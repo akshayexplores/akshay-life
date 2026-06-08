@@ -44,47 +44,105 @@ const chapters: Chapter[] = [
 ]
 
 function Panel({ ch, index }: { ch: Chapter; index: number }) {
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!panelRef.current) return
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduced) return
+
+    const ctx = gsap.context(() => {
+      const els = panelRef.current!.querySelectorAll(".panel-reveal")
+      gsap.fromTo(els,
+        { opacity: 0, y: 24, filter: "blur(6px)" },
+        {
+          opacity: 1, y: 0, filter: "blur(0px)",
+          duration: 0.8, stagger: 0.12, ease: "power3.out",
+          scrollTrigger: {
+            trigger: panelRef.current,
+            start: "top 70%",
+            toggleActions: "play none none none",
+          }
+        }
+      )
+    }, panelRef)
+    return () => ctx.revert()
+  }, [])
+
   return (
     <div
+      ref={panelRef}
       className="journey-panel relative flex w-screen shrink-0 items-center justify-center px-8"
       style={{ height: "100%" }}
     >
+      {/* Chapter number */}
       <span
-        className="absolute left-8 top-24 font-mono md:left-16"
-        style={{ fontSize: "12px", color: "var(--text-muted)", letterSpacing: "0.1em" }}
+        className="panel-reveal absolute left-8 top-24 font-mono md:left-16"
+        style={{ fontSize: "11px", color: "var(--text-muted)", letterSpacing: "0.15em" }}
       >
         {String(index + 1).padStart(2, "0")} / 05
       </span>
-      <div style={{ maxWidth: "680px" }}>
-        <p className="font-mono uppercase" style={{ fontSize: "12px", color: "var(--accent)", letterSpacing: "0.15em" }}>
+
+      <div style={{ maxWidth: "720px" }}>
+        {/* Section label */}
+        <p className="panel-reveal text-label">
           {ch.label}
         </p>
+
+        {/* Stat numbers — big amber accent */}
+        {ch.stat && (
+          <p
+            className="panel-reveal font-display"
+            style={{
+              fontSize: "clamp(2rem, 5vw, 4.5rem)",
+              fontWeight: 900,
+              color: "var(--accent)",
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+              marginTop: "2.5rem",
+              fontVariationSettings: '"opsz" 72',
+            }}
+          >
+            {ch.stat}
+          </p>
+        )}
+
+        {/* Quote */}
         <p
-          className="mt-8 font-display italic"
+          className="panel-reveal font-display"
           style={{
-            fontSize: ch.big ? "clamp(34px, 5vw, 56px)" : "clamp(28px, 4vw, 42px)",
-            fontWeight: 300,
-            lineHeight: 1.2,
+            fontSize: ch.big ? "clamp(2rem, 4.5vw, 4.5rem)" : "clamp(1.6rem, 3.5vw, 3.5rem)",
+            fontWeight: ch.big ? 700 : 500,
+            lineHeight: 1.1,
+            letterSpacing: "-0.025em",
             color: "var(--text-primary)",
+            marginTop: ch.stat ? "1.5rem" : "2.5rem",
+            fontVariationSettings: ch.big ? '"opsz" 72' : '"opsz" 48',
+            fontStyle: "italic",
           }}
         >
           {ch.quote}
         </p>
+
+        {/* Body */}
         <p
-          className="mt-8 font-body"
-          style={{ fontSize: ch.big ? "18px" : "16px", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: "520px" }}
+          className="panel-reveal font-body"
+          style={{
+            fontSize: ch.big ? "1.125rem" : "1rem",
+            color: "var(--text-secondary)",
+            lineHeight: 1.75,
+            maxWidth: "52ch",
+            marginTop: "1.5rem",
+          }}
         >
           {ch.body}
         </p>
-        {ch.stat && (
-          <p className="mt-8 font-mono" style={{ fontSize: "15px", color: "var(--accent)", letterSpacing: "0.04em" }}>
-            {ch.stat}
-          </p>
-        )}
+
+        {/* Outro */}
         {ch.outro && (
           <>
-            <div className="mt-10" style={{ width: 80, height: 1, background: "var(--border)" }} />
-            <p className="mt-6 font-mono" style={{ fontSize: "13px", color: "var(--text-muted)", letterSpacing: "0.08em" }}>
+            <div className="panel-reveal" style={{ width: 60, height: 2, background: "var(--accent)", marginTop: "2.5rem" }} />
+            <p className="panel-reveal font-mono" style={{ fontSize: "12px", color: "var(--text-secondary)", letterSpacing: "0.1em", marginTop: "1rem" }}>
               {ch.outro}
             </p>
           </>
@@ -96,10 +154,10 @@ function Panel({ ch, index }: { ch: Chapter; index: number }) {
 
 export default function Journey() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const fillRef = useRef<HTMLDivElement>(null)
+  const trackRef   = useRef<HTMLDivElement>(null)
+  const fillRef    = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [mounted,  setMounted]  = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -107,11 +165,12 @@ export default function Journey() {
     setIsMobile(mobile)
     if (mobile) return
 
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduced) return
+
     const ctx = gsap.context(() => {
-      const track = trackRef.current!
-      const panels = chapters.length
-      const tween = gsap.to(track, {
-        xPercent: -100 * (panels - 1),
+      const tween = gsap.to(trackRef.current, {
+        xPercent: -100 * (chapters.length - 1),
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -125,34 +184,36 @@ export default function Journey() {
           },
         },
       })
-      return () => {
-        tween.kill()
-      }
+      return () => tween.kill()
     }, sectionRef)
 
-    return () => {
-      ctx.revert()
-      ScrollTrigger.refresh()
-    }
+    return () => { ctx.revert(); ScrollTrigger.refresh() }
   }, [])
 
   return (
-    <section id="journey" className="relative" style={{ background: "var(--bg-primary)" }}>
+    <section id="journey" style={{ background: "var(--bg-primary)" }}>
       {/* Header */}
       <div className="mx-auto max-w-[1400px] px-6 pb-24 pt-40 md:px-12">
-        <p className="font-mono uppercase" style={{ fontSize: "12px", color: "var(--text-muted)", letterSpacing: "0.2em" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
+          <span className="text-label">02 / 06</span>
+          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+        </div>
+        <p className="font-mono" style={{ fontSize: "11px", color: "var(--text-muted)", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem" }}>
           Krama
         </p>
-        <h2 className="mt-4 font-display" style={{ fontSize: "clamp(48px, 8vw, 80px)", fontWeight: 400, color: "var(--text-primary)" }}>
+        <h2
+          className="font-display text-display"
+          style={{ color: "var(--text-primary)" }}
+        >
           Progress.
         </h2>
       </div>
 
+      {/* Panels */}
       {!mounted || isMobile ? (
-        // Mobile / SSR fallback: vertical stack
-        <div className="flex flex-col gap-px">
+        <div className="flex flex-col">
           {chapters.map((ch, i) => (
-            <div key={i} className="border-t py-20" style={{ borderColor: "var(--border)", minHeight: "70vh", display: "flex", alignItems: "center" }}>
+            <div key={i} className="border-t py-20 px-8" style={{ borderColor: "var(--border)", minHeight: "70vh", display: "flex", alignItems: "center" }}>
               <Panel ch={ch} index={i} />
             </div>
           ))}
@@ -165,7 +226,7 @@ export default function Journey() {
                 <Panel key={i} ch={ch} index={i} />
               ))}
             </div>
-            {/* progress bar */}
+            {/* Progress bar */}
             <div className="absolute bottom-12 left-8 right-8 md:left-16 md:right-16" style={{ height: 1, background: "var(--border)" }}>
               <div ref={fillRef} className="h-full origin-left" style={{ background: "var(--accent)", transform: "scaleX(0)" }} />
             </div>

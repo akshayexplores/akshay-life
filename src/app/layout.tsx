@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Cormorant, Inter, JetBrains_Mono } from "next/font/google"
+import { Fraunces, Inter_Tight, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import "splitting/dist/splitting.css"
 import SmoothScroll from "@/components/SmoothScroll"
@@ -7,20 +7,31 @@ import Cursor from "@/components/Cursor"
 import Nav from "@/components/Nav"
 import ScrollProgress from "@/components/ui/ScrollProgress"
 import PageTransition from "@/components/PageTransition"
+import Grain from "@/components/ui/Grain"
+import Preloader from "@/components/ui/Preloader"
 
-const cormorant = Cormorant({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  axes: ["opsz", "SOFT"],
   variable: "--font-display",
   display: "swap",
 })
-const inter = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" })
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" })
+
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Akshay Sajeev — Generalist by design. Entrepreneur by behavior.",
-  description:
-    "I turn ambiguous startup problems into simple, scalable systems. Notes, projects, and tools from a generalist operator.",
+  description: "I turn ambiguous startup problems into simple, scalable systems. Notes, projects, and tools from a generalist operator.",
   metadataBase: new URL("https://akshay.life"),
   openGraph: {
     title: "Akshay Sajeev — akshay.life",
@@ -33,8 +44,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${interTight.variable} ${jetbrainsMono.variable}`}>
       <body>
+        <Preloader />
+        <Grain />
         <Cursor />
         <ScrollProgress />
         <SmoothScroll>

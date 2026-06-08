@@ -1,57 +1,82 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
 import type { NoteMeta } from "@/lib/mdx"
+import GradedImage, { GradedPlaceholder } from "@/components/ui/GradedImage"
 
-export default function NoteCard({ note, featured = false }: { note: NoteMeta; featured?: boolean }) {
-  const [hover, setHover] = useState(false)
+const NOTE_GRADIENTS = [
+  "linear-gradient(135deg, #12100E 0%, #1E1810 55%, #0E0C08 100%)",
+  "linear-gradient(155deg, #0E1016 0%, #141A26 55%, #0A0C12 100%)",
+  "linear-gradient(135deg, #100E16 0%, #1A1424 55%, #0C0A12 100%)",
+  "linear-gradient(150deg, #0E120E 0%, #161E14 55%, #0A0E0A 100%)",
+]
+
+export default function NoteCard({ note, featured = false, index = 0 }: { note: NoteMeta; featured?: boolean; index?: number }) {
   const date = note.date
     ? new Date(note.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
     : ""
 
+  const gradient = NOTE_GRADIENTS[index % NOTE_GRADIENTS.length]
+  const imageH   = featured ? 260 : 160
+
   return (
-    <Link
-      href={`/notes/${note.slug}`}
-      data-cursor-hover
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      className="flex h-full flex-col justify-between"
-      style={{
-        background: hover ? "var(--bg-card)" : "var(--bg-secondary)",
-        border: `1px solid ${hover ? "var(--border-hover)" : "var(--border)"}`,
-        padding: featured ? "48px" : "28px",
-        borderRadius: "2px",
-        transition: "background 0.3s, border-color 0.3s",
-      }}
-    >
-      <div>
-        <span className="font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.1em", color: "var(--accent)" }}>
-          {note.category}
-        </span>
+    <Link href={`/notes/${note.slug}`} data-cursor-hover className="note-card block">
+      {/* Cover */}
+      <div style={{ position: "relative", height: imageH, overflow: "hidden", flexShrink: 0 }}>
+        {(note as NoteMeta & { cover?: string }).cover ? (
+          <GradedImage
+            src={(note as NoteMeta & { cover?: string }).cover!}
+            alt={note.title}
+            fill
+            sizes={featured ? "80vw" : "33vw"}
+          />
+        ) : (
+          <GradedPlaceholder gradient={gradient} style={{ position: "absolute", inset: 0 }} />
+        )}
+        {/* Category label over image */}
+        <div style={{ position: "absolute", top: 16, left: 20, zIndex: 2 }}>
+          <span className="text-label" style={{ fontSize: "10px", background: "rgba(10,9,8,0.7)", padding: "4px 10px", borderRadius: "999px" }}>
+            {note.category}
+          </span>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div style={{ padding: featured ? "32px 36px 36px" : "20px 24px 24px", flex: 1, display: "flex", flexDirection: "column" }}>
         <h3
           className="font-display"
-          style={{ fontSize: featured ? "40px" : "24px", fontWeight: 500, color: "var(--text-primary)", lineHeight: 1.15, marginTop: "16px" }}
+          style={{
+            fontSize: featured ? "clamp(1.4rem, 2.5vw, 2rem)" : "1.1rem",
+            fontWeight: featured ? 700 : 600,
+            color: "var(--text-primary)",
+            lineHeight: 1.15,
+            letterSpacing: "-0.02em",
+            fontVariationSettings: '"opsz" 36',
+          }}
         >
           {note.title}
         </h3>
+
         <p
-          className="mt-4 font-body"
-          style={{ fontSize: featured ? "16px" : "14px", color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: featured ? "60ch" : "40ch" }}
+          className="font-body"
+          style={{
+            fontSize: "0.875rem",
+            color: "var(--text-secondary)",
+            lineHeight: 1.65,
+            marginTop: "10px",
+            maxWidth: featured ? "58ch" : "38ch",
+            flex: 1,
+          }}
         >
-          {note.excerpt.length > (featured ? 240 : 120)
-            ? note.excerpt.slice(0, featured ? 240 : 120).trimEnd() + "…"
+          {note.excerpt.length > (featured ? 220 : 110)
+            ? note.excerpt.slice(0, featured ? 220 : 110).trimEnd() + "…"
             : note.excerpt}
         </p>
-      </div>
-      <div className="mt-8 flex items-center justify-between">
-        <span className="font-mono" style={{ fontSize: "12px", color: "var(--text-muted)" }}>{date}</span>
-        <span
-          className="font-mono"
-          style={{ fontSize: "16px", color: hover ? "var(--accent)" : "var(--text-muted)", transform: hover ? "translateX(5px)" : "none", transition: "transform 0.3s, color 0.3s", opacity: hover ? 1 : 0.6 }}
-        >
-          →
-        </span>
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.25rem", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
+          <span className="font-mono" style={{ fontSize: "11px", color: "var(--text-muted)" }}>{date}</span>
+          <span className="font-mono" style={{ fontSize: "14px", color: "var(--accent)", transition: "transform 0.3s var(--ease-out)", display: "inline-block" }} >→</span>
+        </div>
       </div>
     </Link>
   )

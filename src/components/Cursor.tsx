@@ -1,14 +1,13 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { motion } from "framer-motion"
 
 export default function Cursor() {
-  const dotRef = useRef<HTMLDivElement>(null)
+  const dotRef  = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
   const [hovering, setHovering] = useState(false)
-  const [clicked, setClicked] = useState(false)
-  const [enabled, setEnabled] = useState(false)
+  const [clicked,  setClicked]  = useState(false)
+  const [enabled,  setEnabled]  = useState(false)
 
   useEffect(() => {
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches
@@ -17,34 +16,39 @@ export default function Cursor() {
 
     let dotX = 0, dotY = 0, ringX = 0, ringY = 0
     let raf = 0
+    const hoverRef = { current: false }
 
-    const onMove = (e: MouseEvent) => {
-      dotX = e.clientX
-      dotY = e.clientY
-    }
+    const onMove = (e: MouseEvent) => { dotX = e.clientX; dotY = e.clientY }
 
     const render = () => {
-      ringX += (dotX - ringX) * 0.18
-      ringY += (dotY - ringY) * 0.18
-      if (dotRef.current) dotRef.current.style.transform = `translate(${dotX}px, ${dotY}px) translate(-50%, -50%)`
-      if (ringRef.current) ringRef.current.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) scale(${hoverRef.current ? 2 : 1})`
+      // Dot tracks exactly
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate(${dotX}px,${dotY}px) translate(-50%,-50%)`
+      }
+      // Ring lags with lerp
+      const lerpFactor = hoverRef.current ? 0.12 : 0.16
+      ringX += (dotX - ringX) * lerpFactor
+      ringY += (dotY - ringY) * lerpFactor
+      if (ringRef.current) {
+        const s = hoverRef.current ? 2.2 : 1
+        ringRef.current.style.transform = `translate(${ringX}px,${ringY}px) translate(-50%,-50%) scale(${s})`
+      }
       raf = requestAnimationFrame(render)
     }
 
-    const hoverRef = { current: false }
     const onOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement
-      const interactive = t.closest("a, button, [data-cursor-hover], input, textarea")
-      hoverRef.current = !!interactive
-      setHovering(!!interactive)
+      const interactive = !!t.closest("a,button,[data-cursor-hover],input,textarea")
+      hoverRef.current = interactive
+      setHovering(interactive)
     }
     const onDown = () => setClicked(true)
-    const onUp = () => setClicked(false)
+    const onUp   = () => setClicked(false)
 
-    window.addEventListener("mousemove", onMove)
-    window.addEventListener("mouseover", onOver)
+    window.addEventListener("mousemove", onMove, { passive: true })
+    window.addEventListener("mouseover", onOver, { passive: true })
     window.addEventListener("mousedown", onDown)
-    window.addEventListener("mouseup", onUp)
+    window.addEventListener("mouseup",   onUp)
     raf = requestAnimationFrame(render)
 
     return () => {
@@ -52,7 +56,7 @@ export default function Cursor() {
       window.removeEventListener("mousemove", onMove)
       window.removeEventListener("mouseover", onOver)
       window.removeEventListener("mousedown", onDown)
-      window.removeEventListener("mouseup", onUp)
+      window.removeEventListener("mouseup",   onUp)
     }
   }, [])
 
@@ -60,21 +64,38 @@ export default function Cursor() {
 
   return (
     <>
-      <motion.div
+      {/* Inner dot */}
+      <div
         ref={dotRef}
-        className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full"
-        style={{ width: 6, height: 6, background: "var(--accent)", mixBlendMode: "normal" }}
-        animate={{ scale: clicked ? 0.5 : 1 }}
-        transition={{ type: "spring", stiffness: 500, damping: 28 }}
+        style={{
+          position: "fixed",
+          left: 0, top: 0,
+          zIndex: 9999,
+          width: hovering ? 0 : 7,
+          height: hovering ? 0 : 7,
+          borderRadius: "50%",
+          background: "var(--accent)",
+          pointerEvents: "none",
+          transition: "width 0.2s, height 0.2s",
+          transform: `scale(${clicked ? 0.5 : 1})`,
+          willChange: "transform",
+        }}
       />
+      {/* Outer ring */}
       <div
         ref={ringRef}
-        className="pointer-events-none fixed left-0 top-0 z-[9998] rounded-full transition-[width,height,background] duration-200"
         style={{
-          width: hovering ? 48 : 24,
-          height: hovering ? 48 : 24,
-          border: "2px solid var(--accent)",
-          background: hovering ? "rgba(232,160,32,0.15)" : "transparent",
+          position: "fixed",
+          left: 0, top: 0,
+          zIndex: 9998,
+          width: 28,
+          height: 28,
+          borderRadius: "50%",
+          border: `1.5px solid ${hovering ? "var(--accent)" : "rgba(235,164,39,0.5)"}`,
+          background: hovering ? "rgba(235,164,39,0.12)" : "transparent",
+          pointerEvents: "none",
+          transition: "width 0.25s, height 0.25s, border-color 0.25s, background 0.25s",
+          willChange: "transform",
         }}
       />
     </>

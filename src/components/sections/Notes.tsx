@@ -12,21 +12,29 @@ export default function Notes({ notes }: { notes: NoteMeta[] }) {
   return (
     <section id="notes" className="py-32 md:py-48" style={{ background: "var(--bg-secondary)" }}>
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-        <AnimatedText as="h2" text="89 notes. Here are some that stuck." className="font-display notes-h2" />
-        <style jsx>{`
-          :global(.notes-h2) { font-size: clamp(36px, 6.5vw, 72px); font-weight: 400; color: var(--text-primary); line-height: 1.08; max-width: 16ch; }
-        `}</style>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
+          <span className="text-label">04 / 06</span>
+          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+        </div>
+
+        <AnimatedText
+          as="h2"
+          text="89 notes. Here are some that stuck."
+          className="font-display text-display"
+          style={{ color: "var(--text-primary)", maxWidth: "16ch" }}
+        />
 
         {featured && (
-          <div className="mt-20">
-            <NoteCard note={featured} featured />
+          <div className="mt-16">
+            <NoteCard note={featured} featured index={0} />
           </div>
         )}
 
         {rest.length > 0 && (
-          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {rest.map((n) => (
-              <NoteCard key={n.slug} note={n} />
+          <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3">
+            {rest.map((n, i) => (
+              <NoteCard key={n.slug} note={n} index={i + 1} />
             ))}
           </div>
         )}
@@ -35,10 +43,11 @@ export default function Notes({ notes }: { notes: NoteMeta[] }) {
           <Link
             href="/notes"
             data-cursor-hover
-            className="font-display inline-flex items-center gap-3"
-            style={{ fontSize: "36px", color: "var(--text-primary)" }}
+            className="font-display inline-flex items-center gap-4"
+            style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.02em", fontVariationSettings: '"opsz" 36' }}
           >
-            See all 89 notes <span style={{ color: "var(--accent)" }}>→</span>
+            See all 89 notes{" "}
+            <span style={{ color: "var(--accent)", display: "inline-block", transition: "transform 0.3s var(--ease-out)" }} className="see-all-arrow">→</span>
           </Link>
         </div>
       </div>
