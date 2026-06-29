@@ -1,0 +1,48 @@
+---
+title: "The Data Science Workflow: From Messy Data to Decisions"
+category: "Data Science"
+type: "insight"
+status: "draft"
+slug: "the-data-science-workflow"
+excerpt: "The glamorous part of data science is the model. The *real* job is everything before it. The unglamorous truth I keep relearning: **most of the work — and most…"
+date: "2026-06-29"
+---
+# The Data Science Workflow: From Messy Data to Decisions
+
+The glamorous part of data science is the model. The *real* job is everything before it. The unglamorous truth I keep relearning: **most of the work — and most of the value — is in getting the data into a usable, trustworthy shape.** A brilliant model on dirty data is just a confident way to be wrong.
+
+## The shape of the workflow
+
+Every data project follows the same arc: **collect → clean → prepare → explore → analyse → visualise for decisions.** Skip or rush the middle and the end is worthless. Here's what each step actually demands.
+
+## Cleaning: where reliability is won or lost
+
+When you pull data from multiple sources, some of it will be incorrect, mislabelled, or duplicated. Feed that into a model and you get unreliable predictions and wrong outcomes. So cleaning isn't housekeeping — it's the foundation. The core moves (in pandas terms, but the concepts are universal):
+
+- **Find duplicates** — `duplicated()` flags rows that repeat across the columns you care about; `.any()` tells you quickly whether any exist; `drop_duplicates()` removes them (and you control which copy to keep — first, last, or none).
+- **Find missing values** — `isnull()` / `isna()` return a boolean map of what's empty; `.any()` collapses that per column; `.sum()` gives you a column-wise count of nulls. That count is the first thing I look at — it tells me where the data can't be trusted yet.
+- **Fix data types** — `astype()` converts a column to the correct type. Numbers stored as text, dates stored as strings — these silently break analysis until you coerce them.
+
+The discipline: **never analyse data you haven't audited for duplicates, nulls, and wrong types.** Those three problems cause most "the numbers look weird" moments.
+
+## Exploring: understand before you model
+
+Before any modelling, get a feel for the data:
+
+- **`describe()`** gives the statistical summary for numeric columns (counts, mean, spread). On text columns it shifts to count, number of unique values, the most frequent value, and its frequency — a fast way to understand a categorical field.
+- **`value_counts()`** returns the unique values ranked by frequency (most common first), excluding missing values by default — perfect for "what's actually in this column?"
+- **Selection with `.loc[]`** lets you pull specific rows and columns by label (inclusive of both bounds), so you can isolate exactly the slice you want to inspect — a single row, a range, or specific rows × specific columns.
+- **`transpose` (`.T`)** flips rows and columns when that makes the data easier to read.
+- **`.values`** drops down to the raw array when you need it.
+
+The goal of exploration isn't to produce charts yet — it's to build an honest mental model of what the data *is* before you ask it questions.
+
+## From data to a warehouse to decisions
+
+Operational data is scattered across systems; analysis needs it consolidated. That's the role of a **data warehouse** — a central, structured store designed for querying and analysis rather than day-to-day transactions. Getting data there (extracting it from sources, transforming it into a consistent shape, and loading it) is what turns isolated, inconsistent files into something you can actually reason over at scale.
+
+And the last mile is **business intelligence** — tools like Power BI exist to turn cleaned, modelled data into dashboards and visuals that a decision-maker can act on. This is where the workflow pays off: not in the model's accuracy on a test set, but in a human making a better decision because the data was finally legible. A dashboard nobody acts on is a failed project, however clean the pipeline behind it.
+
+## The throughline
+
+Data science is less "build a clever model" and more "earn the right to trust your data, then make it legible to someone who'll act on it." **Audit before you analyse. Clean before you model. Explore before you conclude. And remember the deliverable isn't a model — it's a decision someone makes because you made the data honest and clear.**

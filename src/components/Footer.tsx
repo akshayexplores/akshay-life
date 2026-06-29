@@ -27,7 +27,7 @@ export default function Footer() {
           </span>
 
           <span className="font-mono" style={{ fontSize: "10px", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
-            © 2026 AKSHAY SAJEEV
+            © {new Date().getFullYear()} AKSHAY SAJEEV
           </span>
         </div>
 

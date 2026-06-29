@@ -1,0 +1,99 @@
+---
+title: "Python Fundamentals: The Parts That Matter Early"
+category: "Python"
+type: "insight"
+status: "draft"
+slug: "python-fundamentals"
+excerpt: "Python was the first language that didn't feel like fighting the computer — and that's by design. If you're starting out, a handful of fundamentals carry…"
+date: "2026-06-29"
+---
+# Python Fundamentals: The Parts That Matter Early
+
+Python was the first language that didn't feel like fighting the computer — and that's by design. If you're starting out, a handful of fundamentals carry almost all the weight. Here are the ones I wish I'd internalised on day one.
+
+## Why Python, and what makes it different
+
+Python shows up everywhere — web (server-side), software development, mathematics, system scripting — and it can do a remarkable range: build web apps, glue workflows together, connect to databases, read and modify files, crunch big data and heavy math, and serve equally well for rapid prototyping or production software. That versatility is why it's so often the first language worth learning.
+
+What makes it *feel* different from other languages:
+
+- It's designed for **readability**, influenced by English and mathematics — you can often read Python almost like prose.
+- It uses **new lines** to end commands, rather than semicolons or parentheses.
+- It relies on **indentation** (whitespace) to define scope — loops, functions, classes — where other languages use curly braces.
+
+That last point is the one beginners trip on, so it's worth stating loudly.
+
+## Indentation is not cosmetic
+
+In most languages, indentation is for human readability. **In Python, indentation is syntax.** It's how the language knows where a block of code begins and ends. This runs fine:
+
+```python
+if 5 > 2:
+    print("Five is greater than two!")
+```
+
+…and this throws a syntax error, purely because the indentation is missing:
+
+```python
+if 5 > 2:
+print("Five is greater than two!")
+```
+
+Use a tab or four spaces, consistently. Half of all early Python errors are really indentation errors in disguise.
+
+## Comments: explain, and disable
+
+Comments do three jobs: explain code, make it readable, and temporarily prevent lines from running while you test. They start with `#` and Python ignores the rest of the line:
+
+```python
+# This is a comment
+print("Hello, World!")      # comments can also sit at the end of a line
+# print("Hello, World!")    # commenting-out disables a line
+```
+
+Python has no real multi-line comment syntax — you either prefix each line with `#`, or use a triple-quoted string (Python ignores string literals that aren't assigned to anything):
+
+```python
+"""
+This is a comment
+written across
+more than one line
+"""
+```
+
+## Variables: dynamic and forgiving
+
+Python has no command to *declare* a variable — **a variable is created the moment you assign a value to it.** And it's dynamically typed: a variable doesn't need a fixed type, and you can change its type after setting it.
+
+```python
+x = 4        # x is an int
+x = "Sam"  # x is now a str — perfectly legal
+```
+
+A few essentials:
+
+- **Casting** sets a type explicitly: `str(4)` → `'4'`, `int(4)` → `4`, `float(4)` → `4.0`.
+- **`type(x)`** tells you a variable's current type.
+- **Naming rules:** must start with a letter or underscore (never a number), can contain only letters, numbers, and underscores, and are **case-sensitive** — `age`, `Age`, and `AGE` are three different variables. Strings can use single or double quotes.
+
+The dynamic typing is a gift and a trap: it makes prototyping fast, but it also means a wrong type can slip through silently until it breaks something later.
+
+## Functions: don't repeat yourself
+
+A function is a reusable block of code that performs a specific task — it lets you do the same thing many times without duplicating a single line. You define it, give it inputs (arguments), and have it return a result:
+
+```python
+def add_three(input_var):
+    output_var = input_var + 3
+    return output_var
+```
+
+The fundamentals worth learning right after this — and they compound fast — are **data types** (numbers, strings, lists, dicts), **conditionals** (`if` / `elif` / `else`), and **variable scope** (where a variable is visible). Together with functions, these four are enough to write genuinely useful programs.
+
+## A glimpse of where it leads
+
+Once the basics are solid, Python's real power in data work comes from its libraries, and a few concepts recur constantly there: **dimensionality reduction** (cutting the number of variables so analysis and visualisation stay efficient, dropping what doesn't add signal), **model selection** (tools to compare, validate, and tune the best parameters for a model), and **pipelines** (chaining the steps of a workflow into one repeatable sequence). You don't need these on day one — but knowing they exist tells you why learning the fundamentals well is worth it: they're the floor everything else is built on.
+
+## The throughline
+
+Python rewards getting a small set of fundamentals genuinely right: **respect the indentation, understand that variables are dynamic and created on assignment, and lean on functions to avoid repeating yourself.** Master those and the language gets out of your way — which, more than any feature, is the whole point of Python.

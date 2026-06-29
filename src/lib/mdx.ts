@@ -12,6 +12,17 @@ export type NoteMeta = {
   excerpt: string
 }
 
+export type InsightMeta = {
+  slug: string
+  title: string
+  category: string
+  type: string
+  status: string
+  date: string
+  excerpt: string
+  tags: string[]
+}
+
 export type ProjectMeta = {
   id: string
   title: string
@@ -67,6 +78,46 @@ export function getNote(slug: string): Doc<NoteMeta> | null {
   }
 }
 
+export function getAllInsights(): InsightMeta[] {
+  return readDir("insights")
+    .map((file) => {
+      const slug = file.replace(/\.mdx$/, "")
+      const raw = fs.readFileSync(path.join(CONTENT_DIR, "insights", file), "utf-8")
+      const { data } = matter(raw)
+      return {
+        slug,
+        title: data.title ?? slug,
+        category: data.category ?? "Insight",
+        type: data.type ?? "insight",
+        status: data.status ?? "draft",
+        date: data.date ?? "",
+        excerpt: data.excerpt ?? "",
+        tags: data.tags ?? [],
+      } as InsightMeta
+    })
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
+}
+
+export function getInsight(slug: string): Doc<InsightMeta> | null {
+  const file = path.join(CONTENT_DIR, "insights", `${slug}.mdx`)
+  if (!fs.existsSync(file)) return null
+  const raw = fs.readFileSync(file, "utf-8")
+  const { data, content } = matter(raw)
+  return {
+    meta: {
+      slug,
+      title: data.title ?? slug,
+      category: data.category ?? "Insight",
+      type: data.type ?? "insight",
+      status: data.status ?? "draft",
+      date: data.date ?? "",
+      excerpt: data.excerpt ?? "",
+      tags: data.tags ?? [],
+    },
+    content,
+  }
+}
+
 export function getProjectDoc(id: string): Doc<Partial<ProjectMeta>> | null {
   const file = path.join(CONTENT_DIR, "projects", `${id}.mdx`)
   if (!fs.existsSync(file)) return null
@@ -82,9 +133,15 @@ function escapeHtml(s: string): string {
 
 function inline(s: string): string {
   let out = escapeHtml(s)
+  // Images: ![alt](url)
+  out = out.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt, src) => `<img src="${src}" alt="${alt}" loading="lazy" />`)
+  // Links: [text](url)
   out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, t, h) => `<a href="${h}">${t}</a>`)
+  // Bold: **text**
   out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+  // Italic: *text* (but not **)
   out = out.replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>")
+  // Inline code: `code`
   out = out.replace(/`([^`]+)`/g, "<code>$1</code>")
   return out
 }
@@ -94,6 +151,9 @@ export function renderMarkdown(md: string): string {
   const html: string[] = []
   let para: string[] = []
   let list: string[] = []
+  let inCodeBlock = false
+  let codeLang = ""
+  let codeLines: string[] = []
 
   const flushPara = () => {
     if (para.length) {
@@ -103,14 +163,78 @@ export function renderMarkdown(md: string): string {
   }
   const flushList = () => {
     if (list.length) {
-      html.push(`<ul>${list.map((li) => `<li>${inline(li)}</li>`).join("")}</ul>`)
+      html.push(renderList(list))
       list = []
     }
   }
 
+  const renderList = (items: string[]): string => {
+    // Handle nested lists by indentation
+    const root: { indent: number; text: string; children: any[] }[] = []
+    const stack: { indent: number; items: any[] }[] = [{ indent: -1, items: root }]
+
+    for (const item of items) {
+      const match = item.match(/^(\s*)[-*]\s+(.*)$/)
+      const indent = match ? match[1].length : 0
+      const text = match ? match[2] : item
+
+      while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+        stack.pop()
+      }
+      const node = { indent, text, children: [] }
+      stack[stack.length - 1].items.push(node)
+      stack.push({ indent, items: node.children })
+    }
+
+    const build = (nodes: any[]): string => {
+      if (!nodes.length) return ""
+      const lis = nodes.map((n) => {
+        const childrenHtml = build(n.children)
+        return `<li>${inline(n.text)}${childrenHtml ? `<ul>${childrenHtml}</ul>` : ""}</li>`
+      })
+      return `<ul>${lis.join("")}</ul>`
+    }
+
+    return build(root)
+  }
+
   for (const raw of lines) {
-    const line = raw.trimEnd()
-    if (!line.trim()) {
+    const line = raw
+    const trimmed = line.trim()
+
+    // Code blocks: ```lang
+    if (trimmed.startsWith("```")) {
+      if (inCodeBlock) {
+        // End code block
+        const code = escapeHtml(codeLines.join("\n"))
+        html.push(`<pre><code${codeLang ? ` class="language-${codeLang}"` : ""}>${code}</code></pre>`)
+        codeLines = []
+        codeLang = ""
+        inCodeBlock = false
+      } else {
+        // Start code block
+        flushPara()
+        flushList()
+        codeLang = trimmed.slice(3).trim()
+        inCodeBlock = true
+      }
+      continue
+    }
+
+    if (inCodeBlock) {
+      codeLines.push(line)
+      continue
+    }
+
+    // Horizontal rule
+    if (/^---+\s*$/.test(trimmed)) {
+      flushPara()
+      flushList()
+      html.push("<hr />")
+      continue
+    }
+
+    if (!trimmed) {
       flushPara()
       flushList()
       continue
@@ -124,9 +248,9 @@ export function renderMarkdown(md: string): string {
     } else if (line.startsWith("# ")) {
       flushPara(); flushList()
       html.push(`<h2>${inline(line.slice(2))}</h2>`)
-    } else if (/^[-*]\s+/.test(line)) {
+    } else if (/^\s*[-*]\s+/.test(line)) {
       flushPara()
-      list.push(line.replace(/^[-*]\s+/, ""))
+      list.push(line)
     } else if (line.startsWith("> ")) {
       flushPara(); flushList()
       html.push(`<blockquote>${inline(line.slice(2))}</blockquote>`)
@@ -135,7 +259,14 @@ export function renderMarkdown(md: string): string {
       para.push(line.trim())
     }
   }
+
+  // Flush any remaining
+  if (inCodeBlock) {
+    const code = escapeHtml(codeLines.join("\n"))
+    html.push(`<pre><code${codeLang ? ` class="language-${codeLang}"` : ""}>${code}</code></pre>`)
+  }
   flushPara()
   flushList()
+
   return html.join("\n")
 }

@@ -29,7 +29,7 @@ export default function Connect() {
 
         {/* Section label */}
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "3rem" }}>
-          <span className="text-label">06 / 06</span>
+          <span className="text-label">Connect</span>
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
 

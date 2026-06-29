@@ -1,0 +1,68 @@
+---
+title: "Data Systems Foundations: Databases & Algorithms"
+category: "Data Science"
+type: "insight"
+status: "draft"
+slug: "data-systems-foundations"
+excerpt: "You can go a surprisingly long way in data work without understanding what's underneath — until the day you can't. Two foundations repay the effort more than…"
+date: "2026-06-29"
+---
+# Data Systems Foundations: Databases & Algorithms
+
+You can go a surprisingly long way in data work without understanding what's underneath — until the day you can't. Two foundations repay the effort more than almost anything: **how databases organise data so it stays safe and consistent, and how algorithms are analysed so you can reason about whether something will actually scale.**
+
+## Why databases exist at all
+
+A database management system (DBMS) is, at its simplest, *a collection of interrelated data plus the programs to access it.* Its whole job is to provide a convenient, safe environment to store and retrieve data. That sounds obvious until you see what life is like *without* one — just operating-system files and bespoke programs to read them. That world is full of predictable pain:
+
+- **Data redundancy and inconsistency** — the same data duplicated across files in different formats, drifting out of sync.
+- **Difficulty accessing data** — every new question needs a new program.
+- **Data isolation** — data scattered across incompatible files.
+- **Integrity problems** — enforcing new rules means rewriting programs.
+- **Atomicity problems** — a transfer that debits one account but fails before crediting the other, because the system crashed midway.
+- **Concurrent-access anomalies** — two users booking the same seat at the same time.
+- **Security issues** — no controlled access.
+
+A DBMS exists to solve all of these at once. That list is also a great checklist for *why* structured data systems matter — every item is a real failure I've watched spreadsheets produce.
+
+## The key idea: abstraction
+
+The most important concept in databases is **data abstraction** — the system hides how data is physically stored and shows you a simplified view. This is what makes databases maintainable, and it's formalised through **schemas and instances**:
+
+- A **schema** is the overall design (a customer schema, an account schema). The **logical schema** describes the design at the conceptual level — and it's the important one, because the whole application is built on it and it can't be changed easily. The **physical schema** describes how it's actually stored, sits *beneath* the logical one, and can usually be changed freely.
+- **Physical data independence** is the payoff: applications that don't depend on the physical schema don't need rewriting when storage changes.
+- An **instance** is the actual data in the database at a given moment — the schema is the structure, the instance is the snapshot.
+
+The lesson that generalises beyond databases: **separate the stable logical design from the changeable physical implementation, and protect the things built on top from churn underneath.** That's good architecture anywhere.
+
+## Algorithms: instructions that scale (or don't)
+
+An algorithm is just a set of unambiguous, step-by-step instructions to solve a problem — distinct from **pseudocode**, which is the easy-to-read *representation* of an algorithm (pseudocode can describe an algorithm but isn't itself one). We write and analyse algorithms for concrete reasons: to find the right approach, improve efficiency, describe a solution without implementation details, and — crucially — **to measure performance without having to build and run the thing.**
+
+### Analysing cost: time and space
+
+Every algorithm is judged on two axes:
+
+- **Space complexity** — how much memory it needs to finish.
+- **Time complexity** — how much time it needs, *as a function of input size.*
+
+And we analyse time in three cases: **worst case** (the maximum time for a given input size — usually what you plan around), **average case**, and **best case** (the minimum). Knowing all three keeps you honest about both typical and pathological behaviour.
+
+### Big O: the language of scale
+
+Complexity is measured with **Big O notation** (asymptotic notation), which expresses how resource consumption grows with input size — not the exact runtime, but the *order* of growth. The common classes, from best to worst, are **constant, logarithmic, linear, quadratic, cubic, and exponential.** This single idea is what lets you look at code and say "this will be fine at a million rows" or "this will melt" *before* you run it.
+
+To estimate cost you also need to recognise the two structural forms: **iterative** algorithms (loops that run until a condition is met — analysed by counting loop executions) and **recursive** algorithms (functions that call themselves — analysed with recurrence equations). They're interchangeable in principle — any iteration can be written as recursion and vice versa — but you analyse them differently.
+
+### Design techniques worth knowing
+
+A handful of strategies solve most problems:
+
+- **Divide and conquer** — split the problem into sub-problems, solve each recursively, and combine the results.
+- **Greedy** — for optimisation problems, make the locally best choice at each step. It doesn't always guarantee the optimal answer, but it usually gets very close, fast.
+- **Dynamic programming** — solve all the small sub-problems once and reuse them to build up bigger solutions; invaluable when sub-problems overlap exponentially.
+- **Branch and bound** — systematically explore the solution space while pruning branches that can't beat the best found so far.
+
+## The throughline
+
+These two foundations rhyme. Databases teach you to **separate logical design from physical storage so systems stay safe, consistent, and changeable.** Algorithms teach you to **reason about cost as things grow, before you build.** Together they're the difference between data work that holds up at scale and data work that quietly falls apart the moment it leaves the demo.

@@ -1,0 +1,81 @@
+---
+title: "Machine Learning Foundations: The Mental Models That Make It Click"
+category: "Machine Learning"
+type: "insight"
+status: "draft"
+slug: "machine-learning-foundations"
+excerpt: "Machine learning stops being intimidating the moment you realise it's a small set of ideas wearing a lot of math. These are the mental models that made it…"
+date: "2026-06-29"
+---
+# Machine Learning Foundations: The Mental Models That Make It Click
+
+Machine learning stops being intimidating the moment you realise it's a small set of ideas wearing a lot of math. These are the mental models that made it click for me — the ones worth understanding before you touch a single library.
+
+## What machine learning actually is
+
+Machine learning is a subfield of AI that uses algorithms and statistical models to let a system **learn from data and improve at a task** — instead of being explicitly programmed for that task. You don't write the rules; you show the system examples and let it infer the rules. That's the whole shift, and it's why ML shows up everywhere from computer vision to natural language to predictive analytics.
+
+## Hypothesis and target class
+
+Two words unlock the rest:
+
+- The **target class** is what you're trying to predict — the output. (Is this email "spam" or "not spam"?)
+- The **hypothesis** is your model's guess about *how the inputs relate to that output* — the pattern connecting features to the answer.
+
+You refine the hypothesis on a **training dataset**, then use it to predict on data it's never seen. The target is also called the *dependent variable* (the thing being predicted); the inputs are the *independent variables* (the predictors). And the target's nature decides the problem type: a **categorical** target (a finite set of labels like spam/not-spam) is *classification*; a **continuous** target (any value in a range, like a salary) is *regression*.
+
+## The big trade-off: bias vs. variance
+
+This is the single most important idea in the whole field. Every model balances two opposing failures:
+
+- **High bias** — the model fits the training data too crudely and misses real patterns. It's underfitting. (Tipped too far toward "simple.")
+- **High variance** — the model fits the training data *too* well, including its noise, and fails to generalise to new data. It's overfitting. (Tipped too far toward "complex.")
+
+The entire craft is finding the balance: complex enough to capture the real relationship, simple enough to generalise. A useful sibling concept is **inductive bias** — the assumptions a model carries *before* it sees data (e.g. "I'll assume the relationship is linear"). Like assuming it's raining because someone carries an umbrella, inductive bias is prior knowledge that shapes what the model can learn.
+
+A related decomposition: **approximation error** (the model isn't expressive enough to represent the true relationship — fix with a more complex model or more features) versus **estimation error** (you only had finite data — fix with more or better data, or regularization). A good model balances both.
+
+## Occam's razor for models
+
+When two models perform similarly, **prefer the simpler one.** A simpler model is easier to understand, interpret, and maintain, and it's less likely to overfit. If a linear regression and a neural network predict equally well, choose the linear regression. The caveat: sometimes a problem genuinely needs the complexity, and forcing simplicity hurts. But "simplest model that works" is the right default.
+
+## How a model actually learns: regression and gradient descent
+
+The cleanest place to see learning happen is **linear regression** — modelling the relationship between a dependent variable and one or more predictors:
+
+- Simple: `y = b0 + b1·x`
+- Multiple: `y = b0 + b1·x1 + b2·x2 + … + bn·xn`
+
+where `b0` is the intercept and the `b` terms are slopes. To find the best-fit line, you estimate those coefficients with **least squares** — minimising the sum of squared differences between actual and predicted values.
+
+That "how wrong are we" measure is the **cost function** (a.k.a. loss/objective function). Learning is just *minimising the cost function*, and the tool for that is **gradient descent**:
+
+- The **gradient** is the slope/direction of the cost function. The **negative gradient** points downhill — toward lower cost.
+- So you repeatedly step in the negative-gradient direction until you reach a minimum. It's literally walking downhill: to reach the bottom fastest, walk opposite the uphill slope.
+- **Standard (batch) gradient descent** computes the gradient over the *entire* dataset each step — accurate but slow.
+- **Stochastic gradient descent (SGD)** computes it on a *random subset* each step — much faster and more efficient, especially on large datasets.
+
+## Classifying with boundaries
+
+For classification, the key geometric idea is the **hyperplane** — a flat subspace one dimension lower than the space it lives in (a line in 2D, a plane in 3D, and so on). It's the surface that separates classes. **Linear discriminants** (like Linear Discriminant Analysis) find the linear combination of features — the line or hyperplane — that best separates the classes, which is exactly what you want for tasks like image classification.
+
+## Supervised vs. unsupervised
+
+The two big learning modes:
+
+- **Supervised learning** — you give the model *labelled* examples (input + correct output), and it learns to map inputs to outputs. Show it labelled cat and dog images; it learns to tell them apart on new images.
+- **Unsupervised learning** — you give only inputs, and the model finds structure (patterns, clusters, relationships) on its own.
+
+## Where it breaks (so you stay honest)
+
+These systems are powerful but not magic, and knowing the limits is part of using them responsibly:
+
+- **Data quality and bias** — poor, biased, or unrepresentative data produces unreliable models that can *amplify* existing social and economic inequalities.
+- **Interpretability** — complex models (deep nets) are hard to explain, which undermines trust where it matters most.
+- **Generalisation** — a model can ace its training data and still flounder on genuinely new scenarios.
+- **Computational cost** — some models need serious resources, limiting where they can run and how fast.
+- **Lack of creativity** — they find patterns and predict; they don't invent. Novel problems still need humans.
+
+## The throughline
+
+Underneath the jargon, machine learning is: *guess a relationship (hypothesis), measure how wrong you are (cost function), step downhill to be less wrong (gradient descent), and fight the constant battle between fitting and generalising (bias–variance).* Master those four and the rest of the field is variations on a theme. And always remember the model is only ever as honest as the data you fed it.

@@ -5,8 +5,10 @@ import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
 const links = [
-  { label: "Notes",    href: "/notes"    },
+  { label: "Insights", href: "/insights" },
   { label: "Projects", href: "/projects" },
+  { label: "Tools",    href: "/tools"    },
+  { label: "About",    href: "/about"    },
   { label: "Contact",  href: "/#connect" },
 ]
 
@@ -92,7 +94,7 @@ export default function Nav() {
                   className="font-display"
                   style={{ fontSize: "clamp(2.5rem, 12vw, 4rem)", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.03em", fontVariationSettings: '"opsz" 72' }}
                 >
-                  <span className="text-label" style={{ marginRight: "1rem" }}>{String(i + 1).padStart(2, "0")}</span>
+                  <span className="text-label" style={{ marginRight: "1rem" }}>—</span>
                   {l.label}
                 </Link>
               ))}

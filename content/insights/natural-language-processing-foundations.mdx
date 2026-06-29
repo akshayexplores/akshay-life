@@ -1,0 +1,49 @@
+---
+title: "Natural Language Processing Foundations"
+category: "Natural language Processing"
+type: "insight"
+status: "draft"
+slug: "natural-language-processing-foundations"
+excerpt: "Natural Language Processing is how machines make sense of human language — and underneath the modern magic of large language models sits a foundation of older,…"
+date: "2026-06-29"
+---
+# Natural Language Processing Foundations
+
+Natural Language Processing is how machines make sense of human language — and underneath the modern magic of large language models sits a foundation of older, simpler ideas that are still worth understanding. These are the building blocks that make text something a computer can actually work with.
+
+## Why NLP matters
+
+At its core, NLP exists to **enhance human–computer interaction** — letting us talk to machines in our own language instead of theirs. The major jobs it does: **information retrieval** (finding the right thing in a sea of text), **making communication accessible**, and **automating language tasks** like summarisation and classification. Anywhere humans and text meet computers, NLP is the bridge.
+
+## Turning words into something a machine can use
+
+Before any analysis, you have to break and normalise text. Two foundational steps:
+
+**Tokenization** splits text into **tokens** — the smallest units that carry meaning (a word, a number, a punctuation mark). Tokens are the basis for everything downstream, and there are several granularities:
+- **Word tokenization:** "I love you" → "I", "love", "you"
+- **Sub-word tokenization:** "unhappiness" → "un", "happi", "ness"
+- **Character tokenization:** "ego" → "e", "g", "o"
+- **Sentence tokenization:** "I love India. I play for India." → two sentences
+
+**Normalising to base forms** — reducing different forms of a word to one, via two related techniques:
+- **Stemming** crudely strips prefixes/suffixes using rules. Fast, but it can produce non-words: "running" → "run", "happily" → "happi". Less accurate, but cheap.
+- **Lemmatization** reduces a word to its proper dictionary form using vocabulary and morphological analysis, *considering context and part of speech*: "running" → "run", "better" → "good". Slower, but accurate.
+
+The trade-off is the whole story: **stemming is fast and rough; lemmatization is slow and correct.** Which you choose depends on whether you need speed or precision.
+
+## Finding and extracting meaning
+
+Two related but distinct tasks:
+
+- **Information Retrieval (IR)** — finding *relevant* documents in a large dataset. The basic loop: a user issues a query, the IR system matches it against documents, and returns the relevant ones. It relies on techniques like indexing, tokenization, stemming/lemmatization, stop-word elimination, and statistical regularities like **Zipf's Law** (a few words appear constantly; most appear rarely). IR models come in classical, non-classical, and alternative flavours.
+- **Information Extraction (IE)** — pulling *structured* information out of unstructured text, using pattern matching, **part-of-speech (POS) tagging**, and dependency parsing. IR finds the document; IE pulls the facts out of it.
+
+## Predicting language: N-grams and smoothing
+
+A foundational way to model language statistically is the **N-gram model** — a probabilistic model that predicts the next item from the preceding sequence. You break a sentence into chunks and estimate the probability of each word given the ones before it (for N=3, the probability of word three given words one and two, and so on). It's the ancestor of "predict the next word," which is, at heart, what today's language models still do — just vastly scaled up.
+
+N-grams have a classic failure: any sequence never seen in training gets a probability of *zero*, which breaks the math. The fix is **smoothing** — adjusting the estimates so every possible N-gram gets a small non-zero probability (the simplest being Laplace / Add-1 smoothing). Smoothing improves accuracy, handles data irregularities, and — crucially — handles **out-of-vocabulary words** the model never saw. The general principle generalises far beyond NLP: *never let "I've never seen this" collapse to "this is impossible."*
+
+## The throughline
+
+NLP is the discipline of making language machine-readable, and it rests on a few durable ideas: **break text into tokens, normalise words to their base forms (fast-and-rough stemming vs. slow-and-accurate lemmatization), retrieve and extract meaning, and model language probabilistically — while smoothing so the unseen never becomes the impossible.** The models have gotten unimaginably more powerful, but these foundations are still what they're built on.

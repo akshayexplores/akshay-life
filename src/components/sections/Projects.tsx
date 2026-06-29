@@ -44,7 +44,7 @@ export default function Projects() {
 
         {/* Section label */}
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
-          <span className="text-label">03 / 06</span>
+          <span className="text-label">Projects</span>
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
 

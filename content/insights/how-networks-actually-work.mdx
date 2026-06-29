@@ -1,0 +1,83 @@
+---
+title: "How Networks Actually Work: A Practical Map of Computer Networking"
+category: "Computer Networks"
+type: "insight"
+status: "draft"
+slug: "how-networks-actually-work"
+excerpt: "Networking felt like alphabet soup to me until I had a map — a way to see how the pieces stack. Once the layers clicked, everything from \"why is this slow\" to…"
+date: "2026-06-29"
+---
+# How Networks Actually Work: A Practical Map of Computer Networking
+
+Networking felt like alphabet soup to me until I had a map — a way to see how the pieces stack. Once the layers clicked, everything from "why is this slow" to "why won't this connect" became diagnosable instead of mysterious. Here's that map.
+
+## Topologies and architectures: the shape of a network
+
+**Topology** is the physical/logical arrangement of devices and connections:
+
+- **Bus** — every device shares one communication line.
+- **Star** — every device connects to a central hub or switch that routes communication. (The most common modern layout.)
+- **Ring** — devices form a circular loop and pass messages around it in one direction.
+- **Mesh** — every device connects to every other; maximum resilience, maximum cost.
+
+**Architecture** is how the network is organised:
+
+- **Client–server** — a central server provides resources; clients request, server responds.
+- **Peer-to-peer** — every device is equal and can be both client and server, communicating directly with no central authority.
+- **Cloud** — resources live on remote servers/data centres reached over the internet rather than hosted locally.
+
+The right choice depends on size, the data being moved, and how much security and resilience you need.
+
+## How data moves: transmission modes
+
+- **Simplex** — one direction only (broadcast radio/TV). Receiver can't reply.
+- **Half-duplex** — both directions, but one at a time (walkie-talkies).
+- **Full-duplex** — both directions simultaneously (phone calls, video conferencing).
+
+## The layered models: the most useful idea in networking
+
+The single concept that makes networking comprehensible is **layering** — breaking communication into stacked layers, each with one job. Two models matter:
+
+**The OSI model (7 layers):**
+1. **Physical** — transmits raw bits over a medium (copper, fibre, radio); defines the electrical/mechanical properties.
+2. **Data Link** — moves frames over the medium; handles error detection/correction, flow control, access control.
+3. **Network** — moves packets *between* networks; provides logical addressing and routing.
+4. **Transport** — reliable end-to-end delivery; flow and congestion control.
+5. **Session** — establishes, manages, and terminates communication sessions.
+6. **Presentation** — translates data formats; compression, encryption/decryption.
+7. **Application** — the services end-users touch: web, email, file transfer.
+
+**The TCP/IP model (4 layers):** Network Access → Internet → Transport → Application — the practical model the actual internet runs on.
+
+Why layering matters beyond exams: dividing communication into independent layers makes networks **easier to troubleshoot, scale, and interoperate** — you can reason about (or fix) one layer without understanding all the others. That's the same separation-of-concerns principle that makes good software, applied to wires.
+
+## Reliable vs. fast: connection-oriented and connectionless
+
+A fundamental trade-off lives at the transport layer:
+
+- **Connection-oriented (TCP)** — establishes a dedicated connection *before* sending, then delivers data in order, reliably, minimising loss and errors. Use it when correctness matters: file transfers, streaming, anything that breaks if bytes arrive scrambled.
+- **Connectionless (UDP)** — no connection setup; data goes as independent packets, each routed on its own, possibly out of order, possibly lost. Simpler, lower overhead, faster. Use it when speed beats perfection: online gaming, real-time video calls.
+
+There's no "better" here — just the right tool for whether you can tolerate loss in exchange for speed.
+
+## Addressing: IPv4 vs. IPv6
+
+Every device needs an address, and we're mid-migration between two schemes:
+
+- **Address space** — IPv4 uses 32-bit addresses (~4.3 billion, now exhausted); IPv6 uses 128-bit addresses (~3.4×10³⁸, effectively unlimited).
+- **Notation** — IPv4 is decimal with dots (`192.168.1.1`); IPv6 is hexadecimal with colons (`2001:0db8:…:7334`).
+- **Header & features** — IPv6's larger header (40 vs 20 bytes) carries more overhead but enables better security and routing; it also drops in-transit fragmentation, simplifying routing and improving performance.
+- **Security** — IPv6 builds in IPSec (encryption/authentication); IPv4 bolts it on separately.
+
+The catch is the transition itself — running both during migration is genuinely complex, which is why IPv4 has lingered far longer than the "out of addresses" headlines suggested.
+
+## Keeping order at speed: flow control & addressing efficiency
+
+Two more ideas worth carrying:
+
+- **Sliding window protocol** — lets a sender transmit multiple packets before waiting for an acknowledgement, using sequence numbers and a "window" of in-flight packets. **Go-Back-N** retransmits *everything* after a lost packet (simple, wasteful); **Selective Repeat** retransmits *only* the lost packet (efficient, more complex). This is how networks stay fast without losing track of what arrived.
+- **Classful vs. classless addressing** — the old classful scheme carved addresses into fixed classes (A–E) with rigid network/host splits, wasting huge ranges. **Classless addressing** (using VLSM and CIDR) allocates exactly the bits needed, allowing networks of any size and using the address space far more efficiently. The move from classful to classless is basically the move from "fixed buckets" to "right-sized allocation."
+
+## The throughline
+
+Networking stops being intimidating once you hold the map: **layers separate concerns so you can reason about one thing at a time; the transport layer trades reliability against speed (TCP vs UDP); and addressing has been a long march toward more space and more efficient allocation (IPv4 → IPv6, classful → classless).** With that frame, "why won't this connect" becomes a layer-by-layer question with an answer, instead of a shrug.

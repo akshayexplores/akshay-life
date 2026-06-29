@@ -14,7 +14,7 @@ export default function Tools() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
 
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
-          <span className="text-label">05 / 06</span>
+          <span className="text-label">Tools</span>
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
 

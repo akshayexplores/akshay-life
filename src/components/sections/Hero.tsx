@@ -25,7 +25,7 @@ function makeParticles(n: number): Particle[] {
   }))
 }
 
-export default function Hero() {
+export default function Hero({ stats = defaultStats }: { stats?: { n: number; l: string }[] }) {
   const root       = useRef<HTMLElement>(null)
   const [particles, setParticles] = useState<Particle[]>([])
 
@@ -205,11 +205,7 @@ export default function Hero() {
 
           {/* Stats */}
           <div className="hero-stats flex gap-8 md:gap-12" style={{ opacity: 0 }}>
-            {[
-              { n: 89,  l: "E-Notes"  },
-              { n: 11,  l: "Projects" },
-              { n: 12,  l: "Clients"  },
-            ].map((s) => (
+            {stats.map((s) => (
               <div key={s.l} style={{ textAlign: "right" }}>
                 <div className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 900, color: "var(--accent)", lineHeight: 1, fontVariationSettings: '"opsz" 48' }}>
                   <CountUp target={s.n} />
@@ -242,13 +238,12 @@ export default function Hero() {
           />
         </div>
       </div>
-
-      {/* ── Section number ── */}
-      <div className="absolute bottom-10 right-6 z-10 hidden md:block" style={{ right: "max(1.5rem, calc(50% - 700px + 3rem))" }}>
-        <span className="font-mono" style={{ fontSize: "10px", color: "var(--text-muted)", letterSpacing: "0.15em" }}>
-          00 / 06
-        </span>
-      </div>
     </section>
   )
 }
+
+const defaultStats = [
+  { n: 89, l: "E-Notes" },
+  { n: 11, l: "Projects" },
+  { n: 12, l: "Clients" },
+]

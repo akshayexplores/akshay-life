@@ -31,7 +31,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Akshay Sajeev — Generalist by design. Entrepreneur by behavior.",
-  description: "I turn ambiguous startup problems into simple, scalable systems. Notes, projects, and tools from a generalist operator.",
+  description: "I turn ambiguous startup problems into simple, scalable systems. Insights, projects, and tools from a generalist operator.",
   metadataBase: new URL("https://akshay.life"),
   openGraph: {
     title: "Akshay Sajeev — akshay.life",
@@ -40,11 +40,46 @@ export const metadata: Metadata = {
     siteName: "akshay.life",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Akshay Sajeev — akshay.life",
+    description: "I turn ambiguous startup problems into simple, scalable systems.",
+  },
+  alternates: {
+    canonical: "https://akshay.life",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Akshay Sajeev",
+  url: "https://akshay.life",
+  jobTitle: "Founder / Chief Buildr",
+  worksFor: {
+    "@type": "Organization",
+    name: "fastrBuild Intelligence",
+  },
+  sameAs: [
+    "https://x.com/AkshayExplores",
+    "https://github.com/akshayexplores",
+  ],
+  description: "Generalist by design. Entrepreneur by behavior. I turn ambiguous startup problems into simple, scalable systems.",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${interTight.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <Preloader />
         <Grain />

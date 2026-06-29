@@ -1,20 +1,27 @@
 import Hero from "@/components/sections/Hero"
 import Journey from "@/components/sections/Journey"
 import Projects from "@/components/sections/Projects"
-import Notes from "@/components/sections/Notes"
+import Insights from "@/components/sections/Notes"
 import Tools from "@/components/sections/Tools"
 import Connect from "@/components/sections/Connect"
 import Footer from "@/components/Footer"
-import { getAllNotes } from "@/lib/mdx"
+import { getAllInsights } from "@/lib/mdx"
+import { projects } from "@/data/projects"
 
 export default function Home() {
-  const notes = getAllNotes()
+  const insights = getAllInsights()
+  const stats = [
+    { n: insights.length, l: "Insights" },
+    { n: projects.length, l: "Projects" },
+    { n: 12, l: "Clients" },
+  ]
+
   return (
     <main>
-      <Hero />
+      <Hero stats={stats} />
       <Journey />
       <Projects />
-      <Notes notes={notes} />
+      <Insights insights={insights} />
       <Tools />
       <Connect />
       <Footer />

@@ -1,0 +1,49 @@
+name: Sync Insights from akshay-brain
+
+on:
+  # Trigger when akshay-brain pushes to main (via repository_dispatch from akshay-brain workflow)
+  repository_dispatch:
+    types: [sync-insights]
+  # Also run nightly as a fallback
+  schedule:
+    - cron: '0 3 * * *'
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout akshay-life
+        uses: actions/checkout@v4
+
+      - name: Checkout akshay-brain
+        uses: actions/checkout@v4
+        with:
+          repository: akshayexplores/akshay-brain
+          path: akshay-brain
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Sync Insights
+        run: |
+          python scripts/sync-insights.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/insights/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Sync Insights from akshay-brain"
+            git push
+          fi

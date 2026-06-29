@@ -11,7 +11,7 @@ const NOTE_GRADIENTS = [
   "linear-gradient(150deg, #0E120E 0%, #161E14 55%, #0A0E0A 100%)",
 ]
 
-export default function NoteCard({ note, featured = false, index = 0 }: { note: NoteMeta; featured?: boolean; index?: number }) {
+export default function NoteCard({ note, featured = false, index = 0, hrefPrefix = "/notes" }: { note: NoteMeta; featured?: boolean; index?: number; hrefPrefix?: string }) {
   const date = note.date
     ? new Date(note.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
     : ""
@@ -20,7 +20,7 @@ export default function NoteCard({ note, featured = false, index = 0 }: { note: 
   const imageH   = featured ? 260 : 160
 
   return (
-    <Link href={`/notes/${note.slug}`} data-cursor-hover className="note-card block">
+    <Link href={`${hrefPrefix}/${note.slug}`} data-cursor-hover className="note-card block">
       {/* Cover */}
       <div style={{ position: "relative", height: imageH, overflow: "hidden", flexShrink: 0 }}>
         {(note as NoteMeta & { cover?: string }).cover ? (

@@ -195,7 +195,7 @@ export default function Journey() {
       {/* Header */}
       <div className="mx-auto max-w-[1400px] px-6 pb-24 pt-40 md:px-12">
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
-          <span className="text-label">02 / 06</span>
+          <span className="text-label">Krama</span>
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
         <p className="font-mono" style={{ fontSize: "11px", color: "var(--text-muted)", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem" }}>

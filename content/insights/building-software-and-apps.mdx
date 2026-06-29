@@ -1,0 +1,44 @@
+---
+title: "Building Software & Apps: From Engineering Principles to Flutter & No-Code"
+category: "Code"
+type: "insight"
+status: "draft"
+slug: "building-software-and-apps"
+excerpt: "I've built software by writing every line, by composing pre-made components, and by not writing code at all. They look different but they rest on the same…"
+date: "2026-06-29"
+---
+# Building Software & Apps: From Engineering Principles to Flutter & No-Code
+
+I've built software by writing every line, by composing pre-made components, and by not writing code at all. They look different but they rest on the same handful of ideas. Here's the map that connects engineering principles, a real cross-platform framework, and the no-code approach.
+
+## Software engineering: the process beneath the code
+
+Before frameworks, there's *process.* Any serious software effort cycles through four phases: **specification** (what should it do?), **design** (how will it be structured?), **validation** (does it actually do it?), and **evolution** (how does it change over time?). Most failures I've seen trace back to skipping or rushing one of these — usually specification.
+
+A few engineering fundamentals that pay off forever:
+
+- **SDLC models** are different ways of sequencing that work — the classic **waterfall** (linear, each phase finished before the next), the **iterative** waterfall (loops back to fix), and **agile / scrum** (short cycles, continuous feedback). The trade-off is predictability versus adaptability; pick by how much the requirements are likely to change.
+- **Requirements come in two kinds:** *functional* (what the system does) and *non-functional* (how well it does it — performance, security, usability). Both belong in a proper **software requirements specification (SRS)**, and forgetting the non-functional ones is how you ship something that technically works and is unusable.
+- **Cohesion and coupling** is the quiet principle behind all good structure: aim for **high cohesion** (each module does one well-defined thing) and **low coupling** (modules depend on each other as little as possible). Get this right and the system stays changeable; get it wrong and every edit breaks three other things.
+- **Modelling tools** like data-flow diagrams (DFD) and UML class diagrams exist to think *before* you build — cheaper to move boxes than to refactor code.
+
+## Flutter: everything is a widget
+
+When I needed to ship to both iOS and Android without maintaining two codebases, Flutter was the answer — a tool to build native cross-platform apps (iOS, Android, web, desktop) from **one language and one codebase.** Two things make it click:
+
+- **Everything is a widget.** The entire UI is widgets nested inside widgets — like Lego blocks — forming a **widget tree.** Layout is done with simple **Rows and Columns** rather than fiddly constraints, which makes building UI genuinely pleasant. And because it's open source, you can read how anything is implemented.
+- **Scaffolding gives you the skeleton for free.** A `MaterialApp` widget pulls in the machinery for a Material-design app (navigation, theming); inside it, a `Scaffold` hands you the standard furniture — `AppBar`, `BottomNavigationBar`, `Drawer`, `FloatingActionButton` — so you're not rebuilding the obvious. The `child` keyword nests one component inside another, which is how the tree grows. And **hot reload** lets you see changes instantly, which collapses the build-test loop.
+
+The most useful habit with a framework this deep: **keep the documentation open.** The framework is mostly a vocabulary of widgets, and fluency comes from looking things up, not memorising.
+
+## No-code: the same app, fewer keystrokes
+
+No-code didn't change *what* an app is — it changed how much typing it takes. The mental model that makes no-code (and honestly, all app-building) legible:
+
+> **Every app has two faces — a frontend (what you see on screen) and a backend (the logic and data behind it).**
+
+And a counter-intuitive but reliable order: **build the backend first, then the frontend.** Decide what data exists and how it's structured before you decorate the screens. In no-code, the "backend" can be something as humble as a spreadsheet acting as your database — and that's enough to ship a real, working product. (I once shipped a full working MVP this way without a single line of production code.)
+
+## The throughline
+
+Whether you're hand-writing code, composing widgets, or wiring a no-code tool, the same truths hold: **specify before you build, keep modules cohesive and loosely coupled, separate the frontend from the backend, and design the data before the screens.** The tools keep getting easier; the engineering thinking is what still separates something that ships and survives from something that demos once and falls over.
