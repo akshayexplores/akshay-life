@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import NoteCard from "@/components/ui/NoteCard"
+import Link from "next/link"
 import type { InsightMeta } from "@/lib/mdx"
 
 export default function InsightsClient({
@@ -40,7 +40,7 @@ export default function InsightsClient({
           placeholder="Search insights..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-md border bg-transparent px-4 py-3 font-body outline-none transition-colors focus:border-[var(--accent)]"
+          className="w-full bg-transparent border-b px-0 py-3 font-body outline-none transition-colors focus:border-[var(--accent)]"
           style={{
             borderColor: "var(--border)",
             color: "var(--text-primary)",
@@ -73,23 +73,26 @@ export default function InsightsClient({
       >
         {filtered.length} insight{filtered.length !== 1 ? "s" : ""}
         {activeSubject !== "All" ? ` in ${activeSubject}` : ""}
-        {search.trim() ? ` matching "${search}"` : ""}
       </p>
 
-      {/* Grid */}
-      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* List */}
+      <div className="mt-10 flex flex-col">
         {filtered.map((i) => (
-          <NoteCard
+          <Link
             key={i.slug}
-            note={{
-              slug: i.slug,
-              title: i.title,
-              category: i.category,
-              date: i.date,
-              excerpt: i.excerpt,
-            }}
-            hrefPrefix="/insights"
-          />
+            href={`/insights/${i.slug}`}
+            className="group border-b py-6 transition-colors"
+            style={{ borderColor: "var(--border)" }}
+          >
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="font-body" style={{ fontSize: "1.0625rem", color: "var(--text-primary)" }}>
+                {i.title}
+              </span>
+              <span className="font-mono flex-shrink-0" style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                {i.category}
+              </span>
+            </div>
+          </Link>
         ))}
       </div>
 
@@ -98,7 +101,7 @@ export default function InsightsClient({
           className="mt-16 text-center font-body"
           style={{ color: "var(--text-muted)", fontSize: "16px" }}
         >
-          No insights match your filters. Try a different search or subject.
+          No insights match your filters.
         </p>
       )}
     </>
@@ -117,13 +120,12 @@ function FilterPill({
   return (
     <button
       onClick={onClick}
-      data-cursor-hover
-      className="rounded-full px-4 py-1.5 font-mono transition-colors"
+      className="rounded-full px-3 py-1 font-mono transition-colors"
       style={{
-        fontSize: "13px",
+        fontSize: "12px",
         letterSpacing: "0.02em",
         background: active ? "var(--accent)" : "transparent",
-        color: active ? "var(--bg-primary)" : "var(--text-muted)",
+        color: active ? "#FFFFFF" : "var(--text-muted)",
         border: active ? "1px solid var(--accent)" : "1px solid var(--border)",
       }}
     >

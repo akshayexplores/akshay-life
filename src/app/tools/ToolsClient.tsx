@@ -20,13 +20,12 @@ export default function ToolsClient() {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            data-cursor-hover
-            className="rounded-full px-4 py-1.5 font-mono transition-colors"
+            className="rounded-full px-3 py-1 font-mono transition-colors"
             style={{
-              fontSize: "13px",
+              fontSize: "12px",
               letterSpacing: "0.02em",
               background: activeCategory === cat ? "var(--accent)" : "transparent",
-              color: activeCategory === cat ? "var(--bg-primary)" : "var(--text-muted)",
+              color: activeCategory === cat ? "#FFFFFF" : "var(--text-muted)",
               border: activeCategory === cat ? "1px solid var(--accent)" : "1px solid var(--border)",
             }}
           >
@@ -36,38 +35,27 @@ export default function ToolsClient() {
       </div>
 
       {/* Results count */}
-      <p
-        className="mt-4 font-mono"
-        style={{ fontSize: "13px", color: "var(--text-muted)" }}
-      >
+      <p className="mt-4 font-mono" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
         {filtered.length} tool{filtered.length !== 1 ? "s" : ""}
         {activeCategory !== "All" ? ` in ${activeCategory}` : ""}
       </p>
 
-      {/* Tools grid */}
-      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Tools list */}
+      <div className="mt-10 flex flex-col">
         {filtered.map((tool) => (
           <div
             key={tool.name}
-            className="rounded-lg border p-5 transition-colors hover:border-[var(--accent)]"
+            className="border-b py-5"
             style={{ borderColor: "var(--border)" }}
           >
-            <p
-              className="font-mono"
-              style={{ fontSize: "12px", color: "var(--accent)" }}
-            >
-              {tool.category}
-            </p>
-            <p
-              className="mt-2 font-body"
-              style={{
-                fontSize: "16px",
-                color: "var(--text-primary)",
-                fontWeight: 500,
-              }}
-            >
-              {tool.name}
-            </p>
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="font-body" style={{ fontSize: "1.0625rem", color: "var(--text-primary)" }}>
+                {tool.name}
+              </span>
+              <span className="font-mono flex-shrink-0" style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                {tool.category}
+              </span>
+            </div>
           </div>
         ))}
       </div>

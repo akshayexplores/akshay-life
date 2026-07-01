@@ -1,14 +1,7 @@
 import type { Metadata } from "next"
 import { Fraunces, Inter_Tight, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
-import "splitting/dist/splitting.css"
-import SmoothScroll from "@/components/SmoothScroll"
-import Cursor from "@/components/Cursor"
 import Nav from "@/components/Nav"
-import ScrollProgress from "@/components/ui/ScrollProgress"
-import PageTransition from "@/components/PageTransition"
-import Grain from "@/components/ui/Grain"
-import Preloader from "@/components/ui/Preloader"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -81,14 +74,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Preloader />
-        <Grain />
-        <Cursor />
-        <ScrollProgress />
-        <SmoothScroll>
-          <Nav />
-          <PageTransition>{children}</PageTransition>
-        </SmoothScroll>
+        <Nav />
+        {children}
       </body>
     </html>
   )

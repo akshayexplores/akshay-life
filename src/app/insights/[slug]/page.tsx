@@ -38,7 +38,6 @@ export default async function InsightPage({
       })
     : ""
 
-  // Related insights: same category, excluding current
   const related = getAllInsights()
     .filter(
       (i) => i.category === insight.meta.category && i.slug !== insight.meta.slug
@@ -47,10 +46,9 @@ export default async function InsightPage({
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      <article className="mx-auto max-w-[720px] px-6 pb-32 pt-40">
+      <article className="mx-auto max-w-[680px] px-6 pb-32 pt-40 md:px-0">
         <Link
           href="/insights"
-          data-cursor-hover
           className="font-mono"
           style={{ fontSize: "13px", color: "var(--text-muted)" }}
         >
@@ -69,39 +67,20 @@ export default async function InsightPage({
         <h1
           className="mt-5 font-display"
           style={{
-            fontSize: "clamp(40px, 6vw, 64px)",
+            fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
             fontWeight: 400,
-            lineHeight: 1.1,
+            lineHeight: 1.2,
             color: "var(--text-primary)",
           }}
         >
           {insight.meta.title}
         </h1>
         <p
-          className="mt-5 font-mono"
+          className="mt-4 font-mono"
           style={{ fontSize: "13px", color: "var(--text-muted)" }}
         >
           {date}
         </p>
-
-        {/* Tags */}
-        {insight.meta.tags && insight.meta.tags.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {insight.meta.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full px-3 py-1 font-mono"
-                style={{
-                  fontSize: "12px",
-                  color: "var(--text-muted)",
-                  border: "1px solid var(--border)",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
 
         <div
           className="prose-note mt-14"
@@ -111,9 +90,8 @@ export default async function InsightPage({
         />
       </article>
 
-      {/* Related insights */}
       {related.length > 0 && (
-        <section className="mx-auto max-w-[720px] px-6 pb-24">
+        <section className="mx-auto max-w-[680px] px-6 pb-24 md:px-0">
           <div
             className="mb-8 h-px w-full"
             style={{ background: "var(--border)" }}
@@ -128,31 +106,17 @@ export default async function InsightPage({
           >
             Related in {insight.meta.category}
           </p>
-          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="mt-6 flex flex-col">
             {related.map((r) => (
               <Link
                 key={r.slug}
                 href={`/insights/${r.slug}`}
-                data-cursor-hover
-                className="group block rounded-lg border p-4 transition-colors hover:border-[var(--accent)]"
+                className="group border-b py-4"
                 style={{ borderColor: "var(--border)" }}
               >
-                <p
-                  className="font-mono"
-                  style={{ fontSize: "12px", color: "var(--accent)" }}
-                >
-                  {r.category}
-                </p>
-                <p
-                  className="mt-2 font-body"
-                  style={{
-                    fontSize: "15px",
-                    color: "var(--text-primary)",
-                    lineHeight: 1.4,
-                  }}
-                >
+                <span className="font-body" style={{ fontSize: "1rem", color: "var(--text-primary)" }}>
                   {r.title}
-                </p>
+                </span>
               </Link>
             ))}
           </div>

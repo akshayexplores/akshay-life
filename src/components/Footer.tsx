@@ -1,38 +1,20 @@
+import Link from "next/link"
+
 export default function Footer() {
   return (
-    <footer style={{ background: "var(--bg-primary)", borderTop: "1px solid var(--border)" }}>
-      <div
-        className="mx-auto max-w-[1400px] px-6 py-10 md:px-12"
-        style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "0.5rem",
-          }}
-        >
-          <span
-            className="font-display"
-            style={{ fontSize: "1.1rem", fontWeight: 300, color: "var(--text-muted)", letterSpacing: "0.04em", fontVariationSettings: '"opsz" 14' }}
-          >
-            akshay.life
-          </span>
-
-          <span className="font-mono" style={{ fontSize: "10px", color: "var(--text-muted)", letterSpacing: "0.15em" }}>
-            BUILT WITH NEXT.JS · GSAP · LENIS
-          </span>
-
-          <span className="font-mono" style={{ fontSize: "10px", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
-            © {new Date().getFullYear()} AKSHAY SAJEEV
-          </span>
+    <footer className="mx-auto max-w-[1200px] px-6 pb-16 pt-12 md:px-12">
+      <div className="flex items-center justify-between border-t pt-8" style={{ borderColor: "var(--border)" }}>
+        <span className="font-mono" style={{ fontSize: "12px", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+          © {new Date().getFullYear()} Akshay Sajeev
+        </span>
+        <div className="flex items-center gap-6">
+          <a href="https://x.com/AkshayExplores" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: "12px", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+            X
+          </a>
+          <a href="https://github.com/akshayexplores" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: "12px", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+            GitHub
+          </a>
         </div>
-
-        {/* Thin amber line */}
-        <div style={{ height: "1px", background: "linear-gradient(to right, var(--accent), transparent)" }} />
       </div>
     </footer>
   )
