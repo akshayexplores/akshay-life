@@ -46,11 +46,11 @@ export default async function InsightPage({
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      <article className="mx-auto max-w-[680px] px-6 pb-32 pt-40 md:px-0">
+      <article className="mx-auto max-w-[680px] px-6 pb-32 pt-32 md:px-0 md:pt-40">
         <Link
           href="/insights"
           className="font-mono"
-          style={{ fontSize: "13px", color: "var(--text-muted)" }}
+          style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none" }}
         >
           ← all insights
         </Link>
@@ -112,7 +112,7 @@ export default async function InsightPage({
                 key={r.slug}
                 href={`/insights/${r.slug}`}
                 className="group border-b py-4"
-                style={{ borderColor: "var(--border)" }}
+                style={{ borderColor: "var(--border)", textDecoration: "none" }}
               >
                 <span className="font-body" style={{ fontSize: "1rem", color: "var(--text-primary)" }}>
                   {r.title}

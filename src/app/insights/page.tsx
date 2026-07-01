@@ -14,11 +14,11 @@ export default function InsightsPage() {
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      <div className="mx-auto max-w-[680px] px-6 pb-24 pt-40 md:px-0">
+      <div className="mx-auto max-w-[680px] px-6 pb-24 pt-32 md:px-0 md:pt-40">
         <Link
           href="/"
           className="font-mono"
-          style={{ fontSize: "13px", color: "var(--text-muted)" }}
+          style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none" }}
         >
           ← back
         </Link>

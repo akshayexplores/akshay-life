@@ -23,8 +23,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      <article className="mx-auto max-w-[760px] px-6 pb-32 pt-40">
-        <Link href="/projects" data-cursor-hover className="font-mono" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+      <article className="mx-auto max-w-[680px] px-6 pb-32 pt-32 md:px-0 md:pt-40">
+        <Link href="/projects" className="font-mono" style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none" }}>
           ← all projects
         </Link>
 
@@ -34,7 +34,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           ))}
         </div>
 
-        <h1 className="mt-5 font-display" style={{ fontSize: "clamp(40px, 6vw, 64px)", fontWeight: 400, lineHeight: 1.1, color: "var(--text-primary)" }}>
+        <h1 className="mt-5 font-display" style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 400, lineHeight: 1.2, color: "var(--text-primary)" }}>
           {project.title}
         </h1>
         <p className="mt-4 font-mono" style={{ fontSize: "13px", color: "var(--accent)" }}>
@@ -48,7 +48,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
         )}
 
         <div className="mt-16 border-t pt-10" style={{ borderColor: "var(--border)" }}>
-          <Link href="/projects" data-cursor-hover className="font-display inline-flex items-center gap-3" style={{ fontSize: "24px", color: "var(--text-primary)" }}>
+          <Link href="/projects" className="font-display inline-flex items-center gap-3" style={{ fontSize: "1.25rem", color: "var(--text-primary)", textDecoration: "none" }}>
             <span style={{ color: "var(--accent)" }}>←</span> More projects
           </Link>
         </div>

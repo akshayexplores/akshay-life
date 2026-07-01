@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="mx-auto max-w-[1200px] px-6 pb-16 pt-12 md:px-12">
+    <footer className="mx-auto max-w-[680px] px-6 pb-16 pt-12 md:px-0">
       <div className="flex items-center justify-between border-t pt-8" style={{ borderColor: "var(--border)" }}>
         <span className="font-mono" style={{ fontSize: "12px", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
           © {new Date().getFullYear()} Akshay Sajeev
