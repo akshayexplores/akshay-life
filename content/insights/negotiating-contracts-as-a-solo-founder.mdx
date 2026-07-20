@@ -5,13 +5,14 @@ type: "insight"
 status: "draft"
 slug: "negotiating-contracts-as-a-solo-founder"
 excerpt: "Over one week I went from receiving a corporate work agreement with an uncapped liability clause to a signed contract with a cap I could live with. Along the…"
-date: "2026-07-19"
+date: "2026-07-20"
 tags:
   - "insight"
   - "entrepreneurship"
   - "negotiation"
   - "contracts"
   - "freelancing"
+  - "scope"
 ---
 # Negotiating Contracts as a Solo Founder
 
@@ -45,6 +46,20 @@ In the same week, pricing a separate proposal, I caught myself about to cut my o
 
 One embarrassing near-miss: a finished proposal PDF carried a date exactly one year in the future. Any AI-assisted document needs a three-point human check before it leaves the building: dates correct, rates as intended, contact details right. Thirty seconds of checklist beats a credibility dent.
 
+## Don't build past what you were paid for
+
+The negotiation doesn't end when the contract is signed - it continues every time you decide what to actually deliver against it. A few months into one retainer, I caught myself speccing a six-module SaaS application - a credit ledger, a RAG pipeline, a multi-tenant admin panel - for a client who had contracted two documents: a playbook and a spreadsheet model. Nobody asked for software. I was about to build it anyway, because I already had the hardest pieces of that architecture sitting in my own product and porting them felt efficient.
+
+It isn't efficient. It's scope creep with better production values. The correction that stuck: *the spreadsheet isn't the deliverable, it's the control panel.* A tool that helps you produce the two documents you were paid for is fine. A resellable product built on a client's dime, without a commercial conversation about who owns it, is a liability dressed as a favor.
+
+Three rules came out of nearly making that mistake:
+
+- **Lock the numbers in the document before you encode them in software.** Funnel rates, targets, pricing assumptions - all of it is still draft until the client signs off. If they push back after you've built five interconnected modules around those numbers, you're not revising a paragraph anymore. Get agreement on the document first. Code is expensive to re-negotiate; prose isn't.
+- **Stub the complex subsystems instead of porting your hardest work.** The pieces of your own product that took the longest to get right - a ledger, a retrieval pipeline, a permissions model - almost always solve a problem the client doesn't have yet. Log a number instead of reserving and settling a balance. Paste full context instead of chunking and embedding it. Build the simple version that fits the actual scope, not the impressive version that fits your other project.
+- **Settle the IP question before you write a line of resellable code.** If a client is paying for the work, they can reasonably claim ownership of anything built under that engagement - including a tool you intended to reuse elsewhere. A one-line assignment or license clause, agreed before you start, is cheap insurance against a fight you'd rather not have later.
+
+The instinct to over-deliver is not a character flaw - it's usually good energy pointed at the wrong target. The discipline is remembering that a contract defines a boundary in both directions: it protects you from doing too little, and it should stop you from quietly doing too much.
+
 ## The throughline
 
-Asymmetric negotiations reward preparation over posture: evidence beats assertion, one bundled counter beats a drip of complaints, verbal pre-alignment beats written surprise, a priced-out cap beats an unwinnable fight for zero risk, and a deliberate discount beats a doubtful one. The party with less leverage wins on process.
+Asymmetric negotiations reward preparation over posture: evidence beats assertion, one bundled counter beats a drip of complaints, verbal pre-alignment beats written surprise, a priced-out cap beats an unwinnable fight for zero risk, a deliberate discount beats a doubtful one, and a client's actual scope - not your own ambition - defines what gets built. The party with less leverage wins on process.
