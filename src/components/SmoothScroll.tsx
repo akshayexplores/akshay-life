@@ -1,35 +1,30 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react"
+import { useEffect } from "react"
 import Lenis from "lenis"
-import { gsap, ScrollTrigger } from "@/lib/gsap"
 
-const LenisContext = createContext<Lenis | null>(null)
-export const useLenis = () => useContext(LenisContext)
-
-export default function SmoothScroll({ children }: { children: ReactNode }) {
-  const [lenis, setLenis] = useState<Lenis | null>(null)
-
+export default function SmoothScroll() {
   useEffect(() => {
-    const instance = new Lenis({
-      lerp: 0.08,
-      duration: 1.2,
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    const lenis = new Lenis({
+      duration: 1.05,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     })
 
-    instance.on("scroll", ScrollTrigger.update)
-
-    const update = (time: number) => instance.raf(time * 1000)
-    gsap.ticker.add(update)
-    gsap.ticker.lagSmoothing(0)
-
-    setLenis(instance)
+    let raf = 0
+    const loop = (time: number) => {
+      lenis.raf(time)
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
 
     return () => {
-      gsap.ticker.remove(update)
-      instance.destroy()
+      cancelAnimationFrame(raf)
+      lenis.destroy()
     }
   }, [])
 
-  return <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>
+  return null
 }
