@@ -8,15 +8,22 @@ export const metadata: Metadata = {
 }
 
 /*
- * PEN-BACK NOTE (see AGENTS.md / the site brief, §8):
- * Every line of prose on this page is Akshay's own copy, lifted from his
- * positioning doc. Nothing here was authored by an assistant.
+ * PEN-BACK NOTE (see the site brief, §8):
+ * Every line of prose on this page is Akshay's own copy — either from his
+ * positioning doc or ported verbatim from the Coda site at akshay.life.
+ * Nothing here was authored by an assistant.
  *
- * [HUMAN_REQUIRED] — "The chase" section currently states the pattern but
- * carries no scar. It wants one specific story: the domain he jumped into,
- * what it cost him, and what he saw on the other side. That has to be written
- * by him.
+ * [HUMAN_REQUIRED] — the track record below names four scars in one line each.
+ * At least one of them deserves its own piece under Founder Scars: the named
+ * breakage, the decision, the aftermath. That has to come from him.
  */
+
+const trackRecord = [
+  "I’ve run cold outbound and watched it fail for reasons dashboards couldn’t explain.",
+  "I’ve built a hyperlocal college-only community app that hit 100 paying users in the first month — and then shut it down because the unit economics didn’t make sense.",
+  "I’ve led the build of a full collective-based work ecosystem on Coda, shipping a working MVP without writing a single production line of code.",
+  "I’ve worked with teams where we’ve pitched to investors, raised investment twice, been through thick and thin — watched one acquisition go through, and lived through a bankruptcy.",
+]
 
 export default function AboutPage() {
   return (
@@ -50,6 +57,30 @@ export default function AboutPage() {
             into a pattern.
           </p>
 
+          <h2 className="t-label mt-16">What I have built and broken</h2>
+          <ul className="mt-5" style={{ borderTop: "1px solid var(--border)" }}>
+            {trackRecord.map((line) => (
+              <li
+                key={line}
+                className="font-body"
+                style={{
+                  fontSize: "1.0625rem",
+                  lineHeight: 1.7,
+                  color: "var(--text-dim)",
+                  maxWidth: "64ch",
+                  padding: "1.1rem 0",
+                  borderBottom: "1px solid var(--border)",
+                }}
+              >
+                {line}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text)", maxWidth: "62ch" }}>
+            The constant has been learning and evolving in public, and getting more honest each time
+            about what truly creates leverage.
+          </p>
+
           <h2 className="t-label mt-16">What I do</h2>
           <p className="mt-4 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text)", maxWidth: "62ch" }}>
             I enter ambiguous spaces, find the signal, and build the system that scales it.
@@ -68,6 +99,21 @@ export default function AboutPage() {
             <Link href="/projects" className="link-u" style={{ color: "var(--accent)" }}>projects</Link>{" "}
             are evidence the worldview is real, not the headline.
           </p>
+
+          <div className="bento mt-16 p-7 md:p-9">
+            <p className="font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text)", maxWidth: "58ch" }}>
+              If you’re a founder or operator sitting on one of those “messy, hard to define”
+              problems — I’m the kind of person who enjoys working with you through that discomfort,
+              helping you turn it into clarity, structure, and leverage.
+            </p>
+            <a
+              href="mailto:akshay@fastrbuild.com"
+              className="t-meta link-u mt-5 inline-block"
+              style={{ color: "var(--accent)" }}
+            >
+              Tell me what you’re building →
+            </a>
+          </div>
         </div>
 
         {/* ── Side column: roles, stated plainly ── */}
