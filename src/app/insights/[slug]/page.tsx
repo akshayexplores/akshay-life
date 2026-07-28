@@ -1,7 +1,8 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import Footer from "@/components/Footer"
 import { getAllInsights, getInsight, renderMarkdown } from "@/lib/mdx"
+import { pillarName } from "@/data/pillars"
 
 export function generateStaticParams() {
   return getAllInsights().map((i) => ({ slug: i.slug }))
@@ -11,119 +12,91 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>
-}) {
+}): Promise<Metadata> {
   const { slug } = await params
-  const insight = getInsight(slug)
-  if (!insight) return { title: "Insight — Akshay Sajeev" }
+  const doc = getInsight(slug)
+  if (!doc) return { title: "Not found" }
+
   return {
-    title: `${insight.meta.title} — Akshay Sajeev`,
-    description: insight.meta.excerpt,
+    title: doc.meta.title,
+    description: doc.meta.excerpt || undefined,
+    openGraph: {
+      title: doc.meta.title,
+      description: doc.meta.excerpt || undefined,
+      type: "article",
+      url: `https://akshay.life/insights/${slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: doc.meta.title,
+      description: doc.meta.excerpt || undefined,
+    },
+    alternates: { canonical: `https://akshay.life/insights/${slug}` },
   }
 }
 
-export default async function InsightPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
+export default async function InsightPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const insight = getInsight(slug)
-  if (!insight) notFound()
+  const doc = getInsight(slug)
+  if (!doc) notFound()
 
-  const date = insight.meta.date
-    ? new Date(insight.meta.date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : ""
+  const { meta, content } = doc
+  const html = renderMarkdown(content, { dropFirstH1: true })
 
-  const related = getAllInsights()
-    .filter(
-      (i) => i.category === insight.meta.category && i.slug !== insight.meta.slug
-    )
-    .slice(0, 3)
+  const all = getAllInsights()
+  const idx = all.findIndex((i) => i.slug === slug)
+  const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null
+  const prev = idx > 0 ? all[idx - 1] : null
 
   return (
-    <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      <article className="mx-auto max-w-[680px] px-6 pb-32 pt-32 md:px-0 md:pt-40">
-        <Link
-          href="/insights"
-          className="font-mono"
-          style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none" }}
-        >
-          ← all insights
-        </Link>
-        <p
-          className="mt-10 font-mono uppercase"
-          style={{
-            fontSize: "12px",
-            letterSpacing: "0.15em",
-            color: "var(--accent)",
-          }}
-        >
-          {insight.meta.category}
-        </p>
-        <h1
-          className="mt-5 font-display"
-          style={{
-            fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-            fontWeight: 400,
-            lineHeight: 1.2,
-            color: "var(--text-primary)",
-          }}
-        >
-          {insight.meta.title}
-        </h1>
-        <p
-          className="mt-4 font-mono"
-          style={{ fontSize: "13px", color: "var(--text-muted)" }}
-        >
-          {date}
-        </p>
+    <main className="relative z-[2] mx-auto max-w-[720px] px-6 pt-32 md:pt-40">
+      <Link href="/insights" className="t-meta link-u">← All insights</Link>
 
-        <div
-          className="prose-note mt-14"
-          dangerouslySetInnerHTML={{
-            __html: renderMarkdown(insight.content),
-          }}
-        />
-      </article>
+      <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-1">
+        <span className="t-meta" style={{ color: "var(--accent-dim)" }}>{pillarName(meta.pillar)}</span>
+        <span className="t-meta">·</span>
+        <span className="t-meta">{meta.subject}</span>
+        <span className="t-meta">·</span>
+        <span className="t-meta">{meta.readingMinutes} min</span>
+      </div>
 
-      {related.length > 0 && (
-        <section className="mx-auto max-w-[680px] px-6 pb-24 md:px-0">
-          <div
-            className="mb-8 h-px w-full"
-            style={{ background: "var(--border)" }}
-          />
-          <p
-            className="font-mono uppercase"
-            style={{
-              fontSize: "12px",
-              letterSpacing: "0.15em",
-              color: "var(--text-muted)",
-            }}
-          >
-            Related in {insight.meta.category}
-          </p>
-          <div className="mt-6 flex flex-col">
-            {related.map((r) => (
-              <Link
-                key={r.slug}
-                href={`/insights/${r.slug}`}
-                className="group border-b py-4"
-                style={{ borderColor: "var(--border)", textDecoration: "none" }}
-              >
-                <span className="font-body" style={{ fontSize: "1rem", color: "var(--text-primary)" }}>
-                  {r.title}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
+      <h1 className="t-display mt-5">{meta.title}</h1>
+
+      {meta.excerpt && (
+        <p
+          className="mt-6 font-body"
+          style={{ fontSize: "1.125rem", lineHeight: 1.7, color: "var(--text)" }}
+        >
+          {meta.excerpt}
+        </p>
       )}
 
-      <Footer />
+      <hr className="rule" style={{ margin: "2.5rem 0" }} />
+
+      <article className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+
+      {meta.tags.length > 0 && (
+        <div className="mt-14 flex flex-wrap gap-2">
+          {meta.tags.map((t) => (
+            <span key={t} className="chip" style={{ cursor: "default" }}>{t}</span>
+          ))}
+        </div>
+      )}
+
+      <nav className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-2" style={{ borderTop: "1px solid var(--border)", paddingTop: "2rem" }}>
+        {prev ? (
+          <Link href={`/insights/${prev.slug}`} className="bento block p-5">
+            <p className="t-label">Newer</p>
+            <p className="mt-2 font-body" style={{ color: "var(--text)", lineHeight: 1.5 }}>{prev.title}</p>
+          </Link>
+        ) : <span />}
+        {next ? (
+          <Link href={`/insights/${next.slug}`} className="bento block p-5 md:text-right">
+            <p className="t-label">Older</p>
+            <p className="mt-2 font-body" style={{ color: "var(--text)", lineHeight: 1.5 }}>{next.title}</p>
+          </Link>
+        ) : <span />}
+      </nav>
     </main>
   )
 }
