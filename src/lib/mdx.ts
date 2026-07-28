@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { pillarFor, type PillarId } from "@/data/pillars"
+import { movementFor, type MovementId } from "@/data/movements"
 
 const CONTENT_DIR = path.join(process.cwd(), "content")
 
@@ -10,7 +10,7 @@ export type InsightMeta = {
   title: string
   /** Subject as synced from akshay-brain (frontmatter `category`). */
   subject: string
-  pillar: PillarId
+  movement: MovementId
   type: string
   status: string
   date: string
@@ -41,7 +41,7 @@ function toMeta(slug: string, data: Record<string, unknown>, body: string): Insi
     slug,
     title: (data.title as string) ?? slug,
     subject,
-    pillar: pillarFor(subject),
+    movement: movementFor(subject),
     type: (data.type as string) ?? "insight",
     status: (data.status as string) ?? "draft",
     date: (data.date as string) ?? "",
