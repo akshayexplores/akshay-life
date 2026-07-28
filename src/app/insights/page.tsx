@@ -1,52 +1,36 @@
-import Link from "next/link"
-import Footer from "@/components/Footer"
-import InsightsClient from "./InsightsClient"
+import type { Metadata } from "next"
 import { getAllInsights } from "@/lib/mdx"
+import InsightsClient from "./InsightsClient"
 
-export const metadata = {
-  title: "Insights — Akshay Sajeev",
-  description: "27 field notes on marketing, sales, building, leverage, and the messy reality of doing the work.",
+export const metadata: Metadata = {
+  title: "Insights",
+  description:
+    "Field notes on ambiguity, systems, AI, compounding, and the failures worth naming.",
 }
 
-export default function InsightsPage() {
+export default async function InsightsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ pillar?: string }>
+}) {
+  const { pillar } = await searchParams
   const insights = getAllInsights()
-  const subjects = Array.from(new Set(insights.map((i) => i.category))).sort()
 
   return (
-    <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      <div className="mx-auto max-w-[680px] px-6 pb-24 pt-32 md:px-0 md:pt-40">
-        <Link
-          href="/"
-          className="font-mono"
-          style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none" }}
-        >
-          ← back
-        </Link>
-        <h1
-          className="mt-8 font-display"
-          style={{
-            fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            fontWeight: 400,
-            color: "var(--text-primary)",
-            lineHeight: 1.1,
-          }}
-        >
-          Insights
-        </h1>
-        <p
-          className="mt-4 font-body"
-          style={{
-            fontSize: "1.125rem",
-            color: "var(--text-secondary)",
-            lineHeight: 1.7,
-          }}
-        >
-          27 field notes on marketing, sales, building, leverage, and the messy reality of doing the work.
-        </p>
+    <main className="relative z-[2] mx-auto max-w-[1180px] px-6 pt-32 md:px-10 md:pt-40">
+      <p className="t-label">Insights</p>
+      <h1 className="t-display mt-5" style={{ maxWidth: "20ch" }}>
+        The archive
+      </h1>
+      <p
+        className="mt-6 font-body"
+        style={{ maxWidth: "62ch", fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text-dim)" }}
+      >
+        {insights.length} pieces, written first-person, distilled from working notes. Filter by
+        pillar or by subject.
+      </p>
 
-        <InsightsClient insights={insights} subjects={subjects} />
-      </div>
-      <Footer />
+      <InsightsClient insights={insights} initialPillar={pillar ?? "all"} />
     </main>
   )
 }

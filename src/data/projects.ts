@@ -1,128 +1,144 @@
+/**
+ * Eleven projects. Honest outcomes only.
+ *
+ * RULES ENFORCED IN THIS FILE:
+ *  - No metric appears here unless Akshay supplied it. No estimates, no rounding up.
+ *  - `outcome` states what actually happened, including when that is "shut down".
+ *  - `relationship` is stated plainly. Akshay holds no equity in Acsia, LiLA or GRAC.
+ */
+
+export type Outcome = "shipped" | "shut-down" | "precursor" | "live" | "in-progress"
+
 export type Project = {
   id: string
   title: string
-  client: string
-  description: string
-  tags: string[]
-  year: string
+  org: string
+  /** One line. What it was. His words where supplied. */
+  summary: string
+  /** What actually happened. The honest part. */
+  outcome: string
+  outcomeKind: Outcome
+  stack: string[]
+  /** Stated plainly where it matters. Empty string = nothing to disclose. */
+  relationship?: string
   featured?: boolean
-  /** Swap string → real image path once assets are ready, e.g. "/images/projects/fastrbuild-ops.jpg" */
-  cover?: string | null
-  /** Placeholder gradient until real cover is provided */
-  coverGradient: string
+}
+
+export const outcomeLabel: Record<Outcome, string> = {
+  "shipped": "Shipped",
+  "shut-down": "Shut down",
+  "precursor": "Precursor",
+  "live": "Live",
+  "in-progress": "In progress",
 }
 
 export const projects: Project[] = [
   {
-    id: "fastrbuild-ops",
-    title: "Team & Ops Management Systems",
-    client: "fastrBuild",
-    description: "Built the internal operating system that runs FastrBuild — task management, client workflows, team accountability, all without production code.",
-    tags: ["Coda", "No-Code", "Systems Design"],
-    year: "2024",
+    id: "buildr-base",
+    title: "Buildr Base",
+    org: "FastrBuild",
+    summary: "A Coda-based operating system for FastrBuild's internal ops — visibility and coordination in one place.",
+    outcome: "Runs the company day to day. No production code was written for it.",
+    outcomeKind: "shipped",
+    stack: ["Coda", "No-Code", "Systems Design"],
     featured: true,
-    cover: null,
-    coverGradient: "linear-gradient(135deg, #1C1208 0%, #2A1C08 45%, #1A1510 100%)",
   },
   {
     id: "dapp",
     title: "Dapp",
-    client: "Self-Built",
-    description: "A hyperlocal, closed-community dating app. 100 paying users in month one. Shut down when the unit economics didn't work.",
-    tags: ["Product", "Growth", "Community"],
-    year: "2023",
+    org: "Self-built",
+    summary: "A hyperlocal dating app for a closed college community, built on GlideApps.",
+    outcome: "100+ paying users. Shut down in month two — the unit economics did not work.",
+    outcomeKind: "shut-down",
+    stack: ["GlideApps", "No-Code", "Community"],
     featured: true,
-    cover: null,
-    coverGradient: "linear-gradient(155deg, #0C1018 0%, #141E2A 55%, #0A0C12 100%)",
   },
   {
     id: "collectiveos",
-    title: "CollectiveOS",
-    client: "Self-Built",
-    description: "A collective-based work ecosystem built entirely on Coda. Full MVP. Zero lines of production code.",
-    tags: ["No-Code", "Coda", "Product"],
-    year: "2023",
-    cover: null,
-    coverGradient: "linear-gradient(135deg, #0F1410 0%, #182015 55%, #0A0D0A 100%)",
+    title: "CollectiveOS / iCreate",
+    org: "Self-built",
+    summary: "A no-code operating system for freelance collectives, assembled from Coda and Typeform.",
+    outcome: "Full working OS. Zero lines of production code.",
+    outcomeKind: "shipped",
+    stack: ["Coda", "Typeform", "No-Code"],
+    featured: true,
   },
   {
-    id: "soffit-thought-leadership",
-    title: "Thought Leadership Build",
-    client: "Soffit",
-    description: "Positioned Soffit as a credible voice in cybersecurity through systematic content and relationship architecture.",
-    tags: ["Content", "Brand", "B2B"],
-    year: "2024",
-    cover: null,
-    coverGradient: "linear-gradient(150deg, #140C18 0%, #201028 55%, #0A0810 100%)",
+    id: "atom11",
+    title: "Events-Led Marketing",
+    org: "Atom11",
+    summary: "Events-led marketing, awards presence, and the messaging and decks behind them.",
+    outcome: "Shipped. Events carried the demand generation, not paid channels.",
+    outcomeKind: "shipped",
+    stack: ["Events", "Messaging", "Decks"],
+  },
+  {
+    id: "soffit",
+    title: "Publishing & CRM Rebuild",
+    org: "Soffit",
+    summary: "A cybersecurity publishing programme, a Zoho CRM rebuild, and an IT Maturity Assessment as the entry point.",
+    outcome: "Shipped. The assessment became the front door to the pipeline.",
+    outcomeKind: "shipped",
+    stack: ["Zoho CRM", "Content", "B2B"],
   },
   {
     id: "soffit-sales",
     title: "Relationship-Led Sales System",
-    client: "Soffit",
-    description: "Built sales funnels and systems grounded in relationship-first principles, replacing cold transactional outreach.",
-    tags: ["Sales", "CRM", "Systems"],
-    year: "2024",
-    cover: null,
-    coverGradient: "linear-gradient(135deg, #181008 0%, #241808 55%, #120E08 100%)",
-  },
-  {
-    id: "atom11",
-    title: "Events-Led Marketing Campaigns",
-    client: "Atom11",
-    description: "Designed and executed marketing campaigns across the US and APAC, using events as the primary demand generation lever.",
-    tags: ["Marketing", "Events", "Growth"],
-    year: "2024",
-    cover: null,
-    coverGradient: "linear-gradient(155deg, #0A1018 0%, #102030 55%, #080C15 100%)",
+    org: "Soffit",
+    summary: "Relationship-led sales funnels on a rebuilt Zoho instance, with automated follow-ups behind them.",
+    outcome: "Shipped. Follow-up stopped depending on someone remembering.",
+    outcomeKind: "shipped",
+    stack: ["Zoho CRM", "Automation", "Sales"],
   },
   {
     id: "enterprise-pivot",
-    title: "Automated Prospecting Engine",
-    client: "Enterprise Pivot",
-    description: "Built an automated prospecting and outreach engine that replaced hours of manual SDR work with systematic, triggered sequences.",
-    tags: ["Automation", "Sales", "n8n"],
-    year: "2024",
-    cover: null,
-    coverGradient: "linear-gradient(135deg, #0C1410 0%, #141C10 55%, #0A0C08 100%)",
+    title: "Enterprise Pivot",
+    org: "Client engagement",
+    summary: "Automated prospecting into a Zoho CRM, with an Organizational Maturity Assessment as the hook.",
+    outcome: "Shipped. The assessment did the qualifying before a human joined the call.",
+    outcomeKind: "shipped",
+    stack: ["Zoho CRM", "Automation", "Prospecting"],
   },
   {
-    id: "fastrbuild-n8n",
-    title: "N8N Workflow Automations",
-    client: "fastrBuild",
-    description: "Automated the repeatable work — lead capture, follow-up sequences, reporting, CRM sync — so the team could focus on what only humans can do.",
-    tags: ["n8n", "Automation", "Ops"],
-    year: "2025",
-    cover: null,
-    coverGradient: "linear-gradient(150deg, #181008 0%, #281808 55%, #140E08 100%)",
+    id: "fastrbuild-internal",
+    title: "Internal Automation",
+    org: "FastrBuild",
+    summary: "N8N workflows covering the repeatable internal work — capture, follow-up, reporting, sync.",
+    outcome: "Automated roughly 30% of internal work. Became the precursor to Vajra.",
+    outcomeKind: "precursor",
+    stack: ["N8N", "Automation", "Ops"],
+    featured: true,
   },
   {
     id: "speedlegal",
-    title: "Fundraise & ABM Campaigns",
-    client: "Speedlegal",
-    description: "Designed and executed an account-based marketing strategy alongside a fundraise push, turning investor attention into pipeline.",
-    tags: ["ABM", "Fundraise", "Marketing"],
-    year: "2024",
-    cover: null,
-    coverGradient: "linear-gradient(135deg, #0C0C18 0%, #141430 55%, #0A0A12 100%)",
+    title: "Fundraise Narrative & ABM",
+    org: "Speedlegal",
+    summary: "The fundraise narrative, a LinkedIn ABM motion, and the newsletter that carried both.",
+    outcome: "Newsletter reached ~1.5k subscribers. Product Hunt launch finished #2 for the day.",
+    outcomeKind: "shipped",
+    stack: ["ABM", "LinkedIn", "Newsletter"],
+    featured: true,
   },
   {
     id: "grac-design",
-    title: "UI & UX Design",
-    client: "GRAC",
-    description: "Comprehensive UI/UX design across the full GRAC product — from information architecture to final pixel.",
-    tags: ["UI/UX", "Design", "Product"],
-    year: "2024",
-    cover: null,
-    coverGradient: "linear-gradient(155deg, #18100C 0%, #2A1808 55%, #120E0A 100%)",
+    title: "UI/UX & Design System",
+    org: "GRAC",
+    summary: "A design system and the case study documenting it.",
+    outcome: "In progress. Not finished, not shipped.",
+    outcomeKind: "in-progress",
+    stack: ["Design System", "UI/UX", "Figma"],
+    relationship: "Advisory role. No equity held.",
   },
   {
     id: "grac-fundraise",
-    title: "Fundraise Support",
-    client: "GRAC",
-    description: "Supported GRAC's fundraise with materials, positioning narrative, and investor-readiness strategy.",
-    tags: ["Fundraise", "Strategy", "Decks"],
-    year: "2024",
-    cover: null,
-    coverGradient: "linear-gradient(135deg, #100C18 0%, #180C28 55%, #0C0810 100%)",
+    title: "Fundraise Narrative",
+    org: "GRAC",
+    summary: "The real-time compliance operations narrative behind the raise.",
+    outcome: "Live and unclosed. No round announced.",
+    outcomeKind: "live",
+    stack: ["Narrative", "Fundraise", "Positioning"],
+    relationship: "Advisory role. No equity held.",
   },
 ]
+
+export const featuredProjects = projects.filter((p) => p.featured)

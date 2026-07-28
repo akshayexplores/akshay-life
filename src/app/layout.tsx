@@ -1,81 +1,78 @@
 import type { Metadata } from "next"
-import { Fraunces, Inter_Tight, JetBrains_Mono } from "next/font/google"
+import { Inter } from "next/font/google"
+import { GeistMono } from "geist/font/mono"
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import "./globals.css"
 import Nav from "@/components/Nav"
+import Footer from "@/components/Footer"
+import SmoothScroll from "@/components/SmoothScroll"
+import ScrollProgress from "@/components/ScrollProgress"
 
-const fraunces = Fraunces({
+const inter = Inter({
   subsets: ["latin"],
-  axes: ["opsz", "SOFT"],
-  variable: "--font-display",
+  variable: "--font-inter",
   display: "swap",
 })
 
-const interTight = Inter_Tight({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-})
+const SITE = "https://akshay.life"
+const TAGLINE = "I enter ambiguous spaces, find the signal, and build the system that scales it."
 
 export const metadata: Metadata = {
-  title: "Akshay Sajeev — Generalist by design. Entrepreneur by behavior.",
-  description: "I turn ambiguous startup problems into simple, scalable systems. Insights, projects, and tools from a generalist operator.",
-  metadataBase: new URL("https://akshay.life"),
+  metadataBase: new URL(SITE),
+  title: {
+    default: "Akshay Sajeev — akshay.life",
+    template: "%s — akshay.life",
+  },
+  description: TAGLINE,
   openGraph: {
     title: "Akshay Sajeev — akshay.life",
-    description: "I turn ambiguous startup problems into simple, scalable systems.",
-    url: "https://akshay.life",
+    description: TAGLINE,
+    url: SITE,
     siteName: "akshay.life",
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "Akshay Sajeev — akshay.life",
-    description: "I turn ambiguous startup problems into simple, scalable systems.",
+    description: TAGLINE,
+    creator: "@AkshayExplores",
   },
-  alternates: {
-    canonical: "https://akshay.life",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  alternates: { canonical: SITE },
+  robots: { index: true, follow: true },
+  authors: [{ name: "Akshay Sajeev", url: SITE }],
+  creator: "Akshay Sajeev",
 }
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Akshay Sajeev",
-  url: "https://akshay.life",
-  jobTitle: "Founder / Chief Buildr",
-  worksFor: {
-    "@type": "Organization",
-    name: "fastrBuild Intelligence",
-  },
-  sameAs: [
-    "https://x.com/AkshayExplores",
-    "https://github.com/akshayexplores",
-  ],
-  description: "Generalist by design. Entrepreneur by behavior. I turn ambiguous startup problems into simple, scalable systems.",
+  url: SITE,
+  jobTitle: "Founder, FastrBuild Intelligence",
+  description: TAGLINE,
+  sameAs: ["https://x.com/AkshayExplores", "https://github.com/akshayexplores"],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${interTight.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${GeistMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>
+      <body className="scanlines">
+        <SmoothScroll />
+        <ScrollProgress />
         <Nav />
         {children}
+        <Footer />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

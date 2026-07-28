@@ -1,62 +1,66 @@
 "use client"
 
-import { useState } from "react"
-import { tools, toolCategories } from "@/data/tools"
+import { useMemo, useState } from "react"
+import type { Tool, ToolCategory } from "@/data/tools"
 
-export default function ToolsClient() {
-  const [activeCategory, setActiveCategory] = useState("All")
-  const categories = ["All", ...toolCategories]
+export default function ToolsClient({
+  tools,
+  categories,
+}: {
+  tools: Tool[]
+  categories: ToolCategory[]
+}) {
+  const [active, setActive] = useState<string>("all")
 
-  const filtered =
-    activeCategory === "All"
-      ? tools
-      : tools.filter((t) => t.category === activeCategory)
+  const grouped = useMemo(() => {
+    const cats = active === "all" ? categories : (categories.filter((c) => c === active) as ToolCategory[])
+    return cats
+      .map((c) => ({ category: c, items: tools.filter((t) => t.category === c) }))
+      .filter((g) => g.items.length > 0)
+  }, [tools, categories, active])
 
   return (
     <>
-      {/* Category filters */}
-      <div className="mt-10 flex flex-wrap gap-2">
-        {categories.map((cat) => (
+      <div className="mt-12 flex flex-wrap gap-2">
+        <button className="chip" data-active={active === "all" ? "1" : undefined} onClick={() => setActive("all")}>
+          All
+        </button>
+        {categories.map((c) => (
           <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className="rounded-full px-3 py-1 font-mono transition-colors"
-            style={{
-              fontSize: "12px",
-              letterSpacing: "0.02em",
-              background: activeCategory === cat ? "var(--accent)" : "transparent",
-              color: activeCategory === cat ? "#FFFFFF" : "var(--text-muted)",
-              border: activeCategory === cat ? "1px solid var(--accent)" : "1px solid var(--border)",
-            }}
+            key={c}
+            className="chip"
+            data-active={active === c ? "1" : undefined}
+            onClick={() => setActive(c)}
           >
-            {cat}
+            {c}
           </button>
         ))}
       </div>
 
-      {/* Results count */}
-      <p className="mt-4 font-mono" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-        {filtered.length} tool{filtered.length !== 1 ? "s" : ""}
-        {activeCategory !== "All" ? ` in ${activeCategory}` : ""}
-      </p>
-
-      {/* Tools list */}
-      <div className="mt-10 flex flex-col">
-        {filtered.map((tool) => (
-          <div
-            key={tool.name}
-            className="border-b py-5"
-            style={{ borderColor: "var(--border)" }}
-          >
-            <div className="flex items-baseline justify-between gap-4">
-              <span className="font-body" style={{ fontSize: "1.0625rem", color: "var(--text-primary)" }}>
-                {tool.name}
-              </span>
-              <span className="font-mono flex-shrink-0" style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                {tool.category}
-              </span>
+      <div className="mt-12 flex flex-col gap-14">
+        {grouped.map((g) => (
+          <section key={g.category}>
+            <div className="flex items-baseline gap-4">
+              <h2 className="t-label" style={{ color: "var(--accent-dim)" }}>{g.category}</h2>
+              <span className="t-meta">{g.items.length}</span>
             </div>
-          </div>
+
+            <ul className="mt-5 grid grid-cols-1 gap-px md:grid-cols-2" style={{ background: "var(--border)", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
+              {g.items.map((t) => (
+                <li key={t.name} style={{ background: "var(--surface)", padding: "1.4rem 1.4rem" }}>
+                  <p className="font-mono" style={{ fontSize: "0.9375rem", color: "var(--text)", letterSpacing: "-0.01em" }}>
+                    {t.name}
+                  </p>
+                  <p
+                    className="mt-2 font-body"
+                    style={{ fontSize: "0.9375rem", lineHeight: 1.6, color: "var(--text-dim)" }}
+                  >
+                    {t.why}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
         ))}
       </div>
     </>

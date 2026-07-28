@@ -1,103 +1,163 @@
+import type { Metadata } from "next"
 import Link from "next/link"
-import Footer from "@/components/Footer"
-import { getAllInsights } from "@/lib/mdx"
-import { projects } from "@/data/projects"
-import { tools } from "@/data/tools"
 
-export const metadata = {
-  title: "About — Akshay Sajeev",
-  description: "Generalist by design. Entrepreneur by behavior. Turning ambiguous startup problems into simple, scalable systems.",
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "An entrepreneur who brings clarity into ambiguity. What I do, what I don't, and the chase across domains.",
 }
 
+/*
+ * PEN-BACK NOTE (see the site brief, §8):
+ * Every line of prose on this page is Akshay's own copy — either from his
+ * positioning doc or ported verbatim from the Coda site at akshay.life.
+ * Nothing here was authored by an assistant.
+ *
+ * [HUMAN_REQUIRED] — the track record below names four scars in one line each.
+ * At least one of them deserves its own piece under Founder Scars: the named
+ * breakage, the decision, the aftermath. That has to come from him.
+ */
+
+const trackRecord = [
+  "I’ve run cold outbound and watched it fail for reasons dashboards couldn’t explain.",
+  "I’ve built a hyperlocal college-only community app that hit 100 paying users in the first month — and then shut it down because the unit economics didn’t make sense.",
+  "I’ve led the build of a full collective-based work ecosystem on Coda, shipping a working MVP without writing a single production line of code.",
+  "I’ve worked with teams where we’ve pitched to investors, raised investment twice, been through thick and thin — watched one acquisition go through, and lived through a bankruptcy.",
+]
+
 export default function AboutPage() {
-  const insightCount = getAllInsights().length
-  const projectCount = projects.length
-  const toolCount = tools.length
-  const clientCount = 12
-
-  const stats = [
-    { label: "Insights", value: insightCount },
-    { label: "Projects", value: projectCount },
-    { label: "Clients", value: clientCount },
-    { label: "Tools", value: toolCount },
-  ]
-
   return (
-    <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      <div className="mx-auto max-w-[680px] px-6 pb-32 pt-32 md:px-0 md:pt-40">
-        <Link
-          href="/"
-          className="font-mono"
-          style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none" }}
-        >
-          ← back
-        </Link>
+    <main className="relative z-[2] mx-auto max-w-[1180px] px-6 pt-32 md:px-10 md:pt-40">
+      <p className="t-label">About</p>
 
-        <h1
-          className="mt-8 font-display"
-          style={{
-            fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            fontWeight: 400,
-            color: "var(--text-primary)",
-            lineHeight: 1.1,
-          }}
-        >
-          About
-        </h1>
+      <h1 className="t-display mt-5" style={{ maxWidth: "18ch" }}>
+        Clarity into ambiguity
+      </h1>
 
-        <p className="mt-6 font-body" style={{ fontSize: "1.125rem", color: "var(--text-secondary)", lineHeight: 1.7 }}>
-          Generalist by design. Entrepreneur by behavior. I turn ambiguous startup problems into simple, scalable systems — and I do it in public.
-        </p>
+      <div className="mt-12 grid grid-cols-1 gap-14 md:grid-cols-[minmax(0,1fr)_320px] md:gap-20">
+        {/* ── Main column ─────────────────────── */}
+        <div>
+          <p className="font-body" style={{ fontSize: "1.25rem", lineHeight: 1.65, color: "var(--text)", maxWidth: "58ch" }}>
+            I am an entrepreneur who brings clarity into ambiguity.
+          </p>
 
-        <p className="mt-4 font-body" style={{ fontSize: "1.125rem", color: "var(--text-secondary)", lineHeight: 1.7 }}>
-          I've spent years moving across sales, marketing, product, no-code, content, and AI. Always chasing the same thing: clarity, fundamentals, and leverage that compounds.
-        </p>
+          <p className="mt-6 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text-dim)", maxWidth: "62ch" }}>
+            I find joy in touching messy problems and turning them into simple, scalable solutions
+            and systems.
+          </p>
 
-        <p className="mt-4 font-body" style={{ fontSize: "1.125rem", color: "var(--text-secondary)", lineHeight: 1.7 }}>
-          I learn and build in public, and I'm candid about failures: cold outbound that failed for reasons dashboards couldn't explain; a hyperlocal college app to 100 paying users in month one, then shut down because the unit economics didn't work; a no-code collective ecosystem to a working MVP without a line of production code; two investment raises, an acquisition, and a bankruptcy.
-        </p>
+          <h2 className="t-label mt-16">The chase</h2>
+          <p className="mt-4 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text-dim)", maxWidth: "62ch" }}>
+            I have spent years bouncing between sales, marketing, product, no-code, content, and AI.
+            Not because I am a generalist. Because I was chasing the same thing in different
+            environments: clarity, fundamentals, and optimization that compounds over time.
+          </p>
+          <p className="mt-4 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text-dim)", maxWidth: "62ch" }}>
+            I do not pretend the breadth was a strategy from day one. It was a chase that turned
+            into a pattern.
+          </p>
 
-        <p className="mt-4 font-body" style={{ fontSize: "1.125rem", color: "var(--text-secondary)", lineHeight: 1.7 }}>
-          I'm not interested in hype. I care about fundamentals, systems that compound, and the hard truth of what actually works.
-        </p>
-
-        {/* Stat strip */}
-        <div className="mt-12 border-y py-8" style={{ borderColor: "var(--border)" }}>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <p className="font-display" style={{ fontSize: "2rem", fontWeight: 400, color: "var(--accent)", lineHeight: 1 }}>
-                  {s.value}
-                </p>
-                <p className="mt-1 font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.15em", color: "var(--text-muted)" }}>
-                  {s.label}
-                </p>
-              </div>
+          <h2 className="t-label mt-16">What I have built and broken</h2>
+          <ul className="mt-5" style={{ borderTop: "1px solid var(--border)" }}>
+            {trackRecord.map((line) => (
+              <li
+                key={line}
+                className="font-body"
+                style={{
+                  fontSize: "1.0625rem",
+                  lineHeight: 1.7,
+                  color: "var(--text-dim)",
+                  maxWidth: "64ch",
+                  padding: "1.1rem 0",
+                  borderBottom: "1px solid var(--border)",
+                }}
+              >
+                {line}
+              </li>
             ))}
+          </ul>
+          <p className="mt-6 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text)", maxWidth: "62ch" }}>
+            The constant has been learning and evolving in public, and getting more honest each time
+            about what truly creates leverage.
+          </p>
+
+          <h2 className="t-label mt-16">What I do</h2>
+          <p className="mt-4 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text)", maxWidth: "62ch" }}>
+            I enter ambiguous spaces, find the signal, and build the system that scales it.
+          </p>
+
+          <h2 className="t-label mt-16">The bet</h2>
+          <p className="mt-4 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text-dim)", maxWidth: "62ch" }}>
+            AI made building and broadcasting cheap. The scarce layer is human: trust, judgment,
+            proof. These can be engineered — but only by someone who has actually shipped, broken
+            things, and watched the fix work.
+          </p>
+
+          <h2 className="t-label mt-16">What this site is</h2>
+          <p className="mt-4 font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text-dim)", maxWidth: "62ch" }}>
+            A body of thought attached to an operator. Not a portfolio. Not a resume. The{" "}
+            <Link href="/projects" className="link-u" style={{ color: "var(--accent)" }}>projects</Link>{" "}
+            are evidence the worldview is real, not the headline.
+          </p>
+
+          <div className="bento mt-16 p-7 md:p-9">
+            <p className="font-body" style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text)", maxWidth: "58ch" }}>
+              If you’re a founder or operator sitting on one of those “messy, hard to define”
+              problems — I’m the kind of person who enjoys working with you through that discomfort,
+              helping you turn it into clarity, structure, and leverage.
+            </p>
+            <a
+              href="mailto:akshay@fastrbuild.com"
+              className="t-meta link-u mt-5 inline-block"
+              style={{ color: "var(--accent)" }}
+            >
+              Tell me what you’re building →
+            </a>
           </div>
         </div>
 
-        {/* Contact */}
-        <div className="mt-16">
-          <p className="font-mono uppercase" style={{ fontSize: "12px", letterSpacing: "0.15em", color: "var(--text-muted)" }}>
-            Contact
-          </p>
-          <p className="mt-4 font-body" style={{ fontSize: "1.125rem", color: "var(--text-secondary)", lineHeight: 1.7 }}>
-            <a href="mailto:akshay@fastrbuild.com" style={{ color: "var(--text-primary)" }}>
-              akshay@fastrbuild.com
-            </a>
-          </p>
-          <div className="mt-4 flex gap-6">
-            <a href="https://x.com/AkshayExplores" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-              X
-            </a>
-            <a href="https://github.com/akshayexplores" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-              GitHub
-            </a>
+        {/* ── Side column: roles, stated plainly ── */}
+        <aside>
+          <h2 className="t-label">Where I work</h2>
+
+          <div className="mt-5 flex flex-col gap-px" style={{ background: "var(--border)", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
+            <div style={{ background: "var(--surface)", padding: "1.25rem" }}>
+              <p className="font-mono" style={{ fontSize: "0.875rem", color: "var(--text)" }}>FastrBuild Intelligence</p>
+              <p className="t-meta mt-1">Founder &amp; CEO</p>
+              <p className="mt-3 font-body" style={{ fontSize: "0.9375rem", lineHeight: 1.6, color: "var(--text-dim)" }}>
+                Bootstrapped B2B growth agency. Relationship-led marketing, CRM pipeline design,
+                automation.
+              </p>
+            </div>
+
+            <div style={{ background: "var(--surface)", padding: "1.25rem" }}>
+              <p className="font-mono" style={{ fontSize: "0.875rem", color: "var(--text)" }}>Acsia Technologies · LiLA</p>
+              <p className="t-meta mt-1">Strategic consultant</p>
+              <p className="mt-3 font-body" style={{ fontSize: "0.9375rem", lineHeight: 1.6, color: "var(--text-dim)" }}>
+                Product vision, GTM motion, and investor readiness for an agentic AI platform built
+                for automotive software.
+              </p>
+              <p className="t-meta mt-3" style={{ color: "var(--text-faint)" }}>Consultant, not an employee. No equity held.</p>
+            </div>
+
+            <div style={{ background: "var(--surface)", padding: "1.25rem" }}>
+              <p className="font-mono" style={{ fontSize: "0.875rem", color: "var(--text)" }}>GRAC Sentinel</p>
+              <p className="t-meta mt-1">Advisor</p>
+              <p className="mt-3 font-body" style={{ fontSize: "0.9375rem", lineHeight: 1.6, color: "var(--text-dim)" }}>
+                GTM, sales enablement, and positioning for real-time compliance operations.
+              </p>
+              <p className="t-meta mt-3" style={{ color: "var(--text-faint)" }}>Advisory role. No equity held.</p>
+            </div>
           </div>
-        </div>
+
+          <h2 className="t-label mt-12">Reach me</h2>
+          <div className="mt-4 flex flex-col gap-2">
+            <a href="mailto:akshay@fastrbuild.com" className="t-meta link-u">akshay@fastrbuild.com</a>
+            <a href="https://x.com/AkshayExplores" target="_blank" rel="noopener noreferrer" className="t-meta link-u">@AkshayExplores</a>
+            <a href="https://github.com/akshayexplores" target="_blank" rel="noopener noreferrer" className="t-meta link-u">github.com/akshayexplores</a>
+          </div>
+        </aside>
       </div>
-      <Footer />
     </main>
   )
 }

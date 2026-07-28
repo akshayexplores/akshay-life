@@ -1,135 +1,110 @@
 "use client"
 
-import { useState, useMemo } from "react"
 import Link from "next/link"
+import { useMemo, useState } from "react"
 import type { InsightMeta } from "@/lib/mdx"
+import { pillars, pillarName } from "@/data/pillars"
 
 export default function InsightsClient({
   insights,
-  subjects,
+  initialPillar = "all",
 }: {
   insights: InsightMeta[]
-  subjects: string[]
+  initialPillar?: string
 }) {
-  const [activeSubject, setActiveSubject] = useState("All")
-  const [search, setSearch] = useState("")
+  const validPillar = pillars.some((p) => p.id === initialPillar) ? initialPillar : "all"
+  const [pillar, setPillar] = useState<string>(validPillar)
+  const [subject, setSubject] = useState<string>("all")
 
-  const filtered = useMemo(() => {
-    let result = insights
-    if (activeSubject !== "All") {
-      result = result.filter((i) => i.category === activeSubject)
-    }
-    if (search.trim()) {
-      const q = search.toLowerCase()
-      result = result.filter(
-        (i) =>
-          i.title.toLowerCase().includes(q) ||
-          i.excerpt.toLowerCase().includes(q) ||
-          i.category.toLowerCase().includes(q)
-      )
-    }
-    return result
-  }, [insights, activeSubject, search])
+  const subjects = useMemo(() => {
+    const set = new Set(insights.map((i) => i.subject))
+    return Array.from(set).sort()
+  }, [insights])
+
+  const shown = useMemo(
+    () =>
+      insights.filter(
+        (i) => (pillar === "all" || i.pillar === pillar) && (subject === "all" || i.subject === subject)
+      ),
+    [insights, pillar, subject]
+  )
 
   return (
     <>
-      {/* Search */}
-      <div className="mt-10">
-        <input
-          type="text"
-          placeholder="Search insights..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-transparent border-b px-0 py-3 font-body outline-none transition-colors focus:border-[var(--accent)]"
-          style={{
-            borderColor: "var(--border)",
-            color: "var(--text-primary)",
-            fontSize: "15px",
-          }}
-        />
+      <div className="mt-12">
+        <p className="t-label">Pillar</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button className="chip" data-active={pillar === "all" ? "1" : undefined} onClick={() => setPillar("all")}>
+            All
+          </button>
+          {pillars.map((p) => (
+            <button
+              key={p.id}
+              className="chip"
+              data-active={pillar === p.id ? "1" : undefined}
+              onClick={() => setPillar(p.id)}
+            >
+              {p.name}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Subject filters */}
-      <div className="mt-6 flex flex-wrap gap-2">
-        <FilterPill
-          label="All"
-          active={activeSubject === "All"}
-          onClick={() => setActiveSubject("All")}
-        />
-        {subjects.map((s) => (
-          <FilterPill
-            key={s}
-            label={s}
-            active={activeSubject === s}
-            onClick={() => setActiveSubject(s)}
-          />
-        ))}
+      <div className="mt-7">
+        <p className="t-label">Subject</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button className="chip" data-active={subject === "all" ? "1" : undefined} onClick={() => setSubject("all")}>
+            All
+          </button>
+          {subjects.map((s) => (
+            <button
+              key={s}
+              className="chip"
+              data-active={subject === s ? "1" : undefined}
+              onClick={() => setSubject(s)}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Results count */}
-      <p
-        className="mt-4 font-mono"
-        style={{ fontSize: "13px", color: "var(--text-muted)" }}
-      >
-        {filtered.length} insight{filtered.length !== 1 ? "s" : ""}
-        {activeSubject !== "All" ? ` in ${activeSubject}` : ""}
+      <p className="t-meta mt-8">
+        {shown.length} {shown.length === 1 ? "piece" : "pieces"}
       </p>
 
-      {/* List */}
-      <div className="mt-10 flex flex-col">
-        {filtered.map((i) => (
-          <Link
-            key={i.slug}
-            href={`/insights/${i.slug}`}
-            className="group border-b py-6 transition-colors"
-            style={{ borderColor: "var(--border)" }}
-          >
-            <div className="flex items-baseline justify-between gap-4">
-              <span className="font-body" style={{ fontSize: "1.0625rem", color: "var(--text-primary)" }}>
-                {i.title}
-              </span>
-              <span className="font-mono flex-shrink-0" style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                {i.category}
-              </span>
-            </div>
-          </Link>
+      <ul className="mt-4" style={{ borderTop: "1px solid var(--border)" }}>
+        {shown.map((i) => (
+          <li key={i.slug}>
+            <Link href={`/insights/${i.slug}`} className="block py-6" style={{ borderBottom: "1px solid var(--border)" }}>
+              <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-6">
+                <span className="t-meta" style={{ minWidth: "9.5rem", color: "var(--accent-dim)" }}>
+                  {pillarName(i.pillar)}
+                </span>
+                <div className="flex-1">
+                  <h2 className="t-heading" style={{ color: "var(--text)" }}>{i.title}</h2>
+                  {i.excerpt && (
+                    <p
+                      className="mt-2 font-body"
+                      style={{ fontSize: "0.9375rem", lineHeight: 1.65, color: "var(--text-dim)", maxWidth: "70ch" }}
+                    >
+                      {i.excerpt}
+                    </p>
+                  )}
+                  <p className="t-meta mt-2">{i.subject}</p>
+                </div>
+                <span className="t-meta" style={{ whiteSpace: "nowrap" }}>{i.readingMinutes} min</span>
+              </div>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {filtered.length === 0 && (
-        <p
-          className="mt-16 text-center font-body"
-          style={{ color: "var(--text-muted)", fontSize: "16px" }}
-        >
-          No insights match your filters.
+      {shown.length === 0 && (
+        <p className="mt-10 font-body" style={{ color: "var(--text-dim)" }}>
+          Nothing matches that combination yet.
         </p>
       )}
     </>
-  )
-}
-
-function FilterPill({
-  label,
-  active,
-  onClick,
-}: {
-  label: string
-  active: boolean
-  onClick: () => void
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="rounded-full px-3 py-1 font-mono transition-colors"
-      style={{
-        fontSize: "12px",
-        letterSpacing: "0.02em",
-        background: active ? "var(--accent)" : "transparent",
-        color: active ? "#FFFFFF" : "var(--text-muted)",
-        border: active ? "1px solid var(--accent)" : "1px solid var(--border)",
-      }}
-    >
-      {label}
-    </button>
   )
 }
