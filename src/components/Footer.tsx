@@ -12,7 +12,7 @@ export default function Footer() {
               <span style={{ fontSize: 19, fontWeight: 300, letterSpacing: "-0.03em" }}>Krama</span>
             </div>
             <p className="meta-sent" style={{ marginTop: 10 }}>
-              Ordered progress. A notebook kept in public by Akshay Sajeev, Thiruvananthapuram.
+              Ordered progress. A notebook kept in public by Akshay Sajeev — Bharat.
             </p>
           </div>
 

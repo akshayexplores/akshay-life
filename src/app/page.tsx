@@ -1,24 +1,64 @@
 import Link from "next/link"
-import { getAllInsights } from "@/lib/mdx"
+import { getAllInsights, getSubjectWeights } from "@/lib/mdx"
 import { movements } from "@/data/movements"
+import { layoutBrain } from "@/lib/brain"
 import Reveal from "@/components/Reveal"
+import BrainMap from "@/components/BrainMap"
 
 export default function Home() {
-  const latest = getAllInsights().slice(0, 5)
+  const insights = getAllInsights()
+  const latest = insights.slice(0, 5)
+  // Weights are read off the files at build time, so the map cannot drift
+  // from what has actually been written.
+  const regions = layoutBrain(getSubjectWeights())
 
   return (
     <main className="sheet" style={{ paddingTop: 96 }}>
       {/* ══ Cover ══ */}
-      <section style={{ padding: "56px 0 60px", borderBottom: "1px solid var(--rule)" }}>
-        <h1 className="t-cover">Krama</h1>
-        <div className="font-dev" style={{ fontSize: 26, color: "var(--pravala)", marginTop: 8 }}>
-          क्रम
+      <section
+        className="cover-grid"
+        style={{ padding: "48px 0 56px", borderBottom: "1px solid var(--rule)" }}
+      >
+        <div>
+          <h1 className="t-cover">Krama</h1>
+          <p
+            style={{
+              fontSize: "clamp(20px,2.6vw,30px)",
+              fontWeight: 300,
+              fontStyle: "italic",
+              letterSpacing: "-0.02em",
+              color: "var(--masi-soft)",
+              marginTop: 2,
+            }}
+          >
+            of Akshay
+          </p>
+
+          <div className="font-dev" style={{ fontSize: 26, color: "var(--pravala)", marginTop: 14 }}>
+            क्रम
+          </div>
+
+          <p className="meta" style={{ marginTop: 24, lineHeight: 2.1 }}>
+            Bharat{" "}
+            <span
+              style={{
+                fontFamily: "var(--font-newsreader), Georgia, serif",
+                fontStyle: "italic",
+                textTransform: "none",
+                letterSpacing: "0.01em",
+                fontSize: 15,
+              }}
+            >
+              India
+            </span>
+            <br />
+            Ordered progress — sequence, step, the correct order of things
+          </p>
         </div>
-        <p className="meta" style={{ marginTop: 24, lineHeight: 2.1 }}>
-          Akshay Sajeev · Thiruvananthapuram
-          <br />
-          Ordered progress — sequence, step, the correct order of things
-        </p>
+
+        <div className="cover-plate">
+          <BrainMap regions={regions} totalPieces={insights.length} />
+        </div>
       </section>
 
       {/* ══ The one Nīla moment ══ */}
