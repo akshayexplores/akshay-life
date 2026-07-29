@@ -163,49 +163,69 @@ a { color: inherit; text-decoration: none; }
   .sheet { padding: 0 22px; }
 }
 
-/* ── Cover foot: notebook line + location ───────────────── */
-.cover-foot {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 40px;
-  align-items: end;
-  margin-top: 46px;
+/* ── Cover: centred title block ─────────────────────── */
+.cover { text-align: center; padding: 26px 0 0; }
+.cover .t-cover { display: flex; align-items: baseline; justify-content: center; gap: 0.24em; }
+.cover-dev { color: var(--pravala); }
+.cover-sub {
+  font-size: clamp(20px, 2.6vw, 30px);
+  font-weight: 300; font-style: italic; letter-spacing: -0.02em;
+  color: var(--masi-soft); margin-top: 4px;
 }
-.dashed-rule {
-  border: 0;
-  border-top: 1px dashed var(--rule);
-  margin-top: 22px;
+.cover-note {
+  font-size: 17px; line-height: 1.7; color: var(--masi-soft);
+  max-width: 44ch; margin: 34px auto 0;
 }
-@media (max-width: 700px) {
-  .cover-foot { grid-template-columns: 1fr; gap: 22px; align-items: start; margin-top: 32px; }
+.cover-place {
+  margin-top: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 0 10px;
+  color: var(--masi);
+}
+.cover-place-en {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-style: italic; text-transform: none; letter-spacing: 0.01em; font-size: 15px;
+}
+.cover-dot { color: var(--rule); }
+.dashed-rule { border: 0; border-top: 1px dashed var(--rule); margin-top: 34px; }
+
+@media (max-width: 640px) {
+  .cover .t-cover { flex-direction: column; gap: 0; }
+  .cover-note { margin-top: 26px; }
 }
 
-/* ── The statement box ─────────────────────────────── */
+/* ── The statement: the page's one Nīla moment ────────── */
+.statement-wrap { padding-top: 34px; }
 .statement {
-  border: 1px solid var(--masi);
-  padding: 26px 30px 24px;
+  text-align: center;
+  padding: 44px 40px 40px;
+  max-width: 860px;
+  margin: 0 auto;
 }
-.statement-head {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  justify-content: space-between;
+.statement-h {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 300; letter-spacing: -0.025em; line-height: 1.1;
+  color: #F2EDE3; margin-top: 16px;
 }
-.pattern-dots { flex-shrink: 0; }
-.pattern-dots circle {
-  animation: dot-drift 5.2s var(--ease) infinite;
+.statement-p {
+  font-size: 17px; line-height: 1.72; color: #B3AC9E;
+  max-width: 56ch; margin: 14px auto 0;
 }
+.statement-mv {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--pravala-tint); margin-top: 22px;
+}
+.pattern-dots { display: block; margin: 0 auto; }
+.pattern-dots ellipse { stroke: var(--pravala-tint); }
+.pattern-dots circle { fill: var(--pravala-tint); animation: dot-drift 5.2s var(--ease) infinite; }
 @keyframes dot-drift {
   0%, 100% { transform: translate(0, 0); opacity: 0.85; }
   35%      { transform: translate(1.6px, -1.4px); opacity: 1; }
-  70%      { transform: translate(-1.3px, 1.5px); opacity: 0.55; }
+  70%      { transform: translate(-1.3px, 1.5px); opacity: 0.5; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .pattern-dots circle { animation: none; }
-}
-@media (max-width: 700px) {
-  .statement { padding: 20px 20px 18px; }
-}
+@media (prefers-reduced-motion: reduce) { .pattern-dots circle { animation: none; } }
+@media (max-width: 640px) { .statement { padding: 32px 22px 30px; } }
 
 /* ── Quantifying my capacity ────────────────────────── */
 .cap-entry {
@@ -312,7 +332,7 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase; color: #98897A; margin-top: 12px;
 }
 
-/* ── The two coloured moments ─────────────────────── */
+/* ── The coloured moments ────────────────────────── */
 .on-nila { background: var(--nila); color: #E6E0D2; padding: 34px 32px; }
 .on-nila .lbl { color: var(--pravala-tint); }
 .on-nila p { color: #B3AC9E; }

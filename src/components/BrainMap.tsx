@@ -138,8 +138,8 @@ export default function BrainMap({
         })}
       </svg>
 
-      <figcaption className="meta" style={{ marginTop: 10, textAlign: "center" }}>
-        {totalPieces} pieces · {territories.length} domains · area = how much I&rsquo;ve written
+      <figcaption className="meta" style={{ marginTop: 12, textAlign: "center" }}>
+        {`${totalPieces} pieces · ${territories.length} domains · area = how much I’ve written`}
       </figcaption>
     </figure>
   )
