@@ -97,7 +97,7 @@ export default function BrainMap({
         <path d={CEREBRUM_PATH} fill="none" stroke="var(--masi)" strokeWidth="3"
               strokeOpacity="0.92" strokeLinejoin="round" pointerEvents="none" />
 
-        {/* every domain labelled, with a line to its territory */}
+        {/* every domain labelled, name and value in two aligned columns */}
         {leaders.map((l) => {
           const on = active === l.subject
           const dim = active && !on
@@ -126,19 +126,19 @@ export default function BrainMap({
                 {l.short}
               </text>
               <text
-                x={l.tx} y={l.ty + 13}
-                textAnchor={l.side === "l" ? "start" : "end"}
-                className="font-mono" fontSize="12"
-                fill="var(--masi-faint)"
+                x={l.vx} y={l.ty}
+                textAnchor={l.side === "l" ? "end" : "start"}
+                className="font-mono" fontSize="13"
+                fill={on ? "var(--pravala-deep)" : "var(--masi-faint)"}
               >
-                {Math.round(l.share * 100)}% · {l.pieces}
+                {`${Math.round(l.share * 100)}%`}
               </text>
             </g>
           )
         })}
       </svg>
 
-      <figcaption className="meta" style={{ marginTop: 12, textAlign: "center" }}>
+      <figcaption className="meta" style={{ marginTop: "var(--s4)", textAlign: "center" }}>
         {`${totalPieces} pieces · ${territories.length} domains · area = how much I’ve written`}
       </figcaption>
     </figure>
