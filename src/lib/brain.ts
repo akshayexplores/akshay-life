@@ -14,9 +14,7 @@
 
 import type { MovementId } from "@/data/movements"
 
-export const VIEW = { x: -70, y: -58, w: 720, h: 600 }
-
-/* ── Anatomy ─────────────────────────────────────────────────
+/* ── Anatomy ──────────────────────────────
    The load-bearing feature is the notch at roughly (150,296): the frontal
    underside rises, then the temporal lobe hooks forward and down. Without
    that notch a lateral brain silhouette reads as a potato.                */
@@ -45,7 +43,7 @@ export const FOLIA = [0, 1, 2, 3, 4].map(
   (i) => `M${350 + i * 4} ${330 + i * 11} C378 ${318 + i * 11} 410 ${320 + i * 11} 434 ${334 + i * 9}`
 )
 
-/* ── Path helpers ───────────────────────────────────────── */
+/* ── Path helpers ─────────────────────── */
 
 export function smooth(P: [number, number][], closed = true, t = 0.55): string {
   const n = P.length
@@ -89,7 +87,7 @@ function rng(seed: number) {
   }
 }
 
-/* ── Cortical folds ─────────────────────────────────────────────
+/* ── Cortical folds ─────────────────────────────
    Sulci run as long wandering ridges, roughly parallel, breaking at the lobe
    edges. Concentric rings read as a fingerprint; meandering bands read as a
    cortex. Each band is sampled across the outline and emitted only where it
@@ -139,7 +137,7 @@ export function foldPaths(): string[] {
   return out
 }
 
-/* ── Radiating dashes ──────────────────────────────────────── */
+/* ── Radiating dashes ──────────────────────── */
 export type Ray = { x1: number; y1: number; x2: number; y2: number; len: number }
 
 export function rayPaths(count = 48): Ray[] {
@@ -154,8 +152,8 @@ export function rayPaths(count = 48): Ray[] {
       if (inside(cx + Math.cos(a) * m, cy + Math.sin(a) * m, CEREBRUM)) lo = m
       else hi = m
     }
-    const r0 = lo + 18 + (i % 3) * 6
-    const r1 = r0 + 40 + ((i * 29) % 50)
+    const r0 = lo + 12 + (i % 3) * 4
+    const r1 = r0 + 22 + ((i * 29) % 30)
     out.push({
       x1: +(cx + Math.cos(a) * r0).toFixed(1), y1: +(cy + Math.sin(a) * r0).toFixed(1),
       x2: +(cx + Math.cos(a) * r1).toFixed(1), y2: +(cy + Math.sin(a) * r1).toFixed(1),
@@ -165,7 +163,7 @@ export function rayPaths(count = 48): Ray[] {
   return out
 }
 
-/* ── Territories ────────────────────────────────────────────── */
+/* ── Territories ─────────────────────────── */
 
 /**
  * Where each domain sits. Position is editorial; size is not — the solver
@@ -310,4 +308,82 @@ export function buildTerritories(
       label: (cn[i] ? [sx[i] / cn[i], sy[i] / cn[i]] : S[i]) as [number, number],
     }))
     .sort((a, b) => b.share - a.share)
+}
+
+/* ── Frame ─────────────────────────────────────────────────
+   Computed from the drawing rather than hand-set, so the plate is always
+   tight around the brain. A loose viewBox was scaling the labels down to
+   ~6px on screen, which is why nothing on the map was readable.          */
+function contentBox() {
+  const pts: [number, number][] = [...CEREBRUM, ...CEREBELLUM, ...STEM]
+  for (const r of rayPaths()) { pts.push([r.x1, r.y1]); pts.push([r.x2, r.y2]) }
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1])
+  const padY = 10
+  return {
+    x: Math.min(...xs) - GUTTER,
+    y: Math.min(...ys) - padY,
+    w: Math.max(...xs) - Math.min(...xs) + GUTTER * 2,
+    h: Math.max(...ys) - Math.min(...ys) + padY * 2,
+  }
+}
+
+/** Room either side of the drawing for the leader-line labels. */
+export const GUTTER = 158
+
+export const VIEW = contentBox()
+
+/* ── Leader-line labels ─────────────────────────────────────
+   Every domain gets a label outside the drawing with a line pointing at its
+   territory. This is the mechanic that makes a well-made pie chart readable
+   — nothing hidden behind a hover — and it is what the map was missing.
+   Labels are stacked in two gutters and de-collided vertically.          */
+export type Leader = {
+  subject: string
+  short: string
+  movement: MovementId
+  share: number
+  pieces: number
+  side: "l" | "r"
+  tx: number      // label anchor
+  ty: number
+  points: string  // polyline: label -> bend -> territory
+}
+
+const LINE_MAX = 30
+const LINE_MIN = 21
+
+export function leaderLabels(territories: Territory[], view: { x: number; y: number; w: number; h: number }): Leader[] {
+  const midX = CEREBRUM.reduce((s, p) => s + p[0], 0) / CEREBRUM.length
+  const left = territories.filter((t) => t.label[0] < midX).sort((a, b) => a.label[1] - b.label[1])
+  const right = territories.filter((t) => t.label[0] >= midX).sort((a, b) => a.label[1] - b.label[1])
+
+  const place = (group: Territory[], side: "l" | "r"): Leader[] => {
+    const n = group.length
+    if (!n) return []
+    // Spread the column across the full height and centre it, so both gutters
+    // stay balanced however many domains land on each side.
+    const usable = view.h - 52
+    const lh = n > 1 ? Math.max(LINE_MIN, Math.min(LINE_MAX, usable / (n - 1))) : 0
+    const span = (n - 1) * lh
+    const top = view.y + (view.h - span) / 2
+    const tx = side === "l" ? view.x + 12 : view.x + view.w - 12
+    const bend = side === "l" ? view.x + GUTTER - 26 : view.x + view.w - GUTTER + 26
+
+    return group.map((t, i) => {
+      const ty = top + i * lh
+      return {
+        subject: t.subject,
+        short: t.short,
+        movement: t.movement,
+        share: t.share,
+        pieces: t.pieces,
+        side,
+        tx,
+        ty,
+        points: `${side === "l" ? tx + 6 : tx - 6},${ty - 4} ${bend},${ty - 4} ${t.label[0].toFixed(0)},${t.label[1].toFixed(0)}`,
+      }
+    })
+  }
+
+  return [...place(left, "l"), ...place(right, "r")]
 }
