@@ -163,6 +163,19 @@ a { color: inherit; text-decoration: none; }
   .sheet { padding: 0 22px; }
 }
 
+/* ── Cover: title column + capacity plate ───────────── */
+.cover-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+  gap: 48px;
+  align-items: center;
+}
+.cover-plate { min-width: 0; }
+@media (max-width: 900px) {
+  .cover-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cover-plate { max-width: 420px; }
+}
+
 /* ── Index list (ledger rows) ─────────────────────── */
 .idx { list-style: none; counter-reset: idx; }
 .idx > li { counter-increment: idx; border-bottom: 1px dotted var(--rule); }
