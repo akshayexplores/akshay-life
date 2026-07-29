@@ -8,17 +8,20 @@ import { movements } from "@/data/movements"
 export default function DarshanaClient({
   insights,
   initialMovement = "all",
+  initialSubject = "all",
 }: {
   insights: InsightMeta[]
   initialMovement?: string
+  initialSubject?: string
 }) {
   const valid = movements.some((m) => m.id === initialMovement) ? initialMovement : "all"
   const [mv, setMv] = useState<string>(valid)
-  const [subject, setSubject] = useState<string>("all")
-
   const subjects = useMemo(
     () => Array.from(new Set(insights.map((i) => i.subject))).sort(),
     [insights]
+  )
+  const [subject, setSubject] = useState<string>(
+    subjects.includes(initialSubject) ? initialSubject : "all"
   )
 
   const shown = useMemo(

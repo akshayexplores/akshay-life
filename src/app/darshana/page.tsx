@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default async function DarshanaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ m?: string }>
+  searchParams: Promise<{ m?: string; s?: string }>
 }) {
-  const { m } = await searchParams
+  const { m, s } = await searchParams
   const insights = getAllInsights()
   const d = movement("darshana")
 
@@ -37,7 +37,7 @@ export default async function DarshanaPage({
         </p>
       </section>
 
-      <DarshanaClient insights={insights} initialMovement={m ?? "all"} />
+      <DarshanaClient insights={insights} initialMovement={m ?? "all"} initialSubject={s ?? "all"} />
     </main>
   )
 }

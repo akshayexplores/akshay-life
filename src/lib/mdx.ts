@@ -16,6 +16,7 @@ export type InsightMeta = {
   date: string
   excerpt: string
   tags: string[]
+  words: number
   readingMinutes: number
 }
 
@@ -30,13 +31,17 @@ function readDir(sub: string): string[] {
   return fs.readdirSync(dir).filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
 }
 
-function estimateMinutes(body: string): number {
-  const words = body.trim().split(/\s+/).filter(Boolean).length
+function countWords(body: string): number {
+  return body.replace(/```[\s\S]*?```/g, " ").trim().split(/\s+/).filter(Boolean).length
+}
+
+function estimateMinutes(words: number): number {
   return Math.max(1, Math.round(words / 225))
 }
 
 function toMeta(slug: string, data: Record<string, unknown>, body: string): InsightMeta {
   const subject = (data.category as string) ?? "Uncategorised"
+  const words = countWords(body)
   return {
     slug,
     title: (data.title as string) ?? slug,
@@ -47,7 +52,8 @@ function toMeta(slug: string, data: Record<string, unknown>, body: string): Insi
     date: (data.date as string) ?? "",
     excerpt: (data.excerpt as string) ?? "",
     tags: (data.tags as string[]) ?? [],
-    readingMinutes: estimateMinutes(body),
+    words,
+    readingMinutes: estimateMinutes(words),
   }
 }
 
@@ -217,4 +223,19 @@ export function renderMarkdown(md: string, opts: { dropFirstH1?: boolean } = {})
   flushList()
 
   return html.join("\n")
+}
+
+/**
+ * Corpus weight per subject, straight from the files on disk.
+ * This is what the capacity map is drawn from — no hand-entered numbers.
+ */
+export function getSubjectWeights(): { subject: string; pieces: number; words: number }[] {
+  const acc = new Map<string, { subject: string; pieces: number; words: number }>()
+  for (const i of getAllInsights()) {
+    const cur = acc.get(i.subject) ?? { subject: i.subject, pieces: 0, words: 0 }
+    cur.pieces += 1
+    cur.words += i.words
+    acc.set(i.subject, cur)
+  }
+  return [...acc.values()].sort((a, b) => b.words - a.words)
 }
