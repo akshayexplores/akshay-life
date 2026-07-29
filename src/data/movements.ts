@@ -52,14 +52,18 @@ export const movements: Movement[] = [
  * Subject (frontmatter `category`, synced from akshay-brain) → movement.
  *
  * Editorial mapping, derived from the "maps to" line of each movement in the
- * field manual. Current distribution across the 29 synced pieces:
- * Darśana 12 · Krama 7 · Kriyā 10.
+ * field manual.
+ *
+ * Subjects come from the vault and DO change — "Computer Networks", "Python"
+ * and "Economics" all appeared after the first pass. Anything unmapped falls
+ * back to Darśana, so add new subjects here rather than letting them drift.
  */
 export const subjectToMovement: Record<string, MovementId> = {
   // Darśana — diagnosis, positioning, the why underneath
   "Marketing": "darshana",
   "Entrepreneurship": "darshana",
   "Finance": "darshana",
+  "Economics": "darshana",
   "Leadership": "darshana",
   "Life": "darshana",
   "Self help": "darshana",
@@ -73,6 +77,8 @@ export const subjectToMovement: Record<string, MovementId> = {
   // Kriyā — shipping, automation, the system that outlasts
   "Tech": "kriya",
   "Code": "kriya",
+  "Python": "kriya",
+  "Computer Networks": "kriya",
   "Artificial Intelligence": "kriya",
   "Machine Learning": "kriya",
   "Natural language Processing": "kriya",
