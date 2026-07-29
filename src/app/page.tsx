@@ -4,6 +4,13 @@ import { movements } from "@/data/movements"
 import { buildTerritories } from "@/lib/brain"
 import Reveal from "@/components/Reveal"
 import BrainMap from "@/components/BrainMap"
+import PatternDots from "@/components/PatternDots"
+
+const HUE: Record<string, string> = {
+  darshana: "192,86,47",
+  krama: "192,138,46",
+  kriya: "31,42,68",
+}
 
 export default function Home() {
   const insights = getAllInsights()
@@ -12,11 +19,29 @@ export default function Home() {
   // from what has actually been written.
   const territories = buildTerritories(getSubjectWeights())
 
+  // Quantified per movement — three rows, no accumulation counters.
+  const byMovement = movements
+    .map((m) => {
+      const own = territories.filter((t) => t.movement === m.id)
+      return {
+        ...m,
+        share: own.reduce((s, t) => s + t.share, 0),
+        pieces: own.reduce((s, t) => s + t.pieces, 0),
+        domains: own.length,
+      }
+    })
+    .filter((m) => m.pieces > 0)
+
   return (
-    <main className="sheet" style={{ paddingTop: 96 }}>
+    <main className="sheet" style={{ paddingTop: 92 }}>
       {/* ══ Cover ══ */}
-      <section style={{ padding: "36px 0 40px" }}>
-        <h1 className="t-cover">Krama</h1>
+      <section style={{ padding: "30px 0 0" }}>
+        <h1 className="t-cover">
+          <span className="font-dev" style={{ color: "var(--pravala)", marginRight: "0.28em" }}>
+            क्रम
+          </span>
+          Krama
+        </h1>
         <p
           style={{
             fontSize: "clamp(20px,2.6vw,30px)",
@@ -30,80 +55,92 @@ export default function Home() {
           of Akshay
         </p>
 
-        <div className="font-dev" style={{ fontSize: 26, color: "var(--pravala)", marginTop: 8, lineHeight: 1.2 }}>
-          क्रम
+        <div className="cover-foot">
+          <p style={{ fontSize: 17, lineHeight: 1.7, color: "var(--masi-soft)", maxWidth: "42ch" }}>
+            This is an open notebook, kept in public to jumpstart future builders.
+          </p>
+
+          <div>
+            <p className="meta" style={{ color: "var(--masi)" }}>
+              <span style={{ color: "var(--pravala)" }}>◉</span> Bharat{" "}
+              <span
+                style={{
+                  fontFamily: "var(--font-newsreader), Georgia, serif",
+                  fontStyle: "italic",
+                  textTransform: "none",
+                  letterSpacing: "0.01em",
+                  fontSize: 15,
+                }}
+              >
+                India
+              </span>
+            </p>
+            <p style={{ marginTop: 2 }}>
+              <Link href="/kriya" className="link meta" style={{ color: "var(--pravala-deep)" }}>
+                Constantly building →
+              </Link>
+            </p>
+          </div>
         </div>
 
-        <p className="meta" style={{ marginTop: 18, lineHeight: 2 }}>
-          Bharat{" "}
-          <span
-            style={{
-              fontFamily: "var(--font-newsreader), Georgia, serif",
-              fontStyle: "italic",
-              textTransform: "none",
-              letterSpacing: "0.01em",
-              fontSize: 15,
-            }}
-          >
-            India
-          </span>
-          <br />
-          Ordered progress — sequence, step, the correct order of things
-        </p>
+        <hr className="dashed-rule" />
       </section>
 
-      {/* ══ The archive, weighted ══ */}
-      <div className="entry" style={{ paddingTop: 40, paddingBottom: 40 }}>
-        <div className="rail">
-          <span className="no">—</span>
-          The archive, weighted
-          <span className="mnote">
-            Every domain I write in, sized by how much of it there actually is. Hover or tab a
-            label to isolate it; click to read that subject.
-          </span>
-        </div>
-        <div className="col" style={{ maxWidth: "none" }}>
-          <BrainMap territories={territories} totalPieces={insights.length} />
-        </div>
-      </div>
-
-      {/* ══ The one Nīla moment ══ */}
-      <section style={{ padding: "8px 0 0" }}>
-        <div className="on-nila">
-          <span className="lbl">The throughline</span>
-          <p
-            style={{
-              fontSize: "clamp(24px,3.4vw,34px)",
-              fontWeight: 300,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.15,
-              margin: "12px 0",
-              color: "#E6E0D2",
-            }}
-          >
-            I look for the pattern behind the mess.
+      {/* ══ The statement ══ */}
+      <section style={{ paddingTop: 30 }}>
+        <div className="statement">
+          <div className="statement-head">
+            <h2 className="t-h2">I look for patterns</h2>
+            <PatternDots />
+          </div>
+          <p style={{ marginTop: 10, fontSize: 17, lineHeight: 1.7, maxWidth: "62ch" }}>
+            Patterns tell the hidden stories inside any complexity. I translate those stories into
+            systems that scale.
           </p>
-          <p style={{ fontSize: 15.5 }}>
-            Then I build the thing that holds it. GTM systems, sales intelligence, and the
-            occasional product — for founders sitting on problems too messy to name.
-          </p>
-          <p
-            className="font-mono"
-            style={{
-              fontSize: 11,
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "#E9906D",
-              marginTop: 20,
-            }}
-          >
+          <p className="meta" style={{ marginTop: 16, color: "var(--pravala-deep)" }}>
             Darśana · Krama · Kriyā
           </p>
         </div>
       </section>
 
+      {/* ══ Quantifying my capacity ══ */}
+      <div className="entry cap-entry" style={{ paddingTop: 44, paddingBottom: 40 }}>
+        <div className="cap-side">
+          <h2 className="t-h2">
+            Quantifying
+            <br />
+            my capacity
+          </h2>
+          <p className="meta-sent" style={{ marginTop: 14, maxWidth: "34ch" }}>
+            Every domain I write in, sized by how much of it there actually is.
+          </p>
+
+          <ol className="cap-rows">
+            {byMovement.map((m) => (
+              <li key={m.id}>
+                <Link href={`/${m.id}`}>
+                  <span className="sw" style={{ background: `rgb(${HUE[m.id]})` }} />
+                  <span className="nm">
+                    {m.roman}
+                    <span className="dv font-dev">{m.devanagari}</span>
+                  </span>
+                  <span className="val">{Math.round(m.share * 100)}%</span>
+                  <span className="sub">
+                    {m.pieces} {m.pieces === 1 ? "piece" : "pieces"} · {m.domains} domains
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="cap-plate">
+          <BrainMap territories={territories} totalPieces={insights.length} />
+        </div>
+      </div>
+
       {/* ══ 01 · The three movements ══ */}
-      <div className="entry" style={{ borderTop: "none", paddingTop: 46 }}>
+      <div className="entry">
         <div className="rail">
           <span className="no">01</span>
           Three movements
