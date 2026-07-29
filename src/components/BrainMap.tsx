@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import {
   CEREBELLUM_PATH, CEREBRUM_PATH, FOLIA, STEM_PATH, VIEW,
-  foldPaths, rayPaths, type Territory,
+  foldPaths, leaderLabels, rayPaths, type Territory,
 } from "@/lib/brain"
 
 const HUE: Record<string, string> = {
@@ -12,6 +12,8 @@ const HUE: Record<string, string> = {
   krama: "192,138,46",     // arka
   kriya: "31,42,68",       // nīla
 }
+const ORDER = ["darshana", "krama", "kriya"] as const
+const ROMAN: Record<string, string> = { darshana: "Darśana", krama: "Krama", kriya: "Kriyā" }
 
 export default function BrainMap({
   territories,
@@ -25,23 +27,39 @@ export default function BrainMap({
 
   const folds = useMemo(() => foldPaths(), [])
   const rays = useMemo(() => rayPaths(), [])
+  const leaders = useMemo(() => leaderLabels(territories, VIEW), [territories])
+
+  const byMovement = useMemo(() => {
+    const m = new Map<string, number>()
+    for (const t of territories) m.set(t.movement, (m.get(t.movement) ?? 0) + t.share)
+    return ORDER.map((id) => ({ id, share: m.get(id) ?? 0 })).filter((d) => d.share > 0)
+  }, [territories])
 
   const max = territories[0]?.share ?? 1
-  const shown = active ? territories.find((t) => t.subject === active) : null
   const open = (s: string) => router.push(`/darshana?s=${encodeURIComponent(s)}`)
 
-  // Fills stay light so the ink folds keep the drawing — colour marks the
-  // zone, the linework says "brain".
   const fillOf = (t: Territory) => {
-    const base = 0.08 + (t.share / max) * 0.34
-    return active === t.subject ? Math.min(0.62, base + 0.22) : base
+    const base = 0.2 + (t.share / max) * 0.5
+    if (!active) return base
+    return active === t.subject ? Math.min(0.94, base + 0.24) : base * 0.4
   }
+
+  const bind = (subject: string) => ({
+    onMouseEnter: () => setActive(subject),
+    onMouseLeave: () => setActive(null),
+    onFocus: () => setActive(subject),
+    onBlur: () => setActive(null),
+    onClick: () => open(subject),
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(subject) }
+    },
+  })
 
   return (
     <figure style={{ margin: 0 }}>
       <svg
         viewBox={`${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`}
-        style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}
+        style={{ width: "100%", height: "auto", display: "block" }}
         role="img"
         aria-label={`Capacity map of ${totalPieces} written pieces across ${territories.length} domains. Each territory's area is that domain's share of the corpus. Largest: ${territories[0]?.subject}.`}
       >
@@ -49,27 +67,19 @@ export default function BrainMap({
           <clipPath id="cortex"><path d={CEREBRUM_PATH} /></clipPath>
         </defs>
 
-        {/* radiating dashes */}
         <g className="rays" aria-hidden="true">
           {rays.map((r, i) => (
-            <line
-              key={i}
-              x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2}
-              stroke="var(--pravala)" strokeWidth="2.2" strokeLinecap="round"
-              strokeDasharray="7 6"
-              style={{ animationDelay: `${(i % 12) * 0.32}s` }}
-            />
+            <line key={i} x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2}
+                  stroke="var(--pravala)" strokeWidth="2" strokeLinecap="round"
+                  strokeDasharray="6 5" style={{ animationDelay: `${(i % 12) * 0.32}s` }} />
           ))}
         </g>
 
-        {/* cerebellum + brainstem */}
-        <path d={CEREBELLUM_PATH} fill="var(--bhurja-2)" stroke="var(--masi)" strokeWidth="3" strokeOpacity="0.9" />
+        <path d={CEREBELLUM_PATH} fill="var(--bhurja-2)" stroke="var(--masi)" strokeWidth="2.6" strokeOpacity="0.9" />
         {FOLIA.map((d, i) => (
-          <path key={i} d={d} fill="none" stroke="var(--masi)" strokeOpacity="0.4" strokeWidth="1.7" />
+          <path key={i} d={d} fill="none" stroke="var(--masi)" strokeOpacity="0.4" strokeWidth="1.5" />
         ))}
-        <path d={STEM_PATH} fill="var(--bhurja-2)" stroke="var(--masi)" strokeWidth="3" strokeOpacity="0.9" />
-
-        {/* cortex */}
+        <path d={STEM_PATH} fill="var(--bhurja-2)" stroke="var(--masi)" strokeWidth="2.6" strokeOpacity="0.9" />
         <path d={CEREBRUM_PATH} fill="var(--bhurja)" />
 
         <g clipPath="url(#cortex)">
@@ -79,57 +89,78 @@ export default function BrainMap({
               d={t.path}
               fill={`rgb(${HUE[t.movement]})`}
               fillOpacity={fillOf(t)}
+              stroke="var(--bhurja)" strokeWidth="1.6" strokeOpacity="0.9"
               style={{ transition: "fill-opacity 0.22s var(--ease)", cursor: "pointer" }}
-              tabIndex={0}
-              role="button"
-              aria-label={`${t.subject}: ${t.pieces} ${t.pieces === 1 ? "piece" : "pieces"}, ${Math.round(t.share * 100)} percent of the corpus`}
-              onMouseEnter={() => setActive(t.subject)}
-              onMouseLeave={() => setActive(null)}
-              onFocus={() => setActive(t.subject)}
-              onBlur={() => setActive(null)}
-              onClick={() => open(t.subject)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(t.subject) }
-              }}
+              tabIndex={-1}
+              aria-hidden="true"
+              {...bind(t.subject)}
             />
           ))}
-
           {folds.map((d, i) => (
-            <path key={i} d={d} fill="none" stroke="var(--masi)" strokeOpacity="0.58"
-                  strokeWidth="2.4" strokeLinecap="round" pointerEvents="none" />
+            <path key={i} d={d} fill="none" stroke="var(--masi)" strokeOpacity="0.4"
+                  strokeWidth="2" strokeLinecap="round" pointerEvents="none" />
           ))}
         </g>
 
-        <path d={CEREBRUM_PATH} fill="none" stroke="var(--masi)" strokeWidth="3.4"
+        <path d={CEREBRUM_PATH} fill="none" stroke="var(--masi)" strokeWidth="3"
               strokeOpacity="0.92" strokeLinejoin="round" pointerEvents="none" />
 
-        {/* only the domains with room to hold a label */}
-        {territories.filter((t) => t.share >= 0.055).map((t) => (
-          <g key={t.subject} pointerEvents="none">
-            <text x={t.label[0]} y={t.label[1] - 1} textAnchor="middle" className="font-mono"
-                  fontSize="10" letterSpacing="0.8" fill="var(--masi)"
-                  stroke="var(--bhurja)" strokeWidth="2.4" paintOrder="stroke">
-              {t.short.toUpperCase()}
-            </text>
-            <text x={t.label[0]} y={t.label[1] + 11} textAnchor="middle" className="font-mono"
-                  fontSize="9.5" fill="var(--pravala-deep)"
-                  stroke="var(--bhurja)" strokeWidth="2.4" paintOrder="stroke">
-              {Math.round(t.share * 100)}%
-            </text>
-          </g>
-        ))}
+        {/* every domain labelled, with a line to its territory */}
+        {leaders.map((l) => {
+          const on = active === l.subject
+          const dim = active && !on
+          const end = l.points.split(" ").slice(-1)[0].split(",")
+          return (
+            <g
+              key={l.subject}
+              className="leader"
+              data-on={on ? "1" : undefined}
+              opacity={dim ? 0.32 : 1}
+              tabIndex={0}
+              role="button"
+              aria-label={`${l.subject}: ${l.pieces} ${l.pieces === 1 ? "piece" : "pieces"}, ${Math.round(l.share * 100)} percent of the corpus`}
+              style={{ cursor: "pointer" }}
+              {...bind(l.subject)}
+            >
+              <polyline points={l.points} fill="none" stroke={`rgb(${HUE[l.movement]})`}
+                        strokeWidth={on ? 1.8 : 1.1} strokeOpacity={on ? 0.95 : 0.55} />
+              <circle cx={end[0]} cy={end[1]} r={on ? 3.4 : 2.4} fill={`rgb(${HUE[l.movement]})`} />
+              <text
+                x={l.tx} y={l.ty}
+                textAnchor={l.side === "l" ? "start" : "end"}
+                className="font-mono" fontSize="13" letterSpacing="0.3"
+                fill={on ? "var(--pravala-deep)" : "var(--masi)"}
+              >
+                {l.short}
+              </text>
+              <text
+                x={l.tx} y={l.ty + 13}
+                textAnchor={l.side === "l" ? "start" : "end"}
+                className="font-mono" fontSize="12"
+                fill="var(--masi-faint)"
+              >
+                {Math.round(l.share * 100)}% · {l.pieces}
+              </text>
+            </g>
+          )
+        })}
       </svg>
 
-      <figcaption style={{ marginTop: 14, borderTop: "1px solid var(--rule)", paddingTop: 12 }}>
-        <p className="meta" style={{ color: shown ? "var(--pravala-deep)" : undefined, minHeight: "1.9em" }}>
-          {shown
-            ? `${shown.subject} · ${shown.pieces} ${shown.pieces === 1 ? "piece" : "pieces"} · ${Math.round(shown.share * 100)}%`
-            : `${totalPieces} pieces · ${territories.length} domains · area = how much I've written`}
-        </p>
-        <p className="meta" style={{ marginTop: 2 }}>
-          <span style={{ color: "var(--pravala)" }}>■</span> Darśana{" "}
-          <span style={{ color: "var(--arka)", marginLeft: 10 }}>■</span> Krama{" "}
-          <span style={{ color: "var(--nila)", marginLeft: 10 }}>■</span> Kriyā
+      <figcaption style={{ marginTop: 20 }}>
+        <div className="mv-bar" aria-hidden="true">
+          {byMovement.map((d) => (
+            <span key={d.id} style={{ width: `${d.share * 100}%`, background: `rgb(${HUE[d.id]})`, opacity: active ? 0.4 : 0.85 }} />
+          ))}
+        </div>
+        <p className="meta" style={{ marginTop: 8 }}>
+          {byMovement.map((d) => (
+            <span key={d.id} style={{ marginRight: 16 }}>
+              <span style={{ color: `rgb(${HUE[d.id]})` }}>■</span> {ROMAN[d.id]} {Math.round(d.share * 100)}%
+            </span>
+          ))}
+          <span style={{ color: "var(--masi-faint)" }}>
+            {totalPieces} pieces · {territories.length} domains · area = how much I&rsquo;ve written
+          </span>
         </p>
       </figcaption>
     </figure>

@@ -15,54 +15,60 @@ export default function Home() {
   return (
     <main className="sheet" style={{ paddingTop: 96 }}>
       {/* ══ Cover ══ */}
-      <section
-        className="cover-grid"
-        style={{ padding: "48px 0 56px", borderBottom: "1px solid var(--rule)" }}
-      >
-        <div>
-          <h1 className="t-cover">Krama</h1>
-          <p
+      <section style={{ padding: "36px 0 40px" }}>
+        <h1 className="t-cover">Krama</h1>
+        <p
+          style={{
+            fontSize: "clamp(20px,2.6vw,30px)",
+            fontWeight: 300,
+            fontStyle: "italic",
+            letterSpacing: "-0.02em",
+            color: "var(--masi-soft)",
+            marginTop: 2,
+          }}
+        >
+          of Akshay
+        </p>
+
+        <div className="font-dev" style={{ fontSize: 26, color: "var(--pravala)", marginTop: 8, lineHeight: 1.2 }}>
+          क्रम
+        </div>
+
+        <p className="meta" style={{ marginTop: 18, lineHeight: 2 }}>
+          Bharat{" "}
+          <span
             style={{
-              fontSize: "clamp(20px,2.6vw,30px)",
-              fontWeight: 300,
+              fontFamily: "var(--font-newsreader), Georgia, serif",
               fontStyle: "italic",
-              letterSpacing: "-0.02em",
-              color: "var(--masi-soft)",
-              marginTop: 2,
+              textTransform: "none",
+              letterSpacing: "0.01em",
+              fontSize: 15,
             }}
           >
-            of Akshay
-          </p>
-
-          <div className="font-dev" style={{ fontSize: 26, color: "var(--pravala)", marginTop: 14 }}>
-            क्रम
-          </div>
-
-          <p className="meta" style={{ marginTop: 24, lineHeight: 2.1 }}>
-            Bharat{" "}
-            <span
-              style={{
-                fontFamily: "var(--font-newsreader), Georgia, serif",
-                fontStyle: "italic",
-                textTransform: "none",
-                letterSpacing: "0.01em",
-                fontSize: 15,
-              }}
-            >
-              India
-            </span>
-            <br />
-            Ordered progress — sequence, step, the correct order of things
-          </p>
-        </div>
-
-        <div className="cover-plate">
-          <BrainMap territories={territories} totalPieces={insights.length} />
-        </div>
+            India
+          </span>
+          <br />
+          Ordered progress — sequence, step, the correct order of things
+        </p>
       </section>
 
+      {/* ══ The archive, weighted ══ */}
+      <div className="entry" style={{ paddingTop: 40, paddingBottom: 40 }}>
+        <div className="rail">
+          <span className="no">—</span>
+          The archive, weighted
+          <span className="mnote">
+            Every domain I write in, sized by how much of it there actually is. Hover or tab a
+            label to isolate it; click to read that subject.
+          </span>
+        </div>
+        <div className="col" style={{ maxWidth: "none" }}>
+          <BrainMap territories={territories} totalPieces={insights.length} />
+        </div>
+      </div>
+
       {/* ══ The one Nīla moment ══ */}
-      <section style={{ padding: "44px 0 0" }}>
+      <section style={{ padding: "8px 0 0" }}>
         <div className="on-nila">
           <span className="lbl">The throughline</span>
           <p
