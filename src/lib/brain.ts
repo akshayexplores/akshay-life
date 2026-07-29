@@ -1,78 +1,195 @@
 /**
- * The capacity map — a cartogram of the cerebrum.
+ * The capacity map — a cartogram of the cortex.
  *
- * Each subject gets a territory whose AREA is proportional to how much has
- * actually been written in it. That is the whole point: area is the quantity,
- * so the picture cannot flatter a domain that is thin.
+ * Each subject holds a territory whose AREA is its share of everything
+ * actually written. Area is the quantity, so the picture cannot flatter a
+ * domain that is thin. Territories come from a power diagram (additively
+ * weighted Voronoi) whose weights are solved at build time until each cell's
+ * share of the brain matches its share of the corpus.
  *
- * Territories are a power diagram (additively-weighted Voronoi). The weights
- * are solved at build time by iterating until each cell's share of the brain
- * matches its share of the corpus, so nothing here is hand-placed except the
- * anatomy and the seed points.
- *
- * Hue carries the movement (Darśana / Krama / Kriyā); tint depth carries the
- * same weight the area does, so the reading is reinforced rather than split.
+ * The drawing itself — outline, folds, cerebellum, brainstem, rays — is
+ * generated here too, so the whole plate is one deterministic function of
+ * the content on disk.
  */
 
 import type { MovementId } from "@/data/movements"
 
-export const VIEW = { w: 580, h: 450 }
+export const VIEW = { x: -70, y: -58, w: 720, h: 600 }
 
-/** Lateral (left-facing) cerebrum. Also the clip mask for everything inside. */
+/* ── Anatomy ─────────────────────────────────────────────────
+   The load-bearing feature is the notch at roughly (150,296): the frontal
+   underside rises, then the temporal lobe hooks forward and down. Without
+   that notch a lateral brain silhouette reads as a potato.                */
 export const CEREBRUM: [number, number][] = [
-  [58,215],[60,178],[70,142],[90,112],[118,88],[154,70],[196,58],[240,52],[284,54],
-  [326,64],[364,82],[396,106],[422,136],[438,170],[444,204],[442,232],[434,258],[418,278],
-  [398,292],[374,300],[350,304],[332,316],[318,332],[300,344],[276,352],[250,354],[224,350],
-  [200,340],[180,326],[166,308],[158,288],[150,272],[136,258],[118,246],[98,238],[76,230],
+  [72,232],[70,196],[76,162],[90,130],[112,104],[140,84],[172,68],[208,58],[246,52],
+  [286,50],[324,54],[360,64],[392,80],[420,102],[442,128],[458,158],[466,190],[468,222],
+  [462,252],[450,276],[432,294],[410,306],
+  [392,316],[378,330],[360,338],[340,340],
+  [322,344],[306,352],[288,358],[268,362],[246,362],[224,358],
+  [204,350],[188,338],[176,322],[171,304],
+  [162,302],[152,300],[143,294],
+  [136,283],[126,272],[114,262],[100,254],[86,246],[76,240],
 ]
 
-export const CEREBRUM_PATH =
-  "M" + CEREBRUM.map(([x, y]) => `${x},${y}`).join(" L") + " Z"
-
-/** The three landmark fissures, drawn heavier than the gyri. */
-export const FISSURES = [
-  { d: "M156 286 C196 266 244 250 296 242 C322 238 340 238 352 240", o: 0.55, w: 3.0 },
-  { d: "M254 62 C266 104 280 150 296 210", o: 0.4, w: 2.2 },
-  { d: "M418 132 C404 162 396 190 392 220", o: 0.34, w: 1.9 },
+export const CEREBELLUM: [number, number][] = [
+  [352,330],[374,318],[398,314],[420,318],[436,330],[442,348],[436,366],
+  [420,378],[398,384],[376,382],[358,372],[348,356],[346,342],
 ]
 
-/** Cortical folds. Decoration — the only part of this drawing that is not data. */
-export const GYRI = [
-  "M78 168 C104 148 134 148 154 166","M70 200 C98 186 128 190 148 208",
-  "M92 128 C120 108 152 108 174 126","M132 96 C160 78 192 78 214 94",
-  "M182 74 C210 62 240 62 262 74","M170 148 C200 132 230 136 248 156",
-  "M162 192 C192 178 220 184 240 202","M180 236 C210 224 236 230 254 248",
-  "M108 232 C136 220 162 224 180 240","M276 62 C304 56 332 64 348 78",
-  "M296 100 C324 88 352 94 370 110","M310 142 C338 130 366 136 384 152",
-  "M320 186 C348 174 376 180 394 196","M326 228 C354 218 382 224 398 238",
-  "M366 96 C392 108 412 128 422 150","M396 160 C418 176 430 196 434 216",
-  "M310 268 C336 258 360 262 376 276","M196 296 C226 286 252 292 268 306",
-  "M226 324 C252 316 276 320 292 332","M258 276 C284 266 308 270 322 282",
-  "M100 186 C122 172 146 174 162 188","M148 118 C172 102 200 102 218 116",
-  "M206 88 C230 76 256 78 274 90","M198 172 C224 158 250 162 266 180",
-  "M212 218 C238 206 262 212 278 228","M132 250 C158 240 180 244 196 258",
-  "M300 78 C326 70 350 78 364 92","M320 118 C346 108 372 114 388 130",
-  "M334 164 C360 154 386 160 402 174","M342 206 C368 196 392 202 408 216",
-  "M286 250 C310 242 332 246 346 258","M232 262 C256 252 278 256 292 268",
-  "M170 268 C194 258 216 262 232 274","M254 306 C278 298 300 302 314 314",
-  "M290 288 C314 280 336 284 350 294","M382 128 C404 142 418 160 424 178",
-  "M406 194 C424 208 434 224 436 238","M88 154 C110 140 134 140 150 152",
+export const STEM: [number, number][] = [
+  [330,344],[342,346],[348,362],[352,382],[354,400],[350,412],[340,414],[334,404],
+  [330,386],[326,364],
 ]
+
+export const FOLIA = [0, 1, 2, 3, 4].map(
+  (i) => `M${350 + i * 4} ${330 + i * 11} C378 ${318 + i * 11} 410 ${320 + i * 11} 434 ${334 + i * 9}`
+)
+
+/* ── Path helpers ───────────────────────────────────────── */
+
+export function smooth(P: [number, number][], closed = true, t = 0.55): string {
+  const n = P.length
+  const d = [`M${P[0][0].toFixed(1)},${P[0][1].toFixed(1)}`]
+  const last = closed ? n : n - 1
+  for (let i = 0; i < last; i++) {
+    const p0 = P[(i - 1 + n) % n], p1 = P[i % n], p2 = P[(i + 1) % n], p3 = P[(i + 2) % n]
+    const c1x = p1[0] + ((p2[0] - p0[0]) / 6) * t
+    const c1y = p1[1] + ((p2[1] - p0[1]) / 6) * t
+    const c2x = p2[0] - ((p3[0] - p1[0]) / 6) * t
+    const c2y = p2[1] - ((p3[1] - p1[1]) / 6) * t
+    d.push(`C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`)
+  }
+  return d.join(" ") + (closed ? " Z" : "")
+}
+
+export const CEREBRUM_PATH = smooth(CEREBRUM)
+export const CEREBELLUM_PATH = smooth(CEREBELLUM)
+export const STEM_PATH = smooth(STEM)
+
+function inside(x: number, y: number, poly: [number, number][]): boolean {
+  let c = false
+  const n = poly.length
+  for (let i = 0; i < n; i++) {
+    const [x1, y1] = poly[i]
+    const [x2, y2] = poly[(i + 1) % n]
+    if (y1 === y2) continue
+    if (y1 > y !== y2 > y && x < ((x2 - x1) * (y - y1)) / (y2 - y1) + x1) c = !c
+  }
+  return c
+}
+
+/** Mulberry32 — deterministic, so the plate is identical on every build. */
+function rng(seed: number) {
+  let a = seed >>> 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+/* ── Cortical folds ─────────────────────────────────────────────
+   Sulci run as long wandering ridges, roughly parallel, breaking at the lobe
+   edges. Concentric rings read as a fingerprint; meandering bands read as a
+   cortex. Each band is sampled across the outline and emitted only where it
+   falls inside, so the breaks happen where the anatomy says they should.  */
+export function foldPaths(): string[] {
+  const r = rng(5)
+  const xs = CEREBRUM.map((p) => p[0])
+  const ys = CEREBRUM.map((p) => p[1])
+  const x0 = Math.min(...xs) - 4, x1 = Math.max(...xs) + 4
+  const y0 = Math.min(...ys) - 4, y1 = Math.max(...ys) + 4
+  const rows = 14
+  const out: string[] = []
+
+  for (let i = 0; i < rows; i++) {
+    const base = y0 + ((y1 - y0) * (i + 0.5)) / rows + (r() - 0.5) * 9
+    const ph = r() * 6.28, ph2 = r() * 6.28
+    const a1 = 11 * (0.7 + r() * 0.7), a2 = 5 * (0.6 + r() * 0.8)
+    const w1 = 58 * (0.78 + r() * 0.5), w2 = 25
+    let run: [number, number][] = []
+    for (let x = x0; x <= x1; x += 5) {
+      const y = base + a1 * Math.sin((x / w1) * 6.283 + ph) + a2 * Math.sin((x / w2) * 6.283 + ph2)
+      if (inside(x, y, CEREBRUM)) run.push([x, y])
+      else { if (run.length > 4) out.push(smooth(run, false)); run = [] }
+    }
+    if (run.length > 4) out.push(smooth(run, false))
+  }
+
+  // Enclosed folds, to break the banding the way real gyri do.
+  const r2 = rng(9)
+  let tries = 0, made = 0
+  while (made < 16 && tries < 4000) {
+    tries++
+    const cx = Math.min(...xs) + r2() * (Math.max(...xs) - Math.min(...xs))
+    const cy = Math.min(...ys) + r2() * (Math.max(...ys) - Math.min(...ys))
+    const rx = 11 + r2() * 11, ry = 7 + r2() * 7, rot = r2() * 3.14
+    const pts: [number, number][] = []
+    let ok = true
+    for (let k = 0; k < 14; k++) {
+      const a = (6.283 * k) / 14
+      const px = cx + Math.cos(a) * rx * Math.cos(rot) - Math.sin(a) * ry * Math.sin(rot)
+      const py = cy + Math.cos(a) * rx * Math.sin(rot) + Math.sin(a) * ry * Math.cos(rot)
+      if (!inside(px, py, CEREBRUM)) { ok = false; break }
+      pts.push([px, py])
+    }
+    if (ok) { out.push(smooth(pts, true)); made++ }
+  }
+  return out
+}
+
+/* ── Radiating dashes ──────────────────────────────────────── */
+export type Ray = { x1: number; y1: number; x2: number; y2: number; len: number }
+
+export function rayPaths(count = 48): Ray[] {
+  const cx = CEREBRUM.reduce((s, p) => s + p[0], 0) / CEREBRUM.length
+  const cy = CEREBRUM.reduce((s, p) => s + p[1], 0) / CEREBRUM.length
+  const out: Ray[] = []
+  for (let i = 0; i < count; i++) {
+    const a = (6.283 * i) / count + 0.1
+    let lo = 0, hi = 700
+    for (let k = 0; k < 24; k++) {
+      const m = (lo + hi) / 2
+      if (inside(cx + Math.cos(a) * m, cy + Math.sin(a) * m, CEREBRUM)) lo = m
+      else hi = m
+    }
+    const r0 = lo + 18 + (i % 3) * 6
+    const r1 = r0 + 40 + ((i * 29) % 50)
+    out.push({
+      x1: +(cx + Math.cos(a) * r0).toFixed(1), y1: +(cy + Math.sin(a) * r0).toFixed(1),
+      x2: +(cx + Math.cos(a) * r1).toFixed(1), y2: +(cy + Math.sin(a) * r1).toFixed(1),
+      len: +(r1 - r0).toFixed(1),
+    })
+  }
+  return out
+}
+
+/* ── Territories ────────────────────────────────────────────── */
 
 /**
- * Seeds, laid out so each movement holds anatomically coherent ground:
- * Darśana frontal, Krama parietal and superior-temporal, Kriyā occipital.
- * These set *where* a domain sits. The solver sets how much room it gets.
+ * Where each domain sits. Position is editorial; size is not — the solver
+ * decides that from the corpus. Subjects with no entry here get a distinct
+ * fallback seed off the ring below, so a newly-synced subject never collapses
+ * onto another one.
  */
 const SEEDS: Record<string, [number, number]> = {
+  // Darśana — frontal
   "Marketing": [126,168], "Entrepreneurship": [118,244], "Leadership": [80,206],
-  "Life": [176,214], "Self help": [180,126], "Finance": [206,278],
+  "Life": [176,214], "Self help": [180,126], "Finance": [206,278], "Economics": [206,278],
+  // Krama — parietal, superior temporal
   "Sales": [258,140], "Data Science": [262,232], "Design": [236,312], "Communities": [310,104],
-  "Tech": [352,168], "Code": [392,132], "Machine Learning": [424,186],
-  "Artificial Intelligence": [356,250], "Natural language Processing": [302,312],
-  "Natural Language Processing": [302,312], "Video Production": [410,262],
+  // Kriyā — occipital
+  "Tech": [352,168], "Code": [392,132], "Python": [406,116], "Machine Learning": [424,186],
+  "Computer Networks": [352,214], "Artificial Intelligence": [356,250],
+  "Natural language Processing": [302,312], "Natural Language Processing": [302,312],
+  "Video Production": [410,262],
 }
-const FALLBACK: [number, number] = [280, 200]
+
+/** Distinct fallback positions, so unmapped subjects still get their own ground. */
+const FALLBACK_RING: [number, number][] = [
+  [230,180],[300,200],[210,240],[330,170],[270,280],[200,300],[340,290],[150,240],
+]
 
 export const SHORT: Record<string, string> = {
   "Artificial Intelligence": "AI",
@@ -82,6 +199,7 @@ export const SHORT: Record<string, string> = {
   "Video Production": "Video",
   "Entrepreneurship": "Entrep.",
   "Data Science": "Data Sci.",
+  "Computer Networks": "Networks",
 }
 
 export type Territory = {
@@ -90,51 +208,30 @@ export type Territory = {
   movement: MovementId
   pieces: number
   words: number
-  share: number      // share of the corpus
-  areaShare: number  // share of the brain actually achieved
-  polygon: [number, number][]
+  share: number
+  areaShare: number
+  path: string
   label: [number, number]
 }
 
-function inCerebrum(x: number, y: number): boolean {
-  let inside = false
-  const n = CEREBRUM.length
-  for (let i = 0; i < n; i++) {
-    const [x1, y1] = CEREBRUM[i]
-    const [x2, y2] = CEREBRUM[(i + 1) % n]
-    if (y1 === y2) continue
-    if (y1 > y !== y2 > y && x < ((x2 - x1) * (y - y1)) / (y2 - y1) + x1) inside = !inside
-  }
-  return inside
-}
-
-/** Cell of the power diagram: argmin over |p-s|² - w. Bisectors stay linear. */
 function powerCell(i: number, S: [number, number][], w: number[]): [number, number][] {
-  let cell: [number, number][] = [
-    [0, 0], [VIEW.w, 0], [VIEW.w, VIEW.h], [0, VIEW.h],
-  ]
+  let cell: [number, number][] = [[-80,-70],[560,-70],[560,470],[-80,470]]
   const [six, siy] = S[i]
   for (let j = 0; j < S.length; j++) {
     if (j === i || !cell.length) continue
     const [sjx, sjy] = S[j]
-    const ax = 2 * (sjx - six)
-    const ay = 2 * (sjy - siy)
-    const c = sjx * sjx + sjy * sjy - six * six - siy * siy - w[j] + w[i]
+    const ax = 2 * (sjx - six), ay = 2 * (sjy - siy)
+    const c = sjx*sjx + sjy*sjy - six*six - siy*siy - w[j] + w[i]
     const f = (p: [number, number]) => ax * p[0] + ay * p[1] - c
     const out: [number, number][] = []
     for (let k = 0; k < cell.length; k++) {
-      const cur = cell[k]
-      const prv = cell[(k - 1 + cell.length) % cell.length]
+      const cur = cell[k], prv = cell[(k - 1 + cell.length) % cell.length]
       const fc = f(cur), fp = f(prv)
       if (fc <= 0) {
-        if (fp > 0) {
-          const t = fp / (fp - fc)
-          out.push([prv[0] + t * (cur[0] - prv[0]), prv[1] + t * (cur[1] - prv[1])])
-        }
+        if (fp > 0) { const t = fp / (fp - fc); out.push([prv[0] + t*(cur[0]-prv[0]), prv[1] + t*(cur[1]-prv[1])]) }
         out.push(cur)
       } else if (fp <= 0) {
-        const t = fp / (fp - fc)
-        out.push([prv[0] + t * (cur[0] - prv[0]), prv[1] + t * (cur[1] - prv[1])])
+        const t = fp / (fp - fc); out.push([prv[0] + t*(cur[0]-prv[0]), prv[1] + t*(cur[1]-prv[1])])
       }
     }
     cell = out
@@ -150,31 +247,29 @@ export function buildTerritories(
 
   const total = rows.reduce((s, r) => s + r.words, 0)
   const target = rows.map((r) => r.words / total)
-  const S: [number, number][] = rows.map((r) => SEEDS[r.subject] ?? FALLBACK)
 
-  // Sample the cerebrum once; the solver only re-assigns these points.
-  const step = 3
-  const px: number[] = []
-  const py: number[] = []
-  for (let y = 0; y < VIEW.h; y += step) {
-    for (let x = 0; x < VIEW.w; x += step) {
-      if (inCerebrum(x, y)) { px.push(x); py.push(y) }
-    }
+  let fb = 0
+  const S: [number, number][] = rows.map((r) => {
+    const s = SEEDS[r.subject]
+    if (s) return s
+    return FALLBACK_RING[fb++ % FALLBACK_RING.length]
+  })
+
+  const px: number[] = [], py: number[] = []
+  for (let y = 0; y < 470; y += 3) {
+    for (let x = 0; x < 560; x += 3) if (inside(x, y, CEREBRUM)) { px.push(x); py.push(y) }
   }
   const N = px.length
-
   const w = new Array(rows.length).fill(0)
   const frac = new Array(rows.length).fill(0)
 
   for (let iter = 0; iter < 260; iter++) {
     const count = new Array(rows.length).fill(0)
     for (let p = 0; p < N; p++) {
-      let best = 0
-      let bd = Infinity
+      let best = 0, bd = Infinity
       for (let i = 0; i < S.length; i++) {
-        const dx = px[p] - S[i][0]
-        const dy = py[p] - S[i][1]
-        const d = dx * dx + dy * dy - w[i]
+        const dx = px[p] - S[i][0], dy = py[p] - S[i][1]
+        const d = dx*dx + dy*dy - w[i]
         if (d < bd) { bd = d; best = i }
       }
       count[best]++
@@ -189,16 +284,14 @@ export function buildTerritories(
     if (maxErr < 0.0012) break
   }
 
-  // Label anchors: centroid of the points each territory actually holds.
   const sx = new Array(rows.length).fill(0)
   const sy = new Array(rows.length).fill(0)
   const cn = new Array(rows.length).fill(0)
   for (let p = 0; p < N; p++) {
     let best = 0, bd = Infinity
     for (let i = 0; i < S.length; i++) {
-      const dx = px[p] - S[i][0]
-      const dy = py[p] - S[i][1]
-      const d = dx * dx + dy * dy - w[i]
+      const dx = px[p] - S[i][0], dy = py[p] - S[i][1]
+      const d = dx*dx + dy*dy - w[i]
       if (d < bd) { bd = d; best = i }
     }
     sx[best] += px[p]; sy[best] += py[p]; cn[best]++
@@ -213,13 +306,8 @@ export function buildTerritories(
       words: r.words,
       share: target[i],
       areaShare: frac[i],
-      polygon: powerCell(i, S, w),
+      path: "M" + powerCell(i, S, w).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" L") + " Z",
       label: (cn[i] ? [sx[i] / cn[i], sy[i] / cn[i]] : S[i]) as [number, number],
     }))
     .sort((a, b) => b.share - a.share)
-}
-
-export function polygonPath(poly: [number, number][]): string {
-  if (!poly.length) return ""
-  return "M" + poly.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" L") + " Z"
 }
