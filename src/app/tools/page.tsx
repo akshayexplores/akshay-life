@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { tools, toolCategories } from "@/data/tools"
+import { toolCategories } from "@/data/tools"
+import { getTools } from "@/lib/sources"
 import ToolsClient from "./ToolsClient"
 
 export const metadata: Metadata = {
@@ -8,14 +9,16 @@ export const metadata: Metadata = {
 }
 
 export default function ToolsPage() {
+  const { rows: tools } = getTools()
+
   return (
-    <main className="sheet" style={{ paddingTop: 116 }}>
-      <section style={{ paddingBottom: 34, borderBottom: "1px solid var(--rule)" }}>
+    <main className="sheet">
+      <section style={{ paddingBottom: "var(--s6)", borderBottom: "1px solid var(--rule)" }}>
         <span className="lbl">The stack</span>
-        <h1 className="t-h2" style={{ marginTop: 14, maxWidth: "24ch" }}>
+        <h1 className="t-h2" style={{ marginTop: "var(--s4)", maxWidth: "24ch" }}>
           What&rsquo;s actually open on the machine
         </h1>
-        <p className="t-first" style={{ marginTop: 18, maxWidth: "60ch" }}>
+        <p className="t-first" style={{ marginTop: "var(--s4)", maxWidth: "60ch" }}>
           Each one has a line on why it is here — not what the vendor claims it does.
         </p>
       </section>
