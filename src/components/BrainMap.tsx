@@ -12,8 +12,6 @@ const HUE: Record<string, string> = {
   krama: "192,138,46",     // arka
   kriya: "31,42,68",       // nīla
 }
-const ORDER = ["darshana", "krama", "kriya"] as const
-const ROMAN: Record<string, string> = { darshana: "Darśana", krama: "Krama", kriya: "Kriyā" }
 
 export default function BrainMap({
   territories,
@@ -28,12 +26,6 @@ export default function BrainMap({
   const folds = useMemo(() => foldPaths(), [])
   const rays = useMemo(() => rayPaths(), [])
   const leaders = useMemo(() => leaderLabels(territories, VIEW), [territories])
-
-  const byMovement = useMemo(() => {
-    const m = new Map<string, number>()
-    for (const t of territories) m.set(t.movement, (m.get(t.movement) ?? 0) + t.share)
-    return ORDER.map((id) => ({ id, share: m.get(id) ?? 0 })).filter((d) => d.share > 0)
-  }, [territories])
 
   const max = territories[0]?.share ?? 1
   const open = (s: string) => router.push(`/darshana?s=${encodeURIComponent(s)}`)
@@ -146,22 +138,8 @@ export default function BrainMap({
         })}
       </svg>
 
-      <figcaption style={{ marginTop: 20 }}>
-        <div className="mv-bar" aria-hidden="true">
-          {byMovement.map((d) => (
-            <span key={d.id} style={{ width: `${d.share * 100}%`, background: `rgb(${HUE[d.id]})`, opacity: active ? 0.4 : 0.85 }} />
-          ))}
-        </div>
-        <p className="meta" style={{ marginTop: 8 }}>
-          {byMovement.map((d) => (
-            <span key={d.id} style={{ marginRight: 16 }}>
-              <span style={{ color: `rgb(${HUE[d.id]})` }}>■</span> {ROMAN[d.id]} {Math.round(d.share * 100)}%
-            </span>
-          ))}
-          <span style={{ color: "var(--masi-faint)" }}>
-            {totalPieces} pieces · {territories.length} domains · area = how much I&rsquo;ve written
-          </span>
-        </p>
+      <figcaption className="meta" style={{ marginTop: 10, textAlign: "center" }}>
+        {totalPieces} pieces · {territories.length} domains · area = how much I&rsquo;ve written
       </figcaption>
     </figure>
   )
