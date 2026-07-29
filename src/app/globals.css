@@ -163,18 +163,13 @@ a { color: inherit; text-decoration: none; }
   .sheet { padding: 0 22px; }
 }
 
-/* ── Cover: title column + capacity plate ───────────── */
-.cover-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
-  gap: 48px;
-  align-items: center;
-}
-.cover-plate { min-width: 0; }
-@media (max-width: 900px) {
-  .cover-grid { grid-template-columns: 1fr; gap: 40px; }
-  .cover-plate { max-width: 460px; }
-}
+/* ── Capacity map: leader labels ──────────────────────── */
+.leader text { transition: fill 0.18s var(--ease); }
+.leader:focus-visible { outline: none; }
+.leader:focus-visible text { fill: var(--pravala-deep); }
+
+.mv-bar { display: flex; width: 100%; height: 7px; overflow: hidden; }
+.mv-bar span { display: block; height: 100%; transition: opacity 0.22s var(--ease); }
 
 /* ── Capacity map: radiating dashes ────────────────────── */
 .rays line {
