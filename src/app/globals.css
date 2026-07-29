@@ -163,13 +163,97 @@ a { color: inherit; text-decoration: none; }
   .sheet { padding: 0 22px; }
 }
 
+/* ── Cover foot: notebook line + location ───────────────── */
+.cover-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: end;
+  margin-top: 46px;
+}
+.dashed-rule {
+  border: 0;
+  border-top: 1px dashed var(--rule);
+  margin-top: 22px;
+}
+@media (max-width: 700px) {
+  .cover-foot { grid-template-columns: 1fr; gap: 22px; align-items: start; margin-top: 32px; }
+}
+
+/* ── The statement box ─────────────────────────────── */
+.statement {
+  border: 1px solid var(--masi);
+  padding: 26px 30px 24px;
+}
+.statement-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-content: space-between;
+}
+.pattern-dots { flex-shrink: 0; }
+.pattern-dots circle {
+  animation: dot-drift 5.2s var(--ease) infinite;
+}
+@keyframes dot-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.85; }
+  35%      { transform: translate(1.6px, -1.4px); opacity: 1; }
+  70%      { transform: translate(-1.3px, 1.5px); opacity: 0.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pattern-dots circle { animation: none; }
+}
+@media (max-width: 700px) {
+  .statement { padding: 20px 20px 18px; }
+}
+
+/* ── Quantifying my capacity ────────────────────────── */
+.cap-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: 44px;
+  border-top: 1px solid var(--rule);
+}
+.cap-side { min-width: 0; }
+.cap-plate { min-width: 0; }
+@media (max-width: 900px) {
+  .cap-entry { grid-template-columns: 1fr; gap: 30px; }
+}
+
+.cap-rows { list-style: none; margin-top: 26px; border-top: 1px solid var(--rule); }
+.cap-rows li { border-bottom: 1px solid var(--rule); }
+.cap-rows a {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 13px 0;
+  transition: background 0.18s var(--ease);
+}
+.cap-rows a:hover { background: var(--bhurja-2); }
+.cap-rows .sw { width: 10px; height: 10px; align-self: center; }
+.cap-rows .nm {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 12px; letter-spacing: 0.08em; color: var(--masi);
+}
+.cap-rows .nm .dv {
+  color: var(--pravala); margin-left: 8px; font-size: 13px; letter-spacing: 0;
+}
+.cap-rows .val {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 17px; color: var(--masi);
+}
+.cap-rows .sub {
+  grid-column: 2 / -1;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.06em; color: var(--masi-faint);
+  margin-top: 3px;
+}
+
 /* ── Capacity map: leader labels ──────────────────────── */
 .leader text { transition: fill 0.18s var(--ease); }
 .leader:focus-visible { outline: none; }
 .leader:focus-visible text { fill: var(--pravala-deep); }
-
-.mv-bar { display: flex; width: 100%; height: 7px; overflow: hidden; }
-.mv-bar span { display: block; height: 100%; transition: opacity 0.22s var(--ease); }
 
 /* ── Capacity map: radiating dashes ────────────────────── */
 .rays line {
