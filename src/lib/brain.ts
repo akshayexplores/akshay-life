@@ -310,7 +310,7 @@ export function buildTerritories(
     .sort((a, b) => b.share - a.share)
 }
 
-/* ── Frame ─────────────────────────────────────────────────
+/* ── Frame ────────────────────────────────────────────────
    Computed from the drawing rather than hand-set, so the plate is always
    tight around the brain. A loose viewBox was scaling the labels down to
    ~6px on screen, which is why nothing on the map was readable.          */
@@ -318,7 +318,7 @@ function contentBox() {
   const pts: [number, number][] = [...CEREBRUM, ...CEREBELLUM, ...STEM]
   for (const r of rayPaths()) { pts.push([r.x1, r.y1]); pts.push([r.x2, r.y2]) }
   const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1])
-  const padY = 10
+  const padY = 34
   return {
     x: Math.min(...xs) - GUTTER,
     y: Math.min(...ys) - padY,
@@ -349,13 +349,17 @@ export type Leader = {
   points: string  // polyline: label -> bend -> territory
 }
 
-const LINE_MAX = 30
-const LINE_MIN = 21
+const LINE_MAX = 36
+const LINE_MIN = 27
 
 export function leaderLabels(territories: Territory[], view: { x: number; y: number; w: number; h: number }): Leader[] {
-  const midX = CEREBRUM.reduce((s, p) => s + p[0], 0) / CEREBRUM.length
-  const left = territories.filter((t) => t.label[0] < midX).sort((a, b) => a.label[1] - b.label[1])
-  const right = territories.filter((t) => t.label[0] >= midX).sort((a, b) => a.label[1] - b.label[1])
+  // Split by x-order into two equal halves so both gutters carry the same
+  // number of labels. Splitting on the midline gave 6 against 12, which is
+  // what made the right-hand column unreadable.
+  const byX = [...territories].sort((a, b) => a.label[0] - b.label[0])
+  const half = Math.ceil(byX.length / 2)
+  const left = byX.slice(0, half).sort((a, b) => a.label[1] - b.label[1])
+  const right = byX.slice(half).sort((a, b) => a.label[1] - b.label[1])
 
   const place = (group: Territory[], side: "l" | "r"): Leader[] => {
     const n = group.length
