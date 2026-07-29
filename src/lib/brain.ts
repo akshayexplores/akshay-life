@@ -328,15 +328,14 @@ function contentBox() {
 }
 
 /** Room either side of the drawing for the leader-line labels. */
-export const GUTTER = 158
+export const GUTTER = 196
 
 export const VIEW = contentBox()
 
 /* ── Leader-line labels ─────────────────────────────────────
    Every domain gets a label outside the drawing with a line pointing at its
    territory. This is the mechanic that makes a well-made pie chart readable
-   — nothing hidden behind a hover — and it is what the map was missing.
-   Labels are stacked in two gutters and de-collided vertically.          */
+   — nothing hidden behind a hover — and it is what the map was missing.   */
 export type Leader = {
   subject: string
   short: string
@@ -344,13 +343,14 @@ export type Leader = {
   share: number
   pieces: number
   side: "l" | "r"
-  tx: number      // label anchor
+  tx: number      // name anchor
+  vx: number      // value anchor — a second aligned column
   ty: number
-  points: string  // polyline: label -> bend -> territory
+  points: string  // polyline: bend -> territory
 }
 
-const LINE_MAX = 36
-const LINE_MIN = 27
+const LINE_MAX = 30
+const LINE_MIN = 23
 
 export function leaderLabels(territories: Territory[], view: { x: number; y: number; w: number; h: number }): Leader[] {
   // Split by x-order into two equal halves so both gutters carry the same
@@ -370,8 +370,11 @@ export function leaderLabels(territories: Territory[], view: { x: number; y: num
     const lh = n > 1 ? Math.max(LINE_MIN, Math.min(LINE_MAX, usable / (n - 1))) : 0
     const span = (n - 1) * lh
     const top = view.y + (view.h - span) / 2
-    const tx = side === "l" ? view.x + 12 : view.x + view.w - 12
-    const bend = side === "l" ? view.x + GUTTER - 26 : view.x + view.w - GUTTER + 26
+    // Two aligned columns per gutter — name on the outside, value on the
+    // inside — so the labels read as a table rather than ragged blocks.
+    const tx = side === "l" ? view.x + 14 : view.x + view.w - 14
+    const vx = side === "l" ? view.x + GUTTER - 42 : view.x + view.w - GUTTER + 42
+    const bend = side === "l" ? view.x + GUTTER - 22 : view.x + view.w - GUTTER + 22
 
     return group.map((t, i) => {
       const ty = top + i * lh
@@ -383,8 +386,9 @@ export function leaderLabels(territories: Territory[], view: { x: number; y: num
         pieces: t.pieces,
         side,
         tx,
+        vx,
         ty,
-        points: `${side === "l" ? tx + 6 : tx - 6},${ty - 4} ${bend},${ty - 4} ${t.label[0].toFixed(0)},${t.label[1].toFixed(0)}`,
+        points: `${bend},${ty - 4} ${t.label[0].toFixed(0)},${t.label[1].toFixed(0)}`,
       }
     })
   }
