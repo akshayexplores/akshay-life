@@ -35,71 +35,39 @@ export default function Home() {
   return (
     <main className="sheet" style={{ paddingTop: 92 }}>
       {/* ══ Cover ══ */}
-      <section style={{ padding: "30px 0 0" }}>
+      <section className="cover">
         <h1 className="t-cover">
-          <span className="font-dev" style={{ color: "var(--pravala)", marginRight: "0.28em" }}>
-            क्रम
-          </span>
+          <span className="font-dev cover-dev">क्रम</span>
           Krama
         </h1>
-        <p
-          style={{
-            fontSize: "clamp(20px,2.6vw,30px)",
-            fontWeight: 300,
-            fontStyle: "italic",
-            letterSpacing: "-0.02em",
-            color: "var(--masi-soft)",
-            marginTop: 2,
-          }}
-        >
-          of Akshay
+        <p className="cover-sub">of Akshay</p>
+
+        <p className="cover-note">
+          This is an open notebook, kept in public to jumpstart future builders.
         </p>
 
-        <div className="cover-foot">
-          <p style={{ fontSize: 17, lineHeight: 1.7, color: "var(--masi-soft)", maxWidth: "42ch" }}>
-            This is an open notebook, kept in public to jumpstart future builders.
-          </p>
-
-          <div>
-            <p className="meta" style={{ color: "var(--masi)" }}>
-              <span style={{ color: "var(--pravala)" }}>◉</span> Bharat{" "}
-              <span
-                style={{
-                  fontFamily: "var(--font-newsreader), Georgia, serif",
-                  fontStyle: "italic",
-                  textTransform: "none",
-                  letterSpacing: "0.01em",
-                  fontSize: 15,
-                }}
-              >
-                India
-              </span>
-            </p>
-            <p style={{ marginTop: 2 }}>
-              <Link href="/kriya" className="link meta" style={{ color: "var(--pravala-deep)" }}>
-                Constantly building →
-              </Link>
-            </p>
-          </div>
-        </div>
+        <p className="cover-place meta">
+          <span style={{ color: "var(--pravala)" }}>◉</span> Bharat{" "}
+          <span className="cover-place-en">India</span>
+          <span className="cover-dot">·</span>
+          <Link href="/kriya" className="link" style={{ color: "var(--pravala-deep)" }}>
+            Constantly building →
+          </Link>
+        </p>
 
         <hr className="dashed-rule" />
       </section>
 
-      {/* ══ The statement ══ */}
-      <section style={{ paddingTop: 30 }}>
-        <div className="statement">
-          <div className="statement-head">
-            <h2 className="t-h2">I look for patterns</h2>
-            <PatternDots />
-          </div>
-          <p style={{ marginTop: 10, fontSize: 17, lineHeight: 1.7, maxWidth: "62ch" }}>
+      {/* ══ The statement — the one Nīla moment ══ */}
+      <section className="statement-wrap">
+        <div className="statement on-nila">
+          <PatternDots />
+          <h2 className="statement-h">I look for patterns</h2>
+          <p className="statement-p">
             Patterns tell the hidden stories inside any complexity. I translate those stories into
             systems that scale.
           </p>
-          <p className="meta" style={{ marginTop: 16, color: "var(--pravala-deep)" }}>
-            Darśana · Krama · Kriyā
-          </p>
+          <p className="statement-mv">Darśana · Krama · Kriyā</p>
         </div>
       </section>
 
