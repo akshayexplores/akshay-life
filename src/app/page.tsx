@@ -1,16 +1,16 @@
 import Link from "next/link"
 import { getAllInsights, getSubjectWeights } from "@/lib/mdx"
 import { movements } from "@/data/movements"
-import { layoutBrain } from "@/lib/brain"
+import { buildTerritories } from "@/lib/brain"
 import Reveal from "@/components/Reveal"
 import BrainMap from "@/components/BrainMap"
 
 export default function Home() {
   const insights = getAllInsights()
   const latest = insights.slice(0, 5)
-  // Weights are read off the files at build time, so the map cannot drift
+  // Solved at build time from the files on disk, so the map cannot drift
   // from what has actually been written.
-  const regions = layoutBrain(getSubjectWeights())
+  const territories = buildTerritories(getSubjectWeights())
 
   return (
     <main className="sheet" style={{ paddingTop: 96 }}>
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
 
         <div className="cover-plate">
-          <BrainMap regions={regions} totalPieces={insights.length} />
+          <BrainMap territories={territories} totalPieces={insights.length} />
         </div>
       </section>
 

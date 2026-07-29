@@ -229,10 +229,16 @@ export function renderMarkdown(md: string, opts: { dropFirstH1?: boolean } = {})
  * Corpus weight per subject, straight from the files on disk.
  * This is what the capacity map is drawn from — no hand-entered numbers.
  */
-export function getSubjectWeights(): { subject: string; pieces: number; words: number }[] {
-  const acc = new Map<string, { subject: string; pieces: number; words: number }>()
+export function getSubjectWeights(): {
+  subject: string
+  pieces: number
+  words: number
+  movement: MovementId
+}[] {
+  const acc = new Map<string, { subject: string; pieces: number; words: number; movement: MovementId }>()
   for (const i of getAllInsights()) {
-    const cur = acc.get(i.subject) ?? { subject: i.subject, pieces: 0, words: 0 }
+    const cur =
+      acc.get(i.subject) ?? { subject: i.subject, pieces: 0, words: 0, movement: i.movement }
     cur.pieces += 1
     cur.words += i.words
     acc.set(i.subject, cur)
