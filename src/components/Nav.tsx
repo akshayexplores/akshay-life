@@ -38,7 +38,10 @@ export default function Nav() {
         transition: "background 0.28s var(--ease), border-color 0.28s var(--ease)",
       }}
     >
-      <nav className="sheet flex items-center justify-between" style={{ paddingTop: 14, paddingBottom: 14 }}>
+      <nav
+        className="sheet flex items-center justify-between"
+        style={{ paddingTop: "var(--s4)", paddingBottom: "var(--s4)" }}
+      >
         <Link href="/" className="flex items-center gap-3" aria-label="Krama — home">
           <Mark size={22} />
           <span style={{ fontSize: 21, fontWeight: 300, letterSpacing: "-0.03em", color: "var(--masi)" }}>
