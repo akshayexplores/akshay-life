@@ -33,7 +33,7 @@ export default function Home() {
     .filter((m) => m.pieces > 0)
 
   return (
-    <main className="sheet" style={{ paddingTop: 92 }}>
+    <main className="sheet">
       {/* ══ Cover ══ */}
       <section className="cover">
         <h1 className="t-cover">
@@ -72,14 +72,14 @@ export default function Home() {
       </section>
 
       {/* ══ Quantifying my capacity ══ */}
-      <div className="entry cap-entry" style={{ paddingTop: 44, paddingBottom: 40 }}>
+      <div className="entry cap-entry">
         <div className="cap-side">
           <h2 className="t-h2">
             Quantifying
             <br />
             my capacity
           </h2>
-          <p className="meta-sent" style={{ marginTop: 14, maxWidth: "34ch" }}>
+          <p className="meta-sent" style={{ maxWidth: "34ch", marginTop: "var(--s4)" }}>
             Every domain I write in, sized by how much of it there actually is.
           </p>
 
@@ -119,7 +119,7 @@ export default function Home() {
         </div>
         <div className="col">
           <h2 className="t-h2">Darśana → Krama → Kriyā</h2>
-          <p className="t-first" style={{ marginTop: 14, marginBottom: 8 }}>
+          <p className="t-first" style={{ marginTop: "var(--s4)", marginBottom: "var(--s2)" }}>
             Each term has an exact professional counterpart. Neither half is decoration.
           </p>
 
@@ -154,7 +154,7 @@ export default function Home() {
         <div className="col">
           <h2 className="t-h2">Recently written</h2>
           <Reveal>
-            <ol className="idx" style={{ marginTop: 20 }}>
+            <ol className="idx" style={{ marginTop: "var(--s5)" }}>
               {latest.map((i) => (
                 <li key={i.slug}>
                   <Link href={`/darshana/${i.slug}`}>
@@ -165,7 +165,7 @@ export default function Home() {
               ))}
             </ol>
           </Reveal>
-          <p style={{ marginTop: 20 }}>
+          <p style={{ marginTop: "var(--s5)" }}>
             <Link href="/darshana" className="link meta-sent">
               The whole archive →
             </Link>
@@ -190,13 +190,13 @@ export default function Home() {
                 lineHeight: 1.2,
                 letterSpacing: "-0.015em",
                 color: "#FFF6EE",
-                marginTop: 10,
+                marginTop: "var(--s3)",
               }}
             >
               Every rep who leaves takes the context with them.
             </p>
           </div>
-          <p className="meta-sent" style={{ marginTop: 18 }}>
+          <p className="meta-sent" style={{ marginTop: "var(--s4)" }}>
             Companies lose their memory as they scale. I&rsquo;m building the fix.{" "}
             <Link href="/kriya" className="link">
               What that looks like today →

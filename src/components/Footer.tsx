@@ -3,15 +3,15 @@ import Mark from "./Mark"
 
 export default function Footer() {
   return (
-    <footer style={{ borderTop: "1px solid var(--rule)", marginTop: 88 }}>
-      <div className="sheet" style={{ paddingTop: 36, paddingBottom: 60 }}>
+    <footer style={{ borderTop: "1px solid var(--rule)", marginTop: "var(--s9)" }}>
+      <div className="sheet" style={{ paddingTop: "var(--s7)", paddingBottom: "var(--s8)" }}>
         <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           <div style={{ maxWidth: "32ch" }}>
             <div className="flex items-center gap-3">
               <Mark size={20} />
               <span style={{ fontSize: 19, fontWeight: 300, letterSpacing: "-0.03em" }}>Krama</span>
             </div>
-            <p className="meta-sent" style={{ marginTop: 10 }}>
+            <p className="meta-sent" style={{ marginTop: "var(--s3)" }}>
               Ordered progress. A notebook kept in public by Akshay Sajeev — Bharat.
             </p>
           </div>
@@ -31,7 +31,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="meta" style={{ marginTop: 40 }}>© {new Date().getFullYear()} Akshay Sajeev</p>
+        <p className="meta" style={{ marginTop: "var(--s7)" }}>© {new Date().getFullYear()} Akshay Sajeev</p>
       </div>
     </footer>
   )
