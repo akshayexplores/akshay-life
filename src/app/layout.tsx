@@ -4,8 +4,10 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import "./globals.css"
+import "./motion.css"
 import Nav from "@/components/Nav"
 import Footer from "@/components/Footer"
+import Motion from "@/components/Motion"
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -50,7 +52,10 @@ export const metadata: Metadata = {
     description: LINE,
     creator: "@AkshayExplores",
   },
-  alternates: { canonical: SITE },
+  alternates: {
+    canonical: SITE,
+    types: { "application/rss+xml": `${SITE}/feed.xml` },
+  },
   robots: { index: true, follow: true },
   authors: [{ name: "Akshay Sajeev", url: SITE }],
   creator: "Akshay Sajeev",
@@ -64,7 +69,11 @@ const jsonLd = {
   jobTitle: "Founder, FastrBuild Intelligence",
   description: LINE,
   address: { "@type": "PostalAddress", addressLocality: "Thiruvananthapuram", addressCountry: "IN" },
-  sameAs: ["https://x.com/AkshayExplores", "https://github.com/akshayexplores"],
+  sameAs: [
+    "https://www.linkedin.com/in/akshayexplores/",
+    "https://x.com/AkshayExplores",
+    "https://github.com/akshayexplores",
+  ],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -75,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body>
+        <Motion />
         <Nav />
         {children}
         <Footer />

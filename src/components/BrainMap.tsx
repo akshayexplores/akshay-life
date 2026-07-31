@@ -47,8 +47,14 @@ export default function BrainMap({
     },
   })
 
+  // The plate builds in sequence: outline, folds, territories largest-first,
+  // then the labels draw out. Timings live in motion.css; the order is here.
+  const FOLD_START = 0.35
+  const TERR_START = 0.75
+  const LEAD_START = 1.15
+
   return (
-    <figure style={{ margin: 0 }}>
+    <figure className="plate" style={{ margin: 0 }}>
       <svg
         viewBox={`${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`}
         style={{ width: "100%", height: "auto", display: "block" }}
@@ -75,33 +81,42 @@ export default function BrainMap({
         <path d={CEREBRUM_PATH} fill="var(--bhurja)" />
 
         <g clipPath="url(#cortex)">
-          {territories.map((t) => (
+          {territories.map((t, i) => (
             <path
               key={t.subject}
+              className="terr"
               d={t.path}
               fill={`rgb(${HUE[t.movement]})`}
               fillOpacity={fillOf(t)}
               stroke="var(--bhurja)" strokeWidth="1.6" strokeOpacity="0.9"
-              style={{ transition: "fill-opacity 0.22s var(--ease)", cursor: "pointer" }}
+              style={{
+                transition: "fill-opacity 0.22s var(--ease)",
+                cursor: "pointer",
+                animationDelay: `${TERR_START + i * 0.03}s`,
+              }}
               tabIndex={-1}
               aria-hidden="true"
               {...bind(t.subject)}
             />
           ))}
           {folds.map((d, i) => (
-            <path key={i} d={d} fill="none" stroke="var(--masi)" strokeOpacity="0.4"
-                  strokeWidth="2" strokeLinecap="round" pointerEvents="none" />
+            <path key={i} className="fold" d={d} pathLength={1} fill="none"
+                  stroke="var(--masi)" strokeOpacity="0.4"
+                  strokeWidth="2" strokeLinecap="round" pointerEvents="none"
+                  style={{ animationDelay: `${FOLD_START + (i % 10) * 0.03}s` }} />
           ))}
         </g>
 
-        <path d={CEREBRUM_PATH} fill="none" stroke="var(--masi)" strokeWidth="3"
+        <path className="cortex-line" d={CEREBRUM_PATH} pathLength={1} fill="none"
+              stroke="var(--masi)" strokeWidth="3"
               strokeOpacity="0.92" strokeLinejoin="round" pointerEvents="none" />
 
         {/* every domain labelled, name and value in two aligned columns */}
-        {leaders.map((l) => {
+        {leaders.map((l, i) => {
           const on = active === l.subject
           const dim = active && !on
           const end = l.points.split(" ").slice(-1)[0].split(",")
+          const delay = `${LEAD_START + i * 0.04}s`
           return (
             <g
               key={l.subject}
@@ -114,22 +129,30 @@ export default function BrainMap({
               style={{ cursor: "pointer" }}
               {...bind(l.subject)}
             >
-              <polyline points={l.points} fill="none" stroke={`rgb(${HUE[l.movement]})`}
-                        strokeWidth={on ? 1.8 : 1.1} strokeOpacity={on ? 0.95 : 0.55} />
-              <circle cx={end[0]} cy={end[1]} r={on ? 3.4 : 2.4} fill={`rgb(${HUE[l.movement]})`} />
+              <polyline className="lead-line" points={l.points} pathLength={1} fill="none"
+                        stroke={`rgb(${HUE[l.movement]})`}
+                        strokeWidth={on ? 1.8 : 1.1} strokeOpacity={on ? 0.95 : 0.55}
+                        style={{ animationDelay: delay }} />
+              <circle className="lead-dot" cx={end[0]} cy={end[1]} r={on ? 3.4 : 2.4}
+                      fill={`rgb(${HUE[l.movement]})`}
+                      style={{ animationDelay: delay }} />
               <text
+                className="lead-txt font-mono"
                 x={l.tx} y={l.ty}
                 textAnchor={l.side === "l" ? "start" : "end"}
-                className="font-mono" fontSize="13" letterSpacing="0.3"
+                fontSize="13" letterSpacing="0.3"
                 fill={on ? "var(--pravala-deep)" : "var(--masi)"}
+                style={{ animationDelay: delay }}
               >
                 {l.short}
               </text>
               <text
+                className="lead-txt font-mono"
                 x={l.vx} y={l.ty}
                 textAnchor={l.side === "l" ? "end" : "start"}
-                className="font-mono" fontSize="13"
+                fontSize="13"
                 fill={on ? "var(--pravala-deep)" : "var(--masi-faint)"}
+                style={{ animationDelay: delay }}
               >
                 {`${Math.round(l.share * 100)}%`}
               </text>
