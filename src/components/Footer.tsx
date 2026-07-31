@@ -26,8 +26,10 @@ export default function Footer() {
 
           <div className="flex flex-wrap gap-x-10 gap-y-2">
             <a href="mailto:akshay@fastrbuild.com" className="meta">Email</a>
+            <a href="https://www.linkedin.com/in/akshayexplores/" target="_blank" rel="noopener noreferrer" className="meta">LinkedIn</a>
             <a href="https://x.com/AkshayExplores" target="_blank" rel="noopener noreferrer" className="meta">X</a>
             <a href="https://github.com/akshayexplores" target="_blank" rel="noopener noreferrer" className="meta">GitHub</a>
+            <a href="/feed.xml" className="meta">RSS</a>
           </div>
         </div>
 
