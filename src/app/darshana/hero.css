@@ -1,0 +1,117 @@
+/* ── Darśana · the daily featured insight ──────────────────────────────────
+   Scoped to the route rather than added to globals.css. Uses only tokens the
+   sheet already defines: --rule, --masi, --masi-soft, --pravala.
+
+   The hero is deliberately NOT an .entry, so the motion layer leaves it
+   alone: it is the first thing on the page and should be legible on paint
+   rather than fading in after it.                                          */
+
+.hero {
+  margin-top: 34px;
+  padding: 30px 0 34px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-flag {
+  display: block;
+  color: var(--pravala);
+}
+
+/* Title left, excerpt right — a single wide row that reads as a plate rather
+   than as the first row of the index below. */
+.hero-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 30px 56px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 38px);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--masi);
+  text-wrap: balance;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding-bottom: 3px;
+  font-size: 13px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--pravala);
+  border-bottom: 1px solid currentColor;
+  transition: opacity 0.18s ease;
+}
+
+.hero-cta:hover {
+  opacity: 0.62;
+}
+
+.hero-cta span {
+  transition: transform 0.18s ease;
+}
+
+.hero-cta:hover span {
+  transform: translateX(3px);
+}
+
+/* Three lines, then it stops — the excerpt is a taste, not the piece. */
+.hero-excerpt {
+  margin: 0;
+  max-width: 52ch;
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--masi-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero-meta {
+  margin-top: 14px;
+}
+
+.hero-note {
+  opacity: 0.62;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 24px 0 28px;
+  }
+
+  .hero-body {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 14px;
+  }
+
+  .hero-title {
+    font-size: clamp(24px, 6.4vw, 30px);
+  }
+
+  .hero-cta {
+    margin-top: 16px;
+  }
+
+  .hero-excerpt {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta,
+  .hero-cta span {
+    transition: none;
+  }
+}
