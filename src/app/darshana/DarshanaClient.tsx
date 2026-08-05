@@ -7,10 +7,13 @@ import { movements } from "@/data/movements"
 
 export default function DarshanaClient({
   insights,
+  heroSlug = null,
   initialMovement = "all",
   initialSubject = "all",
 }: {
   insights: InsightMeta[]
+  /** Slug of today's featured piece, chosen on the server. */
+  heroSlug?: string | null
   initialMovement?: string
   initialSubject?: string
 }) {
@@ -24,7 +27,7 @@ export default function DarshanaClient({
     subjects.includes(initialSubject) ? initialSubject : "all"
   )
 
-  const shown = useMemo(
+  const matching = useMemo(
     () =>
       insights.filter(
         (i) => (mv === "all" || i.movement === mv) && (subject === "all" || i.subject === subject)
@@ -32,8 +35,46 @@ export default function DarshanaClient({
     [insights, mv, subject]
   )
 
+  // The featured piece is a property of the default view. Once someone filters,
+  // they are browsing with intent and a "today's pick" on top is just noise —
+  // so the hero disappears and the piece rejoins the list in its normal place.
+  const filtering = mv !== "all" || subject !== "all"
+  const hero = useMemo(
+    () => (filtering || !heroSlug ? null : insights.find((i) => i.slug === heroSlug) ?? null),
+    [filtering, heroSlug, insights]
+  )
+
+  // Shown once, never twice: pulled out of the list only while it is the hero.
+  const listed = useMemo(
+    () => (hero ? matching.filter((i) => i.slug !== hero.slug) : matching),
+    [matching, hero]
+  )
+
   return (
     <>
+      {hero && (
+        <section className="hero" aria-labelledby="hero-title">
+          <span className="lbl hero-flag">Featured insight · today</span>
+          <div className="hero-body">
+            <div>
+              <h2 id="hero-title" className="hero-title">
+                {hero.title}
+              </h2>
+              <Link className="hero-cta" href={`/darshana/${hero.slug}`}>
+                Read insight
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+            <div>
+              {hero.excerpt && <p className="hero-excerpt">{hero.excerpt}</p>}
+              <p className="meta hero-meta">
+                {hero.subject} · {hero.readingMinutes} min
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       <div className="entry" style={{ borderTop: "none", paddingTop: 30, paddingBottom: 22 }}>
         <div className="rail">
           <span className="no">—</span>
@@ -85,12 +126,15 @@ export default function DarshanaClient({
         </div>
       </div>
 
+      {/* Counts the whole matching set, hero included — the archive has not
+          shrunk just because one piece is being shown above. */}
       <p className="meta" style={{ marginTop: 8 }}>
-        {shown.length} {shown.length === 1 ? "piece" : "pieces"}
+        {matching.length} {matching.length === 1 ? "piece" : "pieces"}
+        {hero && <span className="hero-note"> · one featured above</span>}
       </p>
 
       <ol className="idx" style={{ marginTop: 12, borderTop: "1px solid var(--rule)" }}>
-        {shown.map((i) => (
+        {listed.map((i) => (
           <li key={i.slug}>
             <Link href={`/darshana/${i.slug}`}>
               <span>
@@ -121,7 +165,7 @@ export default function DarshanaClient({
         ))}
       </ol>
 
-      {shown.length === 0 && (
+      {matching.length === 0 && (
         <p style={{ marginTop: 30 }}>Nothing matches that combination yet.</p>
       )}
     </>
