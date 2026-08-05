@@ -40,27 +40,37 @@ export const pillars: Pillar[] = [
 ]
 
 /**
- * Subject (frontmatter `category` synced from akshay-brain) → pillar.
- * Editorial mapping — change here and the whole site follows.
- * Unmapped subjects fall through to "systems-that-survive".
+ * Subject → pillar.
+ *
+ * Two vocabularies feed this table and they do not match:
+ *   - insights carry `category` synced from akshay-brain
+ *   - projects carry `category` taken from the Coda "Skill" column
+ *
+ * Coda uses compound names ("Data Science & AI") where the vault uses
+ * short ones ("Data Science"). Both spellings are mapped on purpose —
+ * an unmapped subject does not error, it silently falls through to
+ * DEFAULT_PILLAR, which is how four projects ended up in one bucket.
  */
 export const subjectToPillar: Record<string, PillarId> = {
   "Artificial Intelligence": "honest-ai",
   "Machine Learning": "honest-ai",
   "Natural language Processing": "honest-ai",
   "Natural Language Processing": "honest-ai",
+  "Data Science & AI": "honest-ai",
 
   "Code": "systems-that-survive",
   "Tech": "systems-that-survive",
   "Data Science": "systems-that-survive",
   "Design": "systems-that-survive",
   "Leadership": "systems-that-survive",
+  "No-code & Vibe-coding": "systems-that-survive",
 
   "Sales": "ambiguity-archive",
   "Marketing": "ambiguity-archive",
 
   "Entrepreneurship": "founder-scars",
   "Finance": "founder-scars",
+  "Finance & Operations": "founder-scars",
 
   "Communities": "compounding-notes",
   "Video Production": "compounding-notes",

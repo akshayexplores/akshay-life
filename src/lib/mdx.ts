@@ -35,6 +35,14 @@ function estimateMinutes(body: string): number {
   return Math.max(1, Math.round(words / 225))
 }
 
+/** Newest first. Entries with no date sort last rather than first. */
+function byDateDesc(a: { date: string; title: string }, b: { date: string; title: string }): number {
+  if (a.date === b.date) return a.title.localeCompare(b.title)
+  if (!a.date) return 1
+  if (!b.date) return -1
+  return a.date < b.date ? 1 : -1
+}
+
 function toMeta(slug: string, data: Record<string, unknown>, body: string): InsightMeta {
   const subject = (data.category as string) ?? "Uncategorised"
   return {
@@ -59,7 +67,7 @@ export function getAllInsights(): InsightMeta[] {
       const { data, content } = matter(raw)
       return toMeta(slug, data, content)
     })
-    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.title.localeCompare(b.title)))
+    .sort(byDateDesc)
 }
 
 export function getInsight(slug: string): Doc<InsightMeta> | null {
@@ -69,6 +77,93 @@ export function getInsight(slug: string): Doc<InsightMeta> | null {
       const raw = fs.readFileSync(file, "utf-8")
       const { data, content } = matter(raw)
       return { meta: toMeta(slug, data, content), content }
+    }
+  }
+  return null
+}
+
+/* ─────────────────────────────────────────────
+   Projects
+
+   Bodies are Akshay's own writing, imported from the Coda
+   "Master Projects DB". The card teaser is each piece's own
+   opening line — no summary here is written by the site.
+
+   The fallbacks below matter: one file still carries the older
+   frontmatter shape (description/tags, no category/skills), and a
+   missing field should degrade to a plain card, never to a crash.
+   ───────────────────────────────────────────── */
+
+export type ProjectMeta = {
+  slug: string
+  title: string
+  client: string
+  year: string
+  date: string
+  /** Primary skill, mapped through the same subject → pillar table as insights. */
+  subject: string
+  pillar: PillarId
+  skills: string[]
+  excerpt: string
+  thumbnail: string
+  status: string
+  readingMinutes: number
+}
+
+function firstParagraph(body: string): string {
+  const para = body
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .find((p) => p && !p.startsWith("#") && !p.startsWith(">") && !p.startsWith("-"))
+  return para ? para.replace(/\*\*/g, "").replace(/\s+/g, " ") : ""
+}
+
+function toProjectMeta(
+  slug: string,
+  data: Record<string, unknown>,
+  body: string
+): ProjectMeta {
+  const skills =
+    (data.skills as string[]) ?? (data.tags as string[]) ?? []
+  const subject = (data.category as string) ?? skills[0] ?? "Uncategorised"
+
+  return {
+    slug,
+    title: (data.title as string) ?? slug,
+    client: (data.client as string) ?? "",
+    year: (data.year as string) ?? "",
+    date: (data.date as string) ?? "",
+    subject,
+    pillar: pillarFor(subject),
+    skills,
+    excerpt:
+      (data.excerpt as string) ??
+      (data.description as string) ??
+      firstParagraph(body),
+    thumbnail: (data.thumbnail as string) ?? "",
+    status: (data.status as string) ?? "draft",
+    readingMinutes: estimateMinutes(body),
+  }
+}
+
+export function getAllProjects(): ProjectMeta[] {
+  return readDir("projects")
+    .map((file) => {
+      const slug = file.replace(/\.mdx?$/, "")
+      const raw = fs.readFileSync(path.join(CONTENT_DIR, "projects", file), "utf-8")
+      const { data, content } = matter(raw)
+      return toProjectMeta(slug, data, content)
+    })
+    .sort(byDateDesc)
+}
+
+export function getProject(slug: string): Doc<ProjectMeta> | null {
+  for (const ext of [".mdx", ".md"]) {
+    const file = path.join(CONTENT_DIR, "projects", `${slug}${ext}`)
+    if (fs.existsSync(file)) {
+      const raw = fs.readFileSync(file, "utf-8")
+      const { data, content } = matter(raw)
+      return { meta: toProjectMeta(slug, data, content), content }
     }
   }
   return null
@@ -184,7 +279,10 @@ export function renderMarkdown(md: string, opts: { dropFirstH1?: boolean } = {})
       continue
     }
 
-    if (line.startsWith("### ")) {
+    if (line.startsWith("#### ")) {
+      flushPara(); flushList()
+      html.push(`<h4>${inline(line.slice(5))}</h4>`)
+    } else if (line.startsWith("### ")) {
       flushPara(); flushList()
       html.push(`<h3>${inline(line.slice(4))}</h3>`)
     } else if (line.startsWith("## ")) {
