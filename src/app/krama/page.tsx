@@ -3,6 +3,7 @@ import Link from "next/link"
 import { outcomeLabel, type Outcome } from "@/data/projects"
 import { getProjects } from "@/lib/sources"
 import { getAllInsights } from "@/lib/mdx"
+import { projectIdsWithBody } from "@/lib/projects-content"
 import { movement } from "@/data/movements"
 import Reveal from "@/components/Reveal"
 
@@ -24,6 +25,7 @@ export default function KramaPage() {
   const k = movement("krama")
   const { rows: projects } = getProjects()
   const writing = getAllInsights().filter((i) => i.movement === "krama")
+  const withBody = projectIdsWithBody()
 
   return (
     <main className="sheet">
@@ -93,7 +95,13 @@ export default function KramaPage() {
                   <div className="row">
                     <div style={{ maxWidth: "68ch" }}>
                       <div className="flex flex-wrap items-baseline gap-x-3">
-                        <h3 className="t-h3">{p.title}</h3>
+                        <h3 className="t-h3">
+                          {withBody.has(p.id) ? (
+                            <Link href={`/krama/${p.id}`}>{p.title}</Link>
+                          ) : (
+                            p.title
+                          )}
+                        </h3>
                         <span className="meta">{p.org}</span>
                       </div>
                       <p style={{ marginTop: "var(--s2)", fontSize: 15.5, lineHeight: 1.65 }}>{p.summary}</p>
@@ -117,6 +125,14 @@ export default function KramaPage() {
                       >
                         {outcomeLabel[p.outcomeKind]}
                         <span style={{ color: "#98897A" }}> · {p.stack.join(" · ")}</span>
+                        {withBody.has(p.id) && (
+                          <>
+                            <span style={{ color: "#98897A" }}> · </span>
+                            <Link href={`/krama/${p.id}`} style={{ color: "var(--pravala)" }}>
+                              Read the write-up
+                            </Link>
+                          </>
+                        )}
                       </p>
                     </div>
                   </div>
