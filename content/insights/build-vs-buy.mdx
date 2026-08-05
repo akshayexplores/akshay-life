@@ -1,0 +1,36 @@
+---
+title: "Build vs Buy: Execution Layers Are for Buying, Governance Layers Are for Owning"
+category: "Tech"
+type: "insight"
+status: "published"
+slug: "build-vs-buy"
+excerpt: "I keep running into the same decision while building an AI product: when a capability shows up as a vendor - fast, cheap, already working - is it a component…"
+date: "2026-08-05"
+tags:
+  - "insight"
+  - "tech"
+  - "build-vs-buy"
+  - "product-strategy"
+  - "ai"
+  - "moat"
+publishedAt: "2026-08-05"
+---
+# Build vs Buy: Execution Layers Are for Buying, Governance Layers Are for Owning
+
+I keep running into the same decision while building an AI product: when a capability shows up as a vendor - fast, cheap, already working - is it a component to buy, or a thing I should be building myself? I finally found a framework that actually resolves the question instead of just restating it: execution layers are for buying, governance layers are for owning.
+
+## What counts as "execution"
+
+Execution is the part of the product that does the visible work - runs a task, produces an output, completes a job. A vendor offering to handle autonomous multi-step task completion, for instance, is selling execution. It's tempting to build that yourself because it's the flashy part, but a three-day-old vendor doing exactly that is also a company with no track record, no pricing stability, and no guarantee it exists in a year. Buying execution from someone else is fine, even smart, as long as you put it behind an abstraction layer you control - so that if the vendor disappears or changes terms, you can swap it out without re-architecting the product around it.
+
+## What counts as "governance"
+
+Governance is the part that decides what the execution layer is allowed to do: which connectors are admin-approved, what data gets masked before it ever reaches a model, which actions get metered and audited. This is quieter than execution - it doesn't demo well - but it's also the part no generic chat-wrapper competitor currently offers, because it requires deep integration with your specific guardrails, credit system, and action log. That's precisely why it's worth owning: a capability is a moat only if it's hard for a competitor to bolt on after the fact, and governance woven into your existing infrastructure is hard to copy in a way that "another agent that does tasks" is not.
+
+## How this shows up in competitive research
+
+Looking at two funded competitors in the same space, both had impressive execution - AI-generated pipelines, autonomous agents, various flavors of "the AI does the work for you." Neither had a governance story. That gap is the signal: when every competitor is racing to out-execute each other, the differentiated position is often one layer up, in making that execution safe, controlled, and auditable enough that a risk-averse buyer says yes. Execution parity gets commoditized fast; governance, because it's stitched into how you already operate, doesn't.
+
+## The decision rule
+
+Before building any new capability, I now ask which layer it belongs to. If it's execution - something that does a visible task - the default is to evaluate vendors first, and only build if nothing viable exists, with an abstraction layer regardless of the answer. If it's governance - something that decides what's allowed, tracked, or exposed - the default flips: build it, because that's the part a buyer can't get anywhere else and a vendor can't sell you without becoming your product's core dependency.
