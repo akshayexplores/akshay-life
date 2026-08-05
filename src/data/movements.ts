@@ -49,20 +49,28 @@ export const movements: Movement[] = [
 ]
 
 /**
- * Subject (frontmatter `category`, synced from akshay-brain) → movement.
+ * Subject (frontmatter `category`) → movement.
  *
  * Editorial mapping, derived from the "maps to" line of each movement in the
  * field manual.
  *
- * Subjects come from the vault and DO change — "Computer Networks", "Python"
- * and "Economics" all appeared after the first pass. Anything unmapped falls
- * back to Darśana, so add new subjects here rather than letting them drift.
+ * TWO VOCABULARIES FEED THIS TABLE AND THEY DO NOT MATCH:
+ *   - insights carry `category` synced from akshay-brain — short names
+ *     ("Data Science", "Finance")
+ *   - project write-ups carry `category` from the Coda "Skill" column —
+ *     compound names ("Data Science & AI", "Finance & Operations")
+ *
+ * Both spellings are mapped deliberately. Subjects also DO change — "Computer
+ * Networks", "Python" and "Economics" all appeared after the first pass.
+ * Anything unmapped falls back to Darśana silently, so add new subjects here
+ * rather than letting them drift.
  */
 export const subjectToMovement: Record<string, MovementId> = {
   // Darśana — diagnosis, positioning, the why underneath
   "Marketing": "darshana",
   "Entrepreneurship": "darshana",
   "Finance": "darshana",
+  "Finance & Operations": "darshana",
   "Economics": "darshana",
   "Leadership": "darshana",
   "Life": "darshana",
@@ -79,10 +87,12 @@ export const subjectToMovement: Record<string, MovementId> = {
   "Code": "kriya",
   "Python": "kriya",
   "Computer Networks": "kriya",
+  "No-code & Vibe-coding": "kriya",
   "Artificial Intelligence": "kriya",
   "Machine Learning": "kriya",
   "Natural language Processing": "kriya",
   "Natural Language Processing": "kriya",
+  "Data Science & AI": "kriya",
   "Video Production": "kriya",
 }
 
