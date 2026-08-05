@@ -1,147 +1,209 @@
 import Link from "next/link"
-import { getAllInsights } from "@/lib/mdx"
-import { projects } from "@/data/projects"
-import { tools } from "@/data/tools"
-import { pillars, pillarName } from "@/data/pillars"
-import Krama from "@/components/Krama"
+import { getAllInsights, getSubjectWeights } from "@/lib/mdx"
+import { movements } from "@/data/movements"
+import { buildTerritories } from "@/lib/brain"
 import Reveal from "@/components/Reveal"
+import BrainMap from "@/components/BrainMap"
+import PatternDots from "@/components/PatternDots"
+
+const HUE: Record<string, string> = {
+  darshana: "192,86,47",
+  krama: "192,138,46",
+  kriya: "31,42,68",
+}
 
 export default function Home() {
   const insights = getAllInsights()
-  const latest = insights.slice(0, 3)
+  const latest = insights.slice(0, 5)
+  // Solved at build time from the files on disk, so the map cannot drift
+  // from what has actually been written.
+  const territories = buildTerritories(getSubjectWeights())
 
-  // Every number on this page is counted from the repo at build time.
-  // Nothing here is typed in by hand.
-  const stats = [
-    { value: String(insights.length), label: "Insights published" },
-    { value: String(projects.length), label: "Projects, outcomes included" },
-    { value: String(pillars.length), label: "Content pillars" },
-    { value: String(tools.length), label: "Tools in the stack" },
-  ]
+  // Quantified per movement — three rows, no accumulation counters.
+  const byMovement = movements
+    .map((m) => {
+      const own = territories.filter((t) => t.movement === m.id)
+      return {
+        ...m,
+        share: own.reduce((s, t) => s + t.share, 0),
+        pieces: own.reduce((s, t) => s + t.pieces, 0),
+        domains: own.length,
+      }
+    })
+    .filter((m) => m.pieces > 0)
 
   return (
-    <main className="relative z-[2] mx-auto max-w-[1180px] px-6 md:px-10">
-      {/* ── Hero ──────────────────────────────── */}
-      <section className="pt-32 md:pt-44">
-        <p className="t-label">क्रम · Krama · Progress in sequence</p>
+    <main className="sheet">
+      {/* ══ Cover ══ */}
+      <section className="cover">
+        <h1 className="t-cover">
+          <span className="font-dev cover-dev">क्रम</span>
+          Krama
+        </h1>
+        <p className="cover-sub">of Akshay</p>
 
-        <Krama
-          text="Akshay Sajeev"
-          as="h1"
-          className="t-hero mt-6"
-        />
-
-        <p
-          className="mt-8 font-body"
-          style={{ maxWidth: "44ch", fontSize: "1.25rem", lineHeight: 1.6, color: "var(--text)" }}
-        >
-          I enter ambiguous spaces, find the signal, and build the system that scales it.
+        <p className="cover-note">
+          This is an open notebook, kept in public to jumpstart future builders.
         </p>
 
-        <p
-          className="mt-5 font-body"
-          style={{ maxWidth: "58ch", fontSize: "1.0625rem", lineHeight: 1.75, color: "var(--text-dim)" }}
-        >
-          AI made building and broadcasting cheap. The scarce layer is human — trust, judgment,
-          proof. Those can be engineered, but only by someone who has shipped, broken things,
-          and watched the fix work.
+        <p className="cover-place meta">
+          <span style={{ color: "var(--pravala)" }}>◉</span> Bharat{" "}
+          <span className="cover-place-en">India</span>
+          <span className="cover-dot">·</span>
+          <Link href="/kriya" className="link" style={{ color: "var(--pravala-deep)" }}>
+            Constantly building →
+          </Link>
         </p>
 
-        <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3">
-          <Link href="/insights" className="t-meta link-u" style={{ color: "var(--accent)" }}>
-            Read the insights →
-          </Link>
-          <Link href="/projects" className="t-meta link-u">
-            See what shipped and what did not →
-          </Link>
-        </div>
+        <hr className="dashed-rule" />
       </section>
 
-      {/* ── Stats bento ───────────────────────── */}
-      <section className="mt-24 md:mt-32">
-        <div className="grid grid-cols-2 gap-px md:grid-cols-4" style={{ background: "var(--border)", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 60}>
-              <div style={{ background: "var(--surface)", padding: "1.75rem 1.5rem", height: "100%" }}>
-                <p className="font-mono" style={{ fontSize: "2rem", lineHeight: 1, letterSpacing: "-0.04em", color: "var(--text)" }}>
-                  {s.value}
-                </p>
-                <p className="t-meta" style={{ marginTop: "0.75rem", lineHeight: 1.5 }}>
-                  {s.label}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Pillars ───────────────────────────── */}
-      <section className="mt-24 md:mt-32">
-        <div className="flex items-baseline justify-between">
-          <h2 className="t-label">What gets written here</h2>
-          <Link href="/insights" className="t-meta link-u">All insights →</Link>
-        </div>
-
-        <div className="mt-7 grid grid-cols-1 gap-px md:grid-cols-3" style={{ background: "var(--border)", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
-          {pillars.map((p, i) => (
-            <Reveal key={p.id} delay={i * 50}>
-              <Link
-                href={`/insights?pillar=${p.id}`}
-                className="block"
-                style={{ background: "var(--surface)", padding: "1.75rem 1.5rem", height: "100%" }}
-              >
-                <h3 className="t-heading" style={{ color: "var(--text)" }}>{p.name}</h3>
-                <p className="mt-3 font-body" style={{ fontSize: "0.9375rem", lineHeight: 1.6, color: "var(--text-dim)" }}>
-                  {p.blurb}
-                </p>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Latest insights ─────────────────────── */}
-      <section className="mt-24 md:mt-32">
-        <h2 className="t-label">Latest</h2>
-
-        <ul className="mt-7" style={{ borderTop: "1px solid var(--border)" }}>
-          {latest.map((i, idx) => (
-            <Reveal as="li" key={i.slug} delay={idx * 60}>
-              <Link
-                href={`/insights/${i.slug}`}
-                className="group block py-6"
-                style={{ borderBottom: "1px solid var(--border)" }}
-              >
-                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-6">
-                  <span className="t-meta" style={{ minWidth: "9.5rem", color: "var(--accent-dim)" }}>
-                    {pillarName(i.pillar)}
-                  </span>
-                  <div className="flex-1">
-                    <h3 className="t-heading" style={{ color: "var(--text)" }}>{i.title}</h3>
-                    {i.excerpt && (
-                      <p className="mt-2 font-body" style={{ fontSize: "0.9375rem", lineHeight: 1.65, color: "var(--text-dim)", maxWidth: "70ch" }}>
-                        {i.excerpt}
-                      </p>
-                    )}
-                  </div>
-                  <span className="t-meta" style={{ whiteSpace: "nowrap" }}>{i.readingMinutes} min</span>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </ul>
-      </section>
-
-      {/* ── Now strip ─────────────────────────── */}
-      <section className="mt-24 md:mt-32">
-        <Link href="/now" className="bento block p-7 md:p-9">
-          <p className="t-label">Currently</p>
-          <p className="mt-4 font-body" style={{ fontSize: "1.125rem", lineHeight: 1.65, color: "var(--text)", maxWidth: "60ch" }}>
-            Vajra GTM, FastrBuild, and consulting work with Acsia on LiLA.
+      {/* ══ The statement — the one Nīla moment ══ */}
+      <section className="statement-wrap">
+        <div className="statement on-nila">
+          <PatternDots />
+          <h2 className="statement-h">I look for patterns</h2>
+          <p className="statement-p">
+            Patterns tell the hidden stories inside any complexity. I translate those stories into
+            systems that scale.
           </p>
-          <p className="t-meta mt-4" style={{ color: "var(--accent)" }}>Read the /now page →</p>
-        </Link>
+          <p className="statement-mv">Darśana · Krama · Kriyā</p>
+        </div>
       </section>
+
+      {/* ══ Quantifying my capacity ══ */}
+      <div className="entry cap-entry">
+        <div className="cap-side">
+          <h2 className="t-h2">
+            Quantifying
+            <br />
+            my capacity
+          </h2>
+          <p className="meta-sent" style={{ maxWidth: "34ch", marginTop: "var(--s4)" }}>
+            Every domain I write in, sized by how much of it there actually is.
+          </p>
+
+          <ol className="cap-rows">
+            {byMovement.map((m) => (
+              <li key={m.id}>
+                <Link href={`/${m.id}`}>
+                  <span className="sw" style={{ background: `rgb(${HUE[m.id]})` }} />
+                  <span className="nm">
+                    {m.roman}
+                    <span className="dv font-dev">{m.devanagari}</span>
+                  </span>
+                  <span className="val">{Math.round(m.share * 100)}%</span>
+                  <span className="sub">
+                    {m.pieces} {m.pieces === 1 ? "piece" : "pieces"} · {m.domains} domains
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="cap-plate">
+          <BrainMap territories={territories} totalPieces={insights.length} />
+        </div>
+      </div>
+
+      {/* ══ 01 · The three movements ══ */}
+      <div className="entry">
+        <div className="rail">
+          <span className="no">01</span>
+          Three movements
+          <span className="mnote">
+            Not pillars. Movements — they run in sequence, and krama means sequence. Site sections,
+            service stages and content categories at once.
+          </span>
+        </div>
+        <div className="col">
+          <h2 className="t-h2">Darśana → Krama → Kriyā</h2>
+          <p className="t-first" style={{ marginTop: "var(--s4)", marginBottom: "var(--s2)" }}>
+            Each term has an exact professional counterpart. Neither half is decoration.
+          </p>
+
+          {movements.map((m) => (
+            <Link key={m.id} href={`/${m.id}`} className="mv" style={{ cursor: "pointer" }}>
+              <div className="glyphbox">
+                <span className="skt">{m.devanagari}</span>
+              </div>
+              <div>
+                <div className="rom">
+                  {m.roman} · {m.gloss}
+                </div>
+                <h3 className="t-h3">{m.heading}</h3>
+                <p>{m.body}</p>
+                <div className="maps">maps to → {m.mapsTo}</div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ══ 02 · Latest ══ */}
+      <div className="entry">
+        <div className="rail">
+          <span className="no">02</span>
+          Latest
+          <span className="mnote">
+            Written first person, from experience. Distilled from a working vault, not composed for
+            an audience.
+          </span>
+        </div>
+        <div className="col">
+          <h2 className="t-h2">Recently written</h2>
+          <Reveal>
+            <ol className="idx" style={{ marginTop: "var(--s5)" }}>
+              {latest.map((i) => (
+                <li key={i.slug}>
+                  <Link href={`/darshana/${i.slug}`}>
+                    <span style={{ fontSize: 16, lineHeight: 1.5 }}>{i.title}</span>
+                    <span className="meta tail">{i.readingMinutes} min</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+          <p style={{ marginTop: "var(--s5)" }}>
+            <Link href="/darshana" className="link meta-sent">
+              The whole archive →
+            </Link>
+          </p>
+        </div>
+      </div>
+
+      {/* ══ 03 · One statement ══ */}
+      <div className="entry" style={{ borderBottom: "1px solid var(--rule)" }}>
+        <div className="rail">
+          <span className="no">03</span>
+          Working on
+          <span className="mnote">One statement per page. The rest is paper, ink and hairlines.</span>
+        </div>
+        <div className="col">
+          <div className="on-pravala">
+            <span className="lbl">OrgIntel</span>
+            <p
+              style={{
+                fontSize: "clamp(22px,3vw,30px)",
+                fontWeight: 300,
+                lineHeight: 1.2,
+                letterSpacing: "-0.015em",
+                color: "#FFF6EE",
+                marginTop: "var(--s3)",
+              }}
+            >
+              Every rep who leaves takes the context with them.
+            </p>
+          </div>
+          <p className="meta-sent" style={{ marginTop: "var(--s4)" }}>
+            Companies lose their memory as they scale. I&rsquo;m building the fix.{" "}
+            <Link href="/kriya" className="link">
+              What that looks like today →
+            </Link>
+          </p>
+        </div>
+      </div>
     </main>
   )
 }

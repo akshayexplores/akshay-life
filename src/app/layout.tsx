@@ -1,46 +1,61 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { GeistMono } from "geist/font/mono"
+import { Newsreader, JetBrains_Mono, Noto_Serif_Devanagari } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import "./globals.css"
+import "./motion.css"
 import Nav from "@/components/Nav"
 import Footer from "@/components/Footer"
-import SmoothScroll from "@/components/SmoothScroll"
-import ScrollProgress from "@/components/ScrollProgress"
+import Motion from "@/components/Motion"
 
-const inter = Inter({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-inter",
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
+  display: "swap",
+})
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+})
+
+const devanagari = Noto_Serif_Devanagari({
+  subsets: ["devanagari"],
+  variable: "--font-devanagari",
   display: "swap",
 })
 
 const SITE = "https://akshay.life"
-const TAGLINE = "I enter ambiguous spaces, find the signal, and build the system that scales it."
+const LINE = "I look for the pattern behind the mess. Then I build the thing that holds it."
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: "Akshay Sajeev — akshay.life",
-    template: "%s — akshay.life",
+    default: "Krama — Akshay Sajeev",
+    template: "%s — Krama",
   },
-  description: TAGLINE,
+  description: LINE,
   openGraph: {
-    title: "Akshay Sajeev — akshay.life",
-    description: TAGLINE,
+    title: "Krama — Akshay Sajeev",
+    description: LINE,
     url: SITE,
-    siteName: "akshay.life",
+    siteName: "Krama",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Akshay Sajeev — akshay.life",
-    description: TAGLINE,
+    title: "Krama — Akshay Sajeev",
+    description: LINE,
     creator: "@AkshayExplores",
   },
-  alternates: { canonical: SITE },
+  alternates: {
+    canonical: SITE,
+    types: { "application/rss+xml": `${SITE}/feed.xml` },
+  },
   robots: { index: true, follow: true },
   authors: [{ name: "Akshay Sajeev", url: SITE }],
   creator: "Akshay Sajeev",
@@ -52,22 +67,24 @@ const jsonLd = {
   name: "Akshay Sajeev",
   url: SITE,
   jobTitle: "Founder, FastrBuild Intelligence",
-  description: TAGLINE,
-  sameAs: ["https://x.com/AkshayExplores", "https://github.com/akshayexplores"],
+  description: LINE,
+  address: { "@type": "PostalAddress", addressLocality: "Thiruvananthapuram", addressCountry: "IN" },
+  sameAs: [
+    "https://www.linkedin.com/in/akshayexplores/",
+    "https://x.com/AkshayExplores",
+    "https://github.com/akshayexplores",
+  ],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${GeistMono.variable}`}>
+    <html lang="en" className={`${newsreader.variable} ${jetbrains.variable} ${devanagari.variable}`}>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <meta name="theme-color" content="#F2EDE3" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body className="scanlines">
-        <SmoothScroll />
-        <ScrollProgress />
+      <body>
+        <Motion />
         <Nav />
         {children}
         <Footer />

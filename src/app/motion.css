@@ -1,0 +1,105 @@
+/* ───────────────────────────────────────────
+   KRAMA — motion
+
+   Everything here runs ONCE, on first view. Nothing loops.
+   The manual's argument is restraint, so the page should feel
+   alive on arrival and then sit still to be read.
+
+   All of it is gated on html.js, set by Motion.tsx, so a
+   failed script leaves the page fully visible rather than blank.
+   ─────────────────────────────────────────── */
+
+@keyframes k-draw    { to { stroke-dashoffset: 0; } }
+@keyframes k-fade    { to { opacity: 1; } }
+@keyframes k-rise    { to { opacity: 1; transform: none; } }
+
+/* ── Section reveal — every .entry, no per-page wiring ── */
+html.js .entry .col,
+html.js .entry .cap-side,
+html.js .entry .cap-plate {
+  opacity: 0;
+  transform: translateY(10px);
+}
+html.js .entry[data-seen="1"] .col,
+html.js .entry[data-seen="1"] .cap-side,
+html.js .entry[data-seen="1"] .cap-plate {
+  animation: k-rise 0.6s var(--ease) forwards;
+}
+html.js .entry[data-seen="1"] .cap-plate { animation-delay: 0.1s; }
+
+/* ── Rail number lights up as you reach the section ── */
+.rail .no { transition: color 0.4s var(--ease); }
+html.js .entry .no { color: var(--masi-faint); }
+html.js .entry[data-seen="1"] .no { color: var(--pravala); }
+
+/* ── The plate assembles itself ───────────────────────
+   Territories arrive largest-first, the folds sketch in, then
+   the labels draw out to their names. Ordered progress, which
+   is the whole point of the word. */
+html.js .plate .terr { opacity: 0; }
+html.js .plate[data-seen="1"] .terr { animation: k-fade 0.45s var(--ease) forwards; }
+
+html.js .plate .fold {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+html.js .plate[data-seen="1"] .fold { animation: k-draw 0.9s var(--ease) forwards; }
+
+html.js .plate .lead-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+html.js .plate[data-seen="1"] .lead-line { animation: k-draw 0.5s var(--ease) forwards; }
+
+html.js .plate .lead-dot,
+html.js .plate .lead-txt { opacity: 0; }
+html.js .plate[data-seen="1"] .lead-dot,
+html.js .plate[data-seen="1"] .lead-txt { animation: k-fade 0.35s var(--ease) forwards; }
+
+/* the outline itself draws before anything fills it */
+html.js .plate .cortex-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+html.js .plate[data-seen="1"] .cortex-line { animation: k-draw 1s var(--ease) forwards; }
+
+/* ── Scattered dots resolve into a pattern on hover ──────
+   Sits beside "I look for patterns", so the gesture is the
+   sentence. Each dot carries its own offset to the grid. */
+.pattern-dots circle { transition: transform 0.5s var(--ease); }
+.statement:hover .pattern-dots circle,
+.statement:focus-within .pattern-dots circle {
+  animation: none;
+  transform: translate(var(--dx, 0), var(--dy, 0));
+}
+
+/* ── The mark draws its risers on load ── */
+html.js header a svg path {
+  stroke-dasharray: 620;
+  stroke-dashoffset: 620;
+  animation: k-draw 0.9s var(--ease) 0.15s forwards;
+}
+html.js header a svg circle {
+  opacity: 0;
+  animation: k-fade 0.3s var(--ease) 0.95s forwards;
+}
+
+/* ── Row hover: the ledger number steps forward ── */
+.idx > li > a::before { transition: color 0.18s var(--ease); }
+.idx > li > a:hover::before { color: var(--pravala); }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .entry .col,
+  html.js .entry .cap-side,
+  html.js .entry .cap-plate,
+  html.js .plate .terr,
+  html.js .plate .lead-dot,
+  html.js .plate .lead-txt,
+  html.js header a svg circle { opacity: 1; transform: none; animation: none; }
+  html.js .plate .fold,
+  html.js .plate .lead-line,
+  html.js .plate .cortex-line,
+  html.js header a svg path { stroke-dashoffset: 0; animation: none; }
+  html.js .entry .no { color: var(--pravala); }
+  .statement:hover .pattern-dots circle { transform: none; }
+}

@@ -3,12 +3,13 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import Mark from "./Mark"
 
 const links = [
-  { label: "Insights", href: "/insights" },
-  { label: "Projects", href: "/projects" },
+  { label: "Darśana", href: "/darshana" },
+  { label: "Krama", href: "/krama" },
+  { label: "Kriyā", href: "/kriya" },
   { label: "Tools", href: "/tools" },
-  { label: "Now", href: "/now" },
   { label: "About", href: "/about" },
 ]
 
@@ -18,34 +19,34 @@ export default function Nav() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 32)
+    const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  useEffect(() => {
-    setOpen(false)
-  }, [pathname])
+  useEffect(() => setOpen(false), [pathname])
 
   return (
     <header
       className="fixed left-0 top-0 z-50 w-full"
       style={{
-        background: scrolled || open ? "rgba(18,18,18,0.86)" : "transparent",
-        backdropFilter: scrolled || open ? "blur(14px)" : "none",
-        WebkitBackdropFilter: scrolled || open ? "blur(14px)" : "none",
-        borderBottom: `1px solid ${scrolled || open ? "var(--border)" : "transparent"}`,
-        transition: "background 0.3s var(--ease), border-color 0.3s var(--ease)",
+        background: scrolled || open ? "rgba(242,237,227,0.94)" : "transparent",
+        backdropFilter: scrolled || open ? "blur(8px)" : "none",
+        WebkitBackdropFilter: scrolled || open ? "blur(8px)" : "none",
+        borderBottom: `1px solid ${scrolled || open ? "var(--rule)" : "transparent"}`,
+        transition: "background 0.28s var(--ease), border-color 0.28s var(--ease)",
       }}
     >
-      <nav className="mx-auto flex max-w-[1180px] items-center justify-between px-6 py-4 md:px-10">
-        <Link
-          href="/"
-          className="font-mono"
-          style={{ fontSize: "13px", letterSpacing: "0.06em", color: "var(--text)" }}
-        >
-          akshay<span style={{ color: "var(--accent)" }}>.</span>life
+      <nav
+        className="sheet flex items-center justify-between"
+        style={{ paddingTop: "var(--s4)", paddingBottom: "var(--s4)" }}
+      >
+        <Link href="/" className="flex items-center gap-3" aria-label="Krama — home">
+          <Mark size={22} />
+          <span style={{ fontSize: 21, fontWeight: 300, letterSpacing: "-0.03em", color: "var(--masi)" }}>
+            Krama
+          </span>
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
@@ -57,10 +58,10 @@ export default function Nav() {
                 href={l.href}
                 className="font-mono"
                 style={{
-                  fontSize: "12px",
-                  letterSpacing: "0.08em",
+                  fontSize: 10.5,
+                  letterSpacing: "0.16em",
                   textTransform: "uppercase",
-                  color: active ? "var(--accent)" : "var(--text-dim)",
+                  color: active ? "var(--pravala-deep)" : "#98897A",
                   transition: "color 0.18s var(--ease)",
                 }}
               >
@@ -77,24 +78,23 @@ export default function Nav() {
           aria-label={open ? "Close menu" : "Open menu"}
           className="font-mono md:hidden"
           style={{
-            fontSize: "12px",
-            letterSpacing: "0.12em",
+            fontSize: 10.5,
+            letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "var(--text-dim)",
+            color: "#98897A",
             background: "transparent",
-            border: "1px solid var(--border)",
-            borderRadius: 2,
-            padding: "6px 10px",
+            border: "1px solid var(--rule)",
+            padding: "6px 11px",
             cursor: "pointer",
           }}
         >
-          {open ? "Close" : "Menu"}
+          {open ? "Close" : "Index"}
         </button>
       </nav>
 
       {open && (
-        <div className="md:hidden" style={{ borderTop: "1px solid var(--border)" }}>
-          <div className="flex flex-col px-6 py-3">
+        <div className="md:hidden" style={{ borderTop: "1px solid var(--rule)" }}>
+          <div className="sheet flex flex-col">
             {links.map((l) => {
               const active = pathname === l.href || pathname.startsWith(l.href + "/")
               return (
@@ -103,12 +103,12 @@ export default function Nav() {
                   href={l.href}
                   className="font-mono"
                   style={{
-                    fontSize: "13px",
-                    letterSpacing: "0.08em",
+                    fontSize: 11,
+                    letterSpacing: "0.16em",
                     textTransform: "uppercase",
-                    color: active ? "var(--accent)" : "var(--text-dim)",
-                    padding: "12px 0",
-                    borderBottom: "1px solid var(--border)",
+                    color: active ? "var(--pravala-deep)" : "#98897A",
+                    padding: "13px 0",
+                    borderBottom: "1px solid var(--rule)",
                   }}
                 >
                   {l.label}

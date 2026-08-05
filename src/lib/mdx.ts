@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-import { pillarFor, type PillarId } from "@/data/pillars"
+import { movementFor, type MovementId } from "@/data/movements"
 
 const CONTENT_DIR = path.join(process.cwd(), "content")
 
@@ -10,12 +10,13 @@ export type InsightMeta = {
   title: string
   /** Subject as synced from akshay-brain (frontmatter `category`). */
   subject: string
-  pillar: PillarId
+  movement: MovementId
   type: string
   status: string
   date: string
   excerpt: string
   tags: string[]
+  words: number
   readingMinutes: number
 }
 
@@ -30,24 +31,29 @@ function readDir(sub: string): string[] {
   return fs.readdirSync(dir).filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
 }
 
-function estimateMinutes(body: string): number {
-  const words = body.trim().split(/\s+/).filter(Boolean).length
+function countWords(body: string): number {
+  return body.replace(/```[\s\S]*?```/g, " ").trim().split(/\s+/).filter(Boolean).length
+}
+
+function estimateMinutes(words: number): number {
   return Math.max(1, Math.round(words / 225))
 }
 
 function toMeta(slug: string, data: Record<string, unknown>, body: string): InsightMeta {
   const subject = (data.category as string) ?? "Uncategorised"
+  const words = countWords(body)
   return {
     slug,
     title: (data.title as string) ?? slug,
     subject,
-    pillar: pillarFor(subject),
+    movement: movementFor(subject),
     type: (data.type as string) ?? "insight",
     status: (data.status as string) ?? "draft",
     date: (data.date as string) ?? "",
     excerpt: (data.excerpt as string) ?? "",
     tags: (data.tags as string[]) ?? [],
-    readingMinutes: estimateMinutes(body),
+    words,
+    readingMinutes: estimateMinutes(words),
   }
 }
 
@@ -217,4 +223,25 @@ export function renderMarkdown(md: string, opts: { dropFirstH1?: boolean } = {})
   flushList()
 
   return html.join("\n")
+}
+
+/**
+ * Corpus weight per subject, straight from the files on disk.
+ * This is what the capacity map is drawn from — no hand-entered numbers.
+ */
+export function getSubjectWeights(): {
+  subject: string
+  pieces: number
+  words: number
+  movement: MovementId
+}[] {
+  const acc = new Map<string, { subject: string; pieces: number; words: number; movement: MovementId }>()
+  for (const i of getAllInsights()) {
+    const cur =
+      acc.get(i.subject) ?? { subject: i.subject, pieces: 0, words: 0, movement: i.movement }
+    cur.pieces += 1
+    cur.words += i.words
+    acc.set(i.subject, cur)
+  }
+  return [...acc.values()].sort((a, b) => b.words - a.words)
 }

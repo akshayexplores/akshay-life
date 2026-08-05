@@ -2,17 +2,21 @@ import Link from "next/link"
 
 export default function NotFound() {
   return (
-    <main className="relative z-[2] mx-auto max-w-[720px] px-6 pt-40 pb-24">
-      <p className="t-label">404</p>
-      <h1 className="t-display mt-5">Nothing here</h1>
-      <p className="mt-6 font-body" style={{ color: "var(--text-dim)", maxWidth: "48ch" }}>
+    <main className="sheet" style={{ paddingTop: 140, paddingBottom: 90 }}>
+      <span className="lbl">404</span>
+      <h1 className="t-h2" style={{ marginTop: 14 }}>
+        Nothing filed here
+      </h1>
+      <p className="t-first" style={{ marginTop: 16, maxWidth: "44ch" }}>
         The page moved, or it never existed. Both happen.
       </p>
-      <div className="mt-8 flex flex-wrap gap-x-7 gap-y-2">
-        <Link href="/" className="t-meta link-u" style={{ color: "var(--accent)" }}>Home</Link>
-        <Link href="/insights" className="t-meta link-u">Insights</Link>
-        <Link href="/projects" className="t-meta link-u">Projects</Link>
-      </div>
+      <p className="meta-sent" style={{ marginTop: 22, lineHeight: 2.2 }}>
+        <Link href="/" className="link">Krama</Link>
+        {" · "}
+        <Link href="/darshana" className="link">the archive</Link>
+        {" · "}
+        <Link href="/kriya" className="link">what I&rsquo;m building</Link>
+      </p>
     </main>
   )
 }

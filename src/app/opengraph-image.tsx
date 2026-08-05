@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const alt = "Akshay Sajeev — akshay.life"
+export const alt = "Krama — Akshay Sajeev"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -14,55 +14,34 @@ export default async function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#121212",
-          padding: "72px",
-          fontFamily: "sans-serif",
+          background: "#F2EDE3",
+          padding: "76px",
+          fontFamily: "Georgia, serif",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 22,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "#6A6A6A",
-            }}
-          >
-            Krama · Progress in sequence
+          {/* the ascent */}
+          <svg width="96" height="96" viewBox="0 0 256 256" fill="none">
+            <path d="M22 226 H92 V156 H162 V86 H226" stroke="#1A1714" strokeWidth="15" strokeLinecap="square" />
+            <circle cx="226" cy="86" r="17" fill="#C0562F" />
+          </svg>
+
+          <div style={{ display: "flex", marginTop: 34, fontSize: 96, fontWeight: 400, letterSpacing: "-3px", color: "#1A1714" }}>
+            Krama
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              marginTop: 36,
-              fontSize: 88,
-              fontWeight: 700,
-              letterSpacing: "-0.04em",
-              color: "#EDEDED",
-            }}
-          >
-            Akshay Sajeev
-          </div>
-
-          <div style={{ display: "flex", width: 128, height: 3, background: "#F2A73B", marginTop: 32 }} />
-
-          <div
-            style={{
-              display: "flex",
-              marginTop: 32,
-              fontSize: 34,
-              lineHeight: 1.4,
-              color: "#9A9A9A",
-              maxWidth: 900,
-            }}
-          >
-            I enter ambiguous spaces, find the signal, and build the system that scales it.
+          <div style={{ display: "flex", marginTop: 22, fontSize: 38, lineHeight: 1.35, color: "#4A423A", maxWidth: 880 }}>
+            I look for the pattern behind the mess. Then I build the thing that holds it.
           </div>
         </div>
 
-        <div style={{ display: "flex", fontSize: 26, color: "#6A6A6A", letterSpacing: "0.06em" }}>
-          akshay.life
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+          <div style={{ display: "flex", fontSize: 22, letterSpacing: "5px", color: "#8E3A1B" }}>
+            AKSHAY SAJEEV
+          </div>
+          <div style={{ display: "flex", fontSize: 22, letterSpacing: "3px", color: "#8B7D6F" }}>
+            akshay.life
+          </div>
         </div>
       </div>
     ),

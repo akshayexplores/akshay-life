@@ -4,7 +4,7 @@ import { getAllInsights } from "@/lib/mdx"
 const SITE = "https://akshay.life"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/projects", "/insights", "/tools", "/now"].map((r) => ({
+  const staticRoutes = ["", "/darshana", "/krama", "/kriya", "/tools", "/about"].map((r) => ({
     url: `${SITE}${r}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   const insightRoutes = getAllInsights().map((i) => ({
-    url: `${SITE}/insights/${i.slug}`,
+    url: `${SITE}/darshana/${i.slug}`,
     lastModified: i.date ? new Date(i.date) : new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.6,
