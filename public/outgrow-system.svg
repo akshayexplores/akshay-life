@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 1100" width="680" height="1100" role="img" aria-label="The Outgrow system on one page: prerequisite, setup, the eight actions, the weekly loop, and what goes on the scorecard.">
+  <style>
+    .s   { font-family: Newsreader, Georgia, "Times New Roman", serif; }
+    .m   { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .lbl { font-size: 9.5px; letter-spacing: 0.16em; fill: #8E3A1B; }
+    .num { font-size: 9px; letter-spacing: 0.08em; fill: #C0562F; }
+    .ttl { font-size: 13.5px; fill: #1A1714; }
+    .bdy { font-size: 12.5px; fill: #4A423A; }
+    .fnt { font-size: 11px; fill: #4A423A; }
+    .fai { font-size: 9.5px; letter-spacing: 0.12em; fill: #8B7D6F; }
+  </style>
+
+  <rect width="680" height="1100" fill="#F2EDE3"/>
+
+  <!-- The axiom -->
+  <rect x="0" y="0" width="680" height="106" fill="#1F2A44"/>
+  <text class="m" x="32" y="34" font-size="9.5" letter-spacing="0.2em" fill="#E9906D">THE OUTGROW SYSTEM</text>
+  <text class="s" x="32" y="68" font-size="20" fill="#F2EDE3">You cannot control whether a customer buys.</text>
+  <text class="s" x="32" y="94" font-size="20" font-style="italic" fill="#E9906D">You have total control over whether you reach out.</text>
+
+  <!-- 00 Prerequisite -->
+  <text class="m lbl" x="24" y="146">00 · PREREQUISITE</text>
+  <rect x="24" y="158" width="632" height="70" fill="#E9E2D4" stroke="#D6CCB8"/>
+  <rect x="24" y="158" width="3" height="70" fill="#C0562F"/>
+  <text class="s ttl" x="44" y="186" font-size="15">Interview eight to twelve happy customers. Record every call.</text>
+  <text class="s bdy" x="44" y="208">Play the clips to the team. Nothing else in the system starts until this is done.</text>
+
+  <!-- 01 Set up -->
+  <text class="m lbl" x="24" y="266">01 · SET UP</text>
+  <g>
+    <rect x="24" y="278" width="200" height="92" fill="#F2EDE3" stroke="#D6CCB8"/>
+    <text class="m num" x="40" y="300">FIVE ROLES</text>
+    <text class="s bdy" x="40" y="322">Owner, leader, admin,</text>
+    <text class="s bdy" x="40" y="340">managers, frontline.</text>
+    <text class="s bdy" x="40" y="358" fill="#8B7D6F">One vacant breaks it.</text>
+
+    <rect x="240" y="278" width="200" height="92" fill="#F2EDE3" stroke="#D6CCB8"/>
+    <text class="m num" x="256" y="300">THE LISTS</text>
+    <text class="s bdy" x="256" y="322">Named accounts, sorted</text>
+    <text class="s bdy" x="256" y="340">by how they decay.</text>
+    <text class="s bdy" x="256" y="358" fill="#8B7D6F">Two good beat eleven thin.</text>
+
+    <rect x="456" y="278" width="200" height="92" fill="#F2EDE3" stroke="#D6CCB8"/>
+    <text class="m num" x="472" y="300">EXPANSION KIT</text>
+    <text class="s bdy" x="472" y="322">One page per person.</text>
+    <text class="s bdy" x="472" y="340">What they buy, what</text>
+    <text class="s bdy" x="472" y="358" fill="#8B7D6F">they don't, and the gap.</text>
+  </g>
+
+  <!-- 02 The eight actions -->
+  <text class="m lbl" x="24" y="410">02 · THE EIGHT ACTIONS</text>
+
+  <rect x="24"  y="422" width="308" height="34" fill="#F2EDE3" stroke="#D6CCB8"/>
+  <text class="m num" x="38" y="443">01</text><text class="s ttl" x="62" y="443">Did you know</text>
+  <rect x="348" y="422" width="308" height="34" fill="#F2EDE3" stroke="#C0562F"/>
+  <text class="m num" x="362" y="443">02</text><text class="s ttl" x="386" y="443">Reverse did you know</text>
+
+  <rect x="24"  y="464" width="308" height="34" fill="#F2EDE3" stroke="#D6CCB8"/>
+  <text class="m num" x="38" y="485">03</text><text class="s ttl" x="62" y="485">Pivot to sale</text>
+  <rect x="348" y="464" width="308" height="34" fill="#F2EDE3" stroke="#D6CCB8"/>
+  <text class="m num" x="362" y="485">04</text><text class="s ttl" x="386" y="485">Pivot to next conversation</text>
+
+  <rect x="24"  y="506" width="308" height="34" fill="#F2EDE3" stroke="#D6CCB8"/>
+  <text class="m num" x="38" y="527">05</text><text class="s ttl" x="62" y="527">Percentage-of-business ask</text>
+  <rect x="348" y="506" width="308" height="34" fill="#F2EDE3" stroke="#D6CCB8"/>
+  <text class="m num" x="362" y="527">06</text><text class="s ttl" x="386" y="527">Internal referral ask</text>
+
+  <rect x="24"  y="548" width="308" height="34" fill="#F2EDE3" stroke="#D6CCB8"/>
+  <text class="m num" x="38" y="569">07</text><text class="s ttl" x="62" y="569">External referral ask</text>
+  <rect x="348" y="548" width="308" height="34" fill="#F2EDE3" stroke="#D6CCB8"/>
+  <text class="m num" x="362" y="569">08</text><text class="s ttl" x="386" y="569">Share a testimonial</text>
+
+  <text class="s" x="24" y="602" font-size="12.5" font-style="italic" fill="#8B7D6F">Stack several of them into one conversation you were already going to have.</text>
+
+  <!-- 03 The weekly loop -->
+  <text class="m lbl" x="24" y="648">03 · THE WEEKLY LOOP</text>
+
+  <g>
+    <rect x="24"  y="662" width="112" height="46" fill="#E9E2D4" stroke="#D6CCB8"/>
+    <text class="s ttl" x="80"  y="686" text-anchor="middle">Assign</text>
+    <text class="m fai" x="80"  y="700" text-anchor="middle">MON</text>
+
+    <rect x="154" y="662" width="112" height="46" fill="#E9E2D4" stroke="#D6CCB8"/>
+    <text class="s ttl" x="210" y="686" text-anchor="middle">Do</text>
+    <text class="m fai" x="210" y="700" text-anchor="middle">ALL WEEK</text>
+
+    <rect x="284" y="662" width="112" height="46" fill="#E9E2D4" stroke="#D6CCB8"/>
+    <text class="s ttl" x="340" y="686" text-anchor="middle">Log</text>
+    <text class="m fai" x="340" y="700" text-anchor="middle">REAL TIME</text>
+
+    <rect x="414" y="662" width="112" height="46" fill="#E9E2D4" stroke="#D6CCB8"/>
+    <text class="s ttl" x="470" y="686" text-anchor="middle">Scorecard</text>
+    <text class="m fai" x="470" y="700" text-anchor="middle">FRI</text>
+
+    <rect x="544" y="662" width="112" height="46" fill="#E9E2D4" stroke="#D6CCB8"/>
+    <text class="s ttl" x="600" y="686" text-anchor="middle">Stories</text>
+    <text class="m fai" x="600" y="700" text-anchor="middle">OUT LOUD</text>
+
+    <path d="M140,685 l8,0 M144,681 l5,4 -5,4" stroke="#C0562F" fill="none" stroke-width="1.2"/>
+    <path d="M270,685 l8,0 M274,681 l5,4 -5,4" stroke="#C0562F" fill="none" stroke-width="1.2"/>
+    <path d="M400,685 l8,0 M404,681 l5,4 -5,4" stroke="#C0562F" fill="none" stroke-width="1.2"/>
+    <path d="M530,685 l8,0 M534,681 l5,4 -5,4" stroke="#C0562F" fill="none" stroke-width="1.2"/>
+
+    <path d="M600,708 L600,730 L80,730 L80,712" stroke="#C0562F" fill="none" stroke-width="1.1" stroke-dasharray="3 3"/>
+    <path d="M76,717 l4,-6 4,6" stroke="#C0562F" fill="none" stroke-width="1.1"/>
+    <rect x="298" y="722" width="84" height="16" fill="#F2EDE3"/>
+    <text class="m fai" x="340" y="734" text-anchor="middle">EVERY WEEK</text>
+  </g>
+
+  <!-- 04 What goes on the scorecard -->
+  <text class="m lbl" x="24" y="790">04 · WHAT GOES ON THE SCORECARD</text>
+
+  <rect x="24" y="802" width="308" height="104" fill="#F2EDE3" stroke="#C0562F" stroke-width="1.5"/>
+  <text class="m num" x="44" y="826">SWINGS</text>
+  <text class="s" x="44" y="852" font-size="15" fill="#1A1714">Actions logged, by person,</text>
+  <text class="s" x="44" y="872" font-size="15" fill="#1A1714">this week.</text>
+  <text class="s bdy" x="44" y="892">Yours to control. On from week one.</text>
+
+  <rect x="348" y="802" width="308" height="104" fill="#E9E2D4" stroke="#D6CCB8" stroke-dasharray="4 3"/>
+  <text class="m" x="368" y="826" font-size="9" letter-spacing="0.08em" fill="#8B7D6F">HITS</text>
+  <text class="s" x="368" y="852" font-size="15" fill="#8B7D6F">Revenue closed.</text>
+  <text class="s" x="368" y="880" font-size="12.5" fill="#8B7D6F">Not yours to control. Off the board</text>
+  <text class="s" x="368" y="896" font-size="12.5" fill="#8B7D6F">for the first two quarters.</text>
+
+  <!-- Guardrails -->
+  <text class="m lbl" x="24" y="948">GUARDRAILS · BREAK THESE AND IT STOPS WORKING</text>
+  <text class="m fnt" x="24" y="974"><tspan fill="#C0562F">—</tspan>  Five to ten minutes per person per day, logging included</text>
+  <text class="m fnt" x="24" y="996"><tspan fill="#C0562F">—</tspan>  Three fields. Ninety seconds. Nothing more.</text>
+  <text class="m fnt" x="24" y="1018"><tspan fill="#C0562F">—</tspan>  Proactive only. Answering an inbound request is not an action.</text>
+  <text class="m fnt" x="24" y="1040"><tspan fill="#C0562F">—</tspan>  Never invent a conversion rate. Measure your own.</text>
+  <text class="m fnt" x="24" y="1062"><tspan fill="#C0562F">—</tspan>  Celebrate publicly, in the person's name.</text>
+
+  <line x1="24" y1="1080" x2="656" y2="1080" stroke="#D6CCB8"/>
+</svg>

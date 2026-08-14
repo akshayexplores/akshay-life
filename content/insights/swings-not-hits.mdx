@@ -1,0 +1,357 @@
+---
+title: "Swings, Not Hits: Running a Proactive Sales System on a Long Cycle"
+category: "Sales"
+type: "insight"
+status: "published"
+slug: "swings-not-hits"
+excerpt: "You cannot control whether a customer buys. You have total control over whether you reach out. Every part of the system below follows from that one asymmetry."
+date: "2026-08-14"
+tags:
+  - "insight"
+  - "sales"
+  - "outgrow"
+  - "proactive-sales"
+  - "wallet-share"
+  - "systems"
+publishedAt: "2026-08-14"
+---
+# Swings, Not Hits: Running a Proactive Sales System on a Long Cycle
+
+You cannot control whether a customer buys. You have total control over whether you reach out. Every part of the system below follows from that one asymmetry.
+
+Outgrow is a proactive sales system: a small number of deliberately trivial customer-facing behaviours, done every day, tracked as **inputs** rather than outcomes, until revenue compounds. It measures swings, not hits. That sounds like a motivational poster until you notice what it does structurally — it makes the number on the scoreboard something the team can actually move, which is the only kind of number that changes behaviour.
+
+I've spent the last few months porting it into a business with nine-to-eighteen-month sales cycles and procurement gates, which is not the environment it was designed for. This is the whole system, plus the four places it breaks when you stretch the cycle out and what to do about them. Read this and you should be able to run it.
+
+I also built a working reference implementation you can click through — the lists, the logging, the scorecard — at [outgrow.akshay.life](https://outgrow.akshay.life). It's easier to copy a shape you've seen.
+
+![The Outgrow system on one page](/outgrow-system.svg)
+
+## The hole this fills
+
+Most companies have a documented process for winning a customer and no process at all for what happens after. Look at your own: it almost certainly runs from first contact through qualification, proposal, negotiation, and then terminates at a step called something like "handoff to delivery." After that, nothing. The account is served, invoiced, and quietly assumed to be at its natural size.
+
+This is where the money is. Not because existing customers are easier to sell to — that's the tired version of the argument — but because **the people with the most trust in your company have no commercial job at all.** The engineer, the project manager, the account delivery lead who talks to the customer every week: they hold a relationship no salesperson can buy, and the org chart has given them nothing to do with it.
+
+Outgrow's real move is to hand a very small commercial behaviour to those people, in a form they'll actually perform.
+
+## First, the belief that has to break
+
+**People dramatically overestimate their share of a customer's spend.** This is the belief that makes everything else unnecessary. If someone thinks they already have most of an account, they won't try for more, and no amount of assignment will change that.
+
+The overestimation is usually severe, and it's structural rather than delusional. A large enterprise customer isn't a company, it's a federation — of divisions, programmes, geographies, and functions, with dozens of people who can commit budget. Someone with a genuinely strong relationship with three of them, delivering one service line, will describe that as "we have that account." They may hold a small single-digit percentage of what it spends externally.
+
+Three ways to break the belief, in ascending order of effectiveness:
+
+- **Ask the customer directly.** "Roughly what share of your external spend in this area comes to us?" The answer is usually startling and it ends the argument in one sentence.
+- **Put the numbers side by side.** Their known external budget for your category, next to what you actually billed them last year. The ratio does the work.
+- **Show the service gap.** List everything you sell against what that account actually buys. Most accounts buy one or two things out of ten.
+
+The second belief to break is quieter: **your own people don't know everything you sell.** Someone deep in one discipline knows the adjacent ones vaguely and the distant ones not at all. They cannot offer what they cannot name. That's a documentation problem, not a motivation problem, and it's fixed with one page.
+
+## The prerequisite nobody wants to do
+
+Before you assign a single action, interview eight to twelve happy customers. Twenty minutes each. Recorded.
+
+This is the step most often skipped and it is the one that decides whether the programme survives. Here is why. The reason a delivery engineer won't mention another service to a customer they like is never time. It's a set of beliefs they have never examined:
+
+- I'd be bothering them.
+- That's not my job, sales does that.
+- If they needed it, they'd have asked.
+- If I bring up money, the relationship changes.
+
+Every one of these is false and none of them yields to being told so. They yield to evidence. A real customer saying, in their own voice, *"honestly, I wish you'd told me you did that — we gave it to someone else"* does more in eleven seconds than a day of training.
+
+### How to run the interview
+
+**Who:** eight to twelve customers who are demonstrably happy. Do not balance the sample. This isn't sentiment measurement, it's an attempt to expose your team to the top of the distribution, because the top of the distribution is the part they don't believe exists.
+
+**Who asks:** not the account owner. They'll unconsciously steer and the customer will be polite instead of candid. The founder or CEO is ideal — the ask carries weight and the answers come out more considered.
+
+**The ask:** keep it small and non-commercial. *"I'd love twenty minutes — I'm interested in your thoughts and experiences working with us. Would that work?"*
+
+**Ask permission to record at the start.** The recording is the entire point. A transcript loses the tone, and tone is what changes minds.
+
+**Talk five percent. Let them talk ninety-five.** Much harder than it sounds, and the single biggest determinant of whether the call is useful.
+
+The questions, in this order:
+
+- "What are some of your favourite things about working with us?"
+- "How does that help you?" — the most important question on the call. The first answer gives you features. This one gives you value, in the customer's own language, which is what you'll reuse everywhere afterwards.
+- Then follow whatever they say with: *Why? · How? · What else? · Tell me more. · Why do you say that? · Really?*
+- "How many suppliers or providers do you work with?"
+- "If you ranked them best to worst on the things we've been talking about — [repeat their own words back] — where would you rank us?"
+- "Is there anything else that puts us there?"
+- "Tell me how you view your relationship with us. What's it like working with us?"
+- "Give me three descriptive words that come to mind when you think about working with us."
+
+### What not to ask
+
+**Do not ask what you could do better.** You will want to. It feels responsible and every instinct in a services business points that way. Fight it. It flips the call from appreciation to critique, and a critique recording does the precise opposite of what you need it to do. There are other places to collect that. This call has one job.
+
+If they volunteer a criticism, acknowledge it, note it, and steer back. Don't chase it.
+
+### What to do with the recordings
+
+This is where the value is released, and it's the step most often dropped:
+
+- Play thirty-to-ninety-second clips in the weekly huddle. Especially any moment where a customer says they'd have bought more, or didn't know you offered something.
+- Cut a highlight reel for onboarding new participants.
+- Pull direct quotes into a testimonial bank. Those become one of the eight actions below.
+- Feed the surprises into your cross-sell map. "We didn't know you did that" is a Did You Know entry with evidence already attached.
+
+## The five roles
+
+Five distinct jobs. They are not interchangeable, and the programme fails in a predictable way when one is vacant.
+
+- **The owner.** The CEO or the most senior person who will actually do it. This is the single point of failure and the obligations are behavioural, not delegable: mention the programme twice a day unprompted, attend the weekly huddle visibly, write two sentences of personal commentary on the scorecard before it goes out, congratulate named people publicly for specific small wins. If they do those things it works. If they endorse it and delegate all of them, participation sags within two months — and the correct diagnosis then is not that the team is lazy.
+- **The leader.** Runs it day to day. Assigns the weekly actions, watches the data, runs monthly one-on-ones and quarterly planning. If this is a consultant, name the internal successor in week one — a programme that depends on an outsider's presence ends when the engagement does.
+- **The administrator.** Maintains the data, builds and sends the scorecard, collects the stories. Unglamorous and completely load-bearing. If the scorecard doesn't go out on time, people log for a week, see nothing, and stop.
+- **The managers.** Make sure their people understand the actions and use them. Managers who treat this as optional teach their teams that it is.
+- **The frontline.** The people who make the contacts.
+
+### Who you actually staff it with
+
+Here is where most implementations go wrong. **Do not staff this out of your sales team.** In a services business the sales org is usually a handful of people, and running the programme through them produces a trickle of actions and changes nothing.
+
+The engine is delivery. Engineers, architects, project managers and delivery leads are sitting inside your customers right now, talking to their technical staff weekly, holding trust that took years to build. They are the equivalent of the field technician in the original model: the person with the relationship and none of the commercial baggage.
+
+The framing decides the outcome. Someone told they are now doing sales will comply for two weeks and then quietly stop. Say instead:
+
+> "You already know more about this customer's problems than anyone else here. All we're asking is that when you're already talking to them, you ask one question about what else they're struggling with — and tell someone what you heard."
+
+That is true, it is small, and it is the whole ask. Give them a physical prompt card with two or three rotating questions on it, and rotate it monthly so it doesn't become wallpaper.
+
+**Start with six to ten people across two or three accounts**, including at least one manager who is genuinely enthusiastic. Run four weeks, generate real stories, then expand using those stories as the recruiting material. A pilot that produces named wins recruits far better than a mandate.
+
+## The lists
+
+Lists exist for exactly one reason: so a manager can be prescriptive. "Make some proactive calls this week" produces nothing. "Call these four named people" produces swings.
+
+The full model has eleven categories, sorted along four axes — actual revenue activity, growth potential, pipeline position, and time since last contact:
+
+- **Zero dark thirty** — used to buy meaningfully, then nothing for thirty days. Silent churn, before anyone notices.
+- **Revenue autopilot** — flat and predictable. Predictability masks untouched potential.
+- **Decreasing revenue** — spending less year over year. Someone else is already inside.
+- **Used to buy, stopped.**
+- **Quotes and proposals outstanding** — sent, no decision. The fastest revenue in the system.
+- **Pre-quote** — opportunity open, nothing sent. Stalled before it started.
+- **Large customers who could buy more.**
+- **Small and medium customers who could buy more** — they hear from you least.
+- **Prospects who evaluated and didn't buy**, relationship intact.
+- **Prospects never contacted** — leave this one out. That's cold outbound, and it's a different machine.
+- **Silent six months or more** — easy, and it works.
+
+### Size it before you build it
+
+Eleven categories assumes hundreds of customers. Most services businesses have far fewer, and eleven near-empty lists makes the programme look bureaucratic in week one. So find the actual number first:
+
+- **Under ten accounts** — three lists. Named-account coverage, not rotation. Every account gets a weekly owner and a weekly action.
+- **Ten to thirty** — four or five lists. Weekly rotation works. Each list needs at least three members or it isn't a list, it's a reminder.
+- **Thirty to a hundred** — six.
+- **Over a hundred** — the full eleven.
+
+If the base is small, start with these five: quotes outstanding, large accounts with headroom, silent accounts, decreasing revenue, and warm prospects who didn't buy. Start on the quotes list on day one — competitors rarely chase, and it produces the first win, which is what buys the programme credibility internally.
+
+Working rules that matter more than the taxonomy:
+
+- **Imperfect lists acted on beat perfect lists built for three weeks.** Start with names on a page.
+- **Accounts can sit on several lists.** That's a feature — two different people then have a reason to reach out.
+- **Build them with the team, not for them.** The delivery engineer knows which account has gone quiet long before the CRM does. Ask.
+- **Refresh them weekly**, as part of the Monday assignment.
+
+And always resolve a list down to named humans. The list is raw material; the assignment is the product.
+
+## The eight actions
+
+Each takes seconds. None requires budget, permission, or a meeting. Their power is entirely in volume and consistency — a single one is a rounding error; a few hundred a quarter is a different business. The mechanism is accumulation, not any individual ask.
+
+The defining property: **proactive means the customer isn't expecting it and nothing is wrong.** Responding to an inbound request, however well you do it, is not one of these. Keeping that line clean is what makes the number mean anything.
+
+- **Did you know** — tell a customer about one thing they can buy from you that they don't know about. One per ask; two makes it a pitch. *"Did you know we also do X?"*
+- **Reverse did you know** — let the customer tell you what they need and currently buy elsewhere. The highest-value action in the system, because they name the opportunity themselves and there's nothing to pitch. *"What else are you working on that we might be able to help with?" · "What are you giving to other vendors right now that we could take off your plate?"*
+- **Pivot to sale** — close what's being discussed right now. *"Shall we scope that and get you a proposal this week?" · "When would you want us to start?"*
+- **Pivot to next conversation** — when there's nothing to close, secure the next contact. *"Can I come see you when I'm there in March?" · "Should we set something up after your decision in Q1?"*
+- **The percentage-of-business question** — ask for more while learning your actual share. *"Roughly what share of your external spend in this area comes to us?"*
+- **Internal referral request** — reach more buyers inside the same customer. *"Which other teams have the same problem?" · "Who runs this for the other division?"*
+- **External referral request** — introductions outside the account. Lower yield, and it produces a new logo, which is outbound's job. Log the ask, hand the referral over, don't work it here.
+- **Communicating a testimonial** — let a happy customer do the persuading, straight from the recordings you made. *"We just wrapped something similar elsewhere — their lead said it was the first time an external team understood their setup without three months of ramp-up. Thought of you."*
+
+### The three-part call
+
+- **Open human.** *"Hi — I was thinking about you. How've you been?"* That phrase is doing real work: it signals the call was deliberate and the person mattered enough to plan for.
+- **Shift to business.** A did you know, a reverse did you know, or both.
+- **Pivot.** To a sale, or to the next conversation.
+
+### The rule that carries the whole system
+
+**Every customer interaction gets a "what else" and a "when."**
+
+One reverse did you know. One pivot. That's it. It applies to proactive calls, site visits, review meetings — and, importantly, to inbound calls too. When a customer rings about a problem, the conversation still ends with "what else is going on?" and "when should we talk next?"
+
+Simple enough to hold without a card. That's why it's the rule.
+
+### Stacking
+
+One conversation can carry several actions: two did you knows, a reverse did you know, a pivot. Four logged actions out of a call that was happening anyway, for zero additional time. **Teach this explicitly** — people default to one action per conversation unless told otherwise, and stacking is how volume gets built without adding minutes.
+
+### The voicemail
+
+Most calls won't be answered. That's expected, and the voicemail is the action, not a failed attempt at one.
+
+- Twelve seconds. Longer doesn't get listened to.
+- Write it to be read as a transcript, because that's how most people now consume it.
+- Include "I was thinking about you."
+- Offer a premise of value — something you saw, something relevant to them.
+- Always follow immediately with a text referencing the voicemail.
+
+Because most calls end here, three calls take under five minutes.
+
+### On channel
+
+The original doctrine is phone-only and emphatic that email is never the action. That's correct in its native context and wrong if you apply it literally across markets. What the doctrine is actually protecting is a set of properties: **synchronous or near-synchronous, low effort for the sender, unexpected, personal, and hard to ignore.** Preserve those; substitute the channel by geography and by what the relationship already uses.
+
+Two rules hold everywhere. **On-site beats everything** — when your person is physically at the customer, that conversation is worth more than any call and costs nothing extra. And **email is never the action itself.** It can confirm or follow up. If someone's logged actions are all email, the programme has quietly reverted to what it was replacing.
+
+Make the calls first thing in the morning, before the day fills up. The first one is the hardest and it gets easier immediately after, which is the actual reason for the timing rule.
+
+## Three ways an account gets bigger
+
+- **More service lines.** The did you know surface. Build a small cross-sell map: if an account already buys A, the natural adjacencies are B and C. Give each person three or four candidates for *their* accounts, never the full matrix — ten options produces paralysis, three produces a question.
+- **More volume of what they already buy.** Less glamorous, usually faster. More people on an existing engagement, extending it before it lapses, adding a second site or shift. The action is just asking: *"Would it help to have two more people on this from January?"* Most growth of this kind is lost by never asking.
+- **More buyers inside the same customer.** The highest-leverage one, because enterprises are federations. An account with two mapped contacts and thirty people in the buying committee is not a covered account — it's a single-threaded one, and single-threaded accounts are how incumbents get displaced quietly.
+
+Build a one-page expansion kit per participant before week one: their accounts, what each buys today, three did you know candidates each, who else they should be talking to, which competitors are already inside, and the gap between what that account spends externally and what it spends with you. **That last number is the one that changes behaviour.** Everything above it is instruction; that is evidence.
+
+## The weekly loop
+
+Five steps, repeating. The loop matters more than any individual part — each step exists to make the next one happen, and removing any one collapses the rest within a month. Most failures are loop failures, not effort failures.
+
+**Assign — Monday.** Specific quantities of specific actions, by specific people, against specific named customers. Compare "everyone make some proactive calls this week" with a list of four named people and what to ask each. The second can be executed without thinking. The first requires a decision, and a decision at 9am on a busy Monday is a decision to skip. Rotate the list focus weekly so coverage doesn't drift toward whoever is easiest to call.
+
+**Do — throughout the week, inside work that's already happening.** The critical constraint: **five to ten minutes per person per day, including logging.** Not thirty. Not an hour. This is infused, not blocked out. If your plan requires a dedicated calling block, it's the wrong plan and it will be the first thing dropped in a busy week. (The exception is anyone whose actual job is commercial — for them, proactive contact *is* the work, and thirty to forty-five minutes is right.)
+
+**Log — real time.** Ninety seconds. Three fields. Logging at the end of the week doesn't happen, and when it does, it's fiction.
+
+**Scorecard — published Friday**, covering that week, to everyone, reviewed at Monday's huddle. This is the step most often skipped and the one that makes the other four self-sustaining: people log because they can see the result of logging. Track leading indicators only — actions logged, by person, this week. Stack-rank them. Add a streak count of consecutive weeks with at least one action; it's cheap to compute and nobody wants to break a streak. The owner writes two sentences on it before it goes out, naming two people. That converts a report into a signal.
+
+**Stories — especially the small ones.** A dormant account that replied. A customer who said "I didn't know you did that." **Peer storytelling changes behaviour in a way that private incentives don't.** Someone who hears that a colleague they respect asked one question and surfaced a real opportunity will try it. The same person told to "increase proactive outreach" will not.
+
+### The cadence
+
+Keep it light. The system's credibility depends on not becoming a meeting.
+
+- **Daily, two minutes, for managers** — send one recognition note, suggest one did you know to one person. The point is that the programme is mentioned every single day by someone with authority.
+- **Weekly huddle, fifteen to twenty minutes** — two minutes on last week's numbers, three on one or two named success stories, ten assigning the week. Set the month's did you know focus at the first huddle of each month only.
+- **Monthly one-on-one, ten minutes each** — did they swing enough, what came of it, what's the top expansion opportunity in their accounts. Ask about long-running pursuits and treat continued effort as the achievement. This is where perseverance gets reinforced or quietly dies.
+- **Quarterly planning, ninety minutes** — what the measured conversion rates turned out to be, and the focus for next quarter.
+
+## Logging: three fields, ninety seconds
+
+Logging one action takes ninety seconds and three fields. This is not a nicety; it's the difference between a system people use and one they resent.
+
+The three fields the human thinks about:
+
+- **Which action** it was, from the eight.
+- **What service or topic** was discussed.
+- **Estimated potential value.** A guess is fine. Precision isn't the point, magnitude is.
+
+Everything else — who, which account, when — should be captured automatically or pre-filled. If someone is typing their own name every time, you've set it up wrong.
+
+**Every field you add past three trades a real behaviour for a data point.** That trade always loses. When someone proposes adding a field, ask which action you're willing to give up to get it.
+
+Two rules that keep the number honest:
+
+- **Proactive only.** An inbound request handled well is good work and not one of these.
+- **The conversation is never the action.** This is the distinction people get wrong most often. A customer calls about a problem, you handle it, and before hanging up you ask "what else are you working on?" — the ask is the logged action; the support call is not. One log, not two. If someone's action count matches their call volume, they're logging conversations rather than asks.
+
+Put it in the CRM you already have rather than standing up a parallel tracker, which is faster on day one and becomes a second source of truth by month two. But don't let CRM admin lead time block the launch either — a shared sheet for four weeks is fine. The behaviour is the hard part; the plumbing isn't.
+
+## What to do when it stops working
+
+Almost every failure looks identical from the outside: actions drop, logging thins, the scorecard goes quiet. The mistake is reading that as a frontline effort problem. It very rarely is. Work the diagnosis in this order.
+
+- **Participation below fifty or sixty percent → leadership, not the team.** Check honestly: has the owner mentioned it unprompted in the last two days? Did they attend the last huddle? Did the last scorecard carry their commentary? Are managers tracking their own people, or has it become the admin's job? If any answer is no, that's your cause, and adding pressure to the frontline while leadership is absent makes it worse — it confirms this is something done *to* people.
+- **High resistance, or "no time" for a five-minute activity → the mindset work got skipped.** Logistical objections to something that takes five minutes a day are almost always fear in costume. Nobody says "I'm afraid they'll think I'm pushy"; they say the week was busy. Stop assigning, go back and run the happy customer interviews, play them, then resume.
+- **Complaints about admin burden → logging got complicated.** Someone added fields, or the form takes four clicks to reach. Cut back to three fields even if what was added is useful.
+- **Actions logged but nothing surfacing → the actions aren't proactive.** Audit a week of logs against the eight. If it's mostly email or mostly inbound follow-ups, it's reverted.
+- **People participating then stopping around week three → framing drift.** Somewhere they got told, or inferred, that this is sales. Check the language in your huddles and assignments. Return to *help*, *ask*, *mention*, *check in*. Never *sell*, *pitch*, *target*, *pipeline*.
+- **Everything works but leadership is impatient → wrong scoreboard.** Someone senior is asking about closed revenue at week eight. Answer it directly rather than deflecting: show the leading indicators, name the cycle length, point at the horizon you agreed at the start. If no horizon was agreed, that's the real gap. Agree it now.
+
+### Pause rather than push if
+
+The owner has visibly disengaged and won't re-engage; a genuine crisis is consuming the participants; or fewer than four people are participating, because below that there's no peer effect and the peer effect is the mechanism. **Pausing deliberately, with a stated reason and a restart date, costs far less than letting it decay.** A programme that quietly faded is evidence it doesn't work here. A programme that was paused for a named reason is not.
+
+## The objections you will actually hear
+
+Answer these with reasoning, not authority. Someone argued into compliance stops the moment nobody's watching.
+
+> "I'm technical, this isn't my job." — You're not being asked to sell anything. You know more about this customer's problems than anyone else here. When you're already talking to them, ask what else they're struggling with and tell someone. If the answer is nothing, that's a fine answer.
+
+> "I don't want to damage the relationship." — Right instinct, and it's why we ask rather than pitch. "What else are you working on?" has never damaged a relationship. What does damage it is a customer finding out two years later that we could have helped and didn't say.
+
+> "They'd have asked if they needed it." — They can't ask for something they don't know exists. Most of our customers don't know half of what we do. That's not their failure, it's ours.
+
+> "The customer's quiet right now, nothing's happening." — That's the best time. Everyone contacts them when there's a decision on the table. Almost nobody contacts them when there isn't, which is exactly why it lands.
+
+> "We tried something like this before and it fizzled." — Probably true and worth taking seriously. Ask what happened. Usually nobody senior stayed with it, or the tracking got heavy. Both are things you can point at and show what's different.
+
+> "What if they ask about price?" — Perfect outcome. Hand it to whoever owns the commercial conversation. Your job ends at "that's interesting, let me get the right person to you."
+
+## Porting it to a long cycle
+
+The original system was built for distribution — supply houses, wholesalers — where a customer buys weekly and a counter conversation converts the same day. If you sell complex services on a nine-to-eighteen-month cycle through procurement gates, four things change.
+
+**Judge on swings for at least two quarters.** In a fast-feedback business, hits arrive within weeks and validate the programme early. In yours they will not. If anyone proposes measuring this on closed revenue in the first ninety days, push back hard — that is the single most reliable way to kill it before it works. Agree the horizon out loud, in writing, at the start, with the person who will later get impatient.
+
+**The engine is delivery, not sales.** Covered above, and it's the adaptation that matters most. A three-person sales team cannot generate the volume this needs. Thirty embedded delivery people asking one question a week can.
+
+**Translate the channel doctrine rather than importing it.** Preserve the properties, substitute the medium per market.
+
+**Keep it away from your outbound machine.** If you already run cold acquisition — an ICP, sequences, a qualification methodology — this does not touch any of it. This fills the hole that starts where your documented process ends. When the two motions overlap on a live deal, the rule is simple: **the existing owner still owns the opportunity, and this system logs the touch, not the deal.** The moment you find yourself updating deal stage inside the tracker, stop. That's the two-sources-of-truth failure and it ends with people trusting neither.
+
+### The part built for long cycles
+
+There's one chapter of the original that becomes the most important one when you stretch the cycle out, and it's about perseverance.
+
+Some accounts take years. The person who stays in contact for six years and wins is not lucky — they are the only one still there. **Macro perseverance** is staying with an account across years and buying cycles. **Micro perseverance** is the eleventh follow-up on one proposal when the tenth got no reply. Both feel, from the inside, like being ignored. Both are the job.
+
+An account that says no today is genuinely reachable at the next decision point, which may be three years out. The competitor who stops following up after two attempts has effectively conceded that window.
+
+Perseverance decays without reinforcement, so build it into the rhythm. Share perseverance stories alongside the win stories, and when a deal closes, name explicitly how many touches it took and over what period — *"this took fourteen months and nine follow-ups"* teaches more than the revenue number. Review long-running pursuits in every one-on-one. Consider rewarding effort directly: a bonus for a sale that took ten or more touches, or survived five rejections. That's deliberately rewarding the input, and it works because it makes persistence socially visible rather than privately demoralising.
+
+Without this, the natural drift is toward pursuing only accounts that respond quickly — which on a long cycle means pursuing almost nothing.
+
+## Don't forecast yet
+
+You will be asked to convert logged behaviour into expected revenue. Resist it, in a specific way.
+
+There are widely circulated conversion figures for these actions. **Do not use them.** They come from businesses where a counter conversation converts the same day. There is no reason to think they transfer to a long-cycle enterprise sale and strong reason to think they don't. A confident wrong forecast destroys trust in the whole programme the first time reality diverges from it.
+
+You don't need to invent them, because you can measure them. Every logged action carries a type and an account. Every opportunity carries a source. Connect the two and the rates fall out with no special instrumentation. Expect roughly: no forecast for the first twelve weeks, a first noisy read at week twelve, something stable around week twenty-six, and a real close rate only once opportunities have actually closed — which on your cycle is nine to twelve months out.
+
+Until then, the honest framing, which is a stronger position than a fabricated number and survives contact with the first quarter's results:
+
+> "We can tell you exactly how many proactive customer contacts happened last week, by whom, and which opportunities came out of them. What we can't tell you yet is the conversion rate, because we've never measured it here and the published numbers come from businesses with two-week sales cycles. We'll have a first read at week twelve and a reliable one at week twenty-six. Until then, actions are the number — and they're the number we actually control."
+
+## Your first four weeks
+
+- **Week zero.** Interview eight happy customers. Record them. Cut the clips. Name the five roles and get the owner to agree to their five behaviours in writing.
+- **Week one.** Count your active accounts, then build two or three lists — start with outstanding proposals. Build the one-page expansion kit per participant, including the gap number. Walk six to ten people through the eight actions, using the recordings, not a slide deck. Stand up the logging form: three fields.
+- **Week two.** Assign named actions on Monday. Publish the first scorecard on Friday whether the numbers are good or not. Owner writes their two sentences on it.
+- **Week three.** Same again. Find one story and tell it publicly, with the person's name on it.
+- **Week four.** Same again. Now look at whether participation is above sixty percent. If it isn't, do not add pressure — go to the diagnostics above and start at the top of the list, which is leadership.
+
+By week six you're looking for: participation above sixty percent, six consecutive scorecards, at least one story a week that someone outside the programme has heard, actions specific enough that nobody asks "what should I do?", and nobody yet asking what the revenue impact is — or if they have, someone senior having explained why that's the wrong question this quarter.
+
+## The throughline
+
+Almost nothing here is clever. Ask one more question in a conversation you were already having. Write it down in ninety seconds. Show everyone the count on Friday. Say someone's name out loud when it works.
+
+The reason it's hard isn't difficulty, it's that every part of it is optional in any given week, and the loop is what removes the option. **Measure the swing and the swing happens.** Measure the hit and, on a long cycle, you'll have cancelled the programme two quarters before the first one lands.
+
+If you want to see the shape before you build your own, I put a working reference implementation at [outgrow.akshay.life](https://outgrow.akshay.life) — the lists, the logging form, the weekly scorecard, wired together.
+
+---
+
+*Source note. Outgrow is Alex Goldfayn's system, set out across his books on proactive selling — most directly "The Revenue Growth Habit" and "Pick Up The Phone and Sell." The eight actions, the lists, the swings-not-hits principle and the happy customer interview protocol are his. What I've added is the port: what changes when you run it in a business with a nine-to-eighteen-month cycle, where the frontline is delivery rather than sales and the first hit is two quarters away. Any errors in the translation are mine.*
