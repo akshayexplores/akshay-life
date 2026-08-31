@@ -1,0 +1,62 @@
+---
+title: "Review Is the Wrong Place to Discover a Requirement"
+category: "Design"
+type: "insight"
+status: "published"
+slug: "01-review-is-the-wrong-place-to-discover-a-requirement"
+excerpt: "Two things went sideways in the same week, on two unrelated pieces of creative work, and it took me until the second one to notice they were the same failure."
+date: "2026-08-31"
+tags:
+  - "insight"
+  - "design"
+  - "creative-direction"
+  - "handoff"
+  - "no-code"
+  - "requirements"
+publishedAt: "2026-08-31"
+---
+# Review Is the Wrong Place to Discover a Requirement
+
+Two things went sideways in the same week, on two unrelated pieces of creative work, and it took me until the second one to notice they were the same failure.
+
+## The first: a requirement that arrived two days before launch
+
+A client's marketing site was two dozen-odd pages into a rebuild on a visual, no-code site builder, with go-live a couple of days out. At that point a stakeholder raised a requirement that had never been written down: the important content on the main pages had to be present in the raw HTML, not rendered in by JavaScript after load.
+
+This is a perfectly reasonable requirement. It is also, on that class of platform, close to unfixable at that stage — the builder doesn't hand you the source, so "put this in the markup" isn't a task you can simply do. The requirement wasn't wrong and the build wasn't wrong. The sequencing was.
+
+## The second: a bad draft that wasn't a drafting problem
+
+Separately, a contractor delivered a first cut of a short brand video. It was weak, and he said so himself before I did.
+
+My instinct was to give notes. My better instinct, which I'm glad won, was that notes on that draft would have produced a slightly less weak second draft and then a third. The thing that didn't exist was a storyboard. He had been asked to make a video, not to execute a plan, so what came back was his guess at the plan, rendered.
+
+Reviewing it would have been reviewing the guess.
+
+## The shared shape
+
+In both cases the problem surfaced at review, and in both cases **review was structurally incapable of solving it**, because what was missing wasn't quality — it was a specification that should have existed before anyone started.
+
+The reason this is easy to miss is that both problems *present* as quality problems. The pages look fine but rank badly. The video looks bad. In each case the obvious next move is to critique the artefact. And critiquing the artefact is exactly the wrong move, because the artefact is a faithful rendering of an incomplete brief.
+
+The distinguishing question, which I now try to ask before giving any feedback: **is this a worse version of the right thing, or a good version of the wrong thing?** Notes fix the first. Only going back upstream fixes the second.
+
+## Where requirements hide
+
+The SEO one is worth generalising because of *why* nobody wrote it down: it isn't visible in the output. Every stakeholder reviewing that site in a browser saw the content. The content was there. The requirement concerned a property of the artefact that the review process cannot see, and requirements that are invisible in the deliverable are the ones that reliably get discovered late.
+
+My running list of those, for web work: what's in the markup versus what's painted in afterward, page weight and load behaviour, how the content is structured for a machine reader, what happens on a cold cache, what a crawler retrieves versus what a human sees. None of these are visible in a review meeting. All of them are cheap before the build and expensive after.
+
+The practical version: **for any build on a platform I don't control the output of, list the constraints of that platform before the first page is made** — what it will not let me do, and which requirements therefore have to be settled at the start or abandoned. That list is a half-hour of work at kickoff and a rescue operation later.
+
+## A smaller lesson about who you ask first
+
+When the requirement landed, it collided directly with what the platform allowed. My first move was to ask the builder privately what was actually possible before answering in the shared channel, and that was right.
+
+Raising a constraint in a group puts whoever owns the tooling on the spot in front of the client, and the answer you get under that pressure is a defensive one rather than an accurate one. Asking privately buys you two things: the real constraint, and time to arrive in the group with a proposed path instead of a problem. Nobody thanks you for surfacing a blocker fast if you surface it without an option attached.
+
+## The counter-view
+
+There is an argument that over-specifying upfront is its own failure — that storyboarding every video and enumerating every platform constraint front-loads bureaucracy onto work that would benefit from being made and then reacted to. That's fair, and I don't want to swing into writing briefs nobody reads.
+
+The line I'd draw is on reversibility. Iterate freely on the things a second draft can fix — tone, pacing, composition, copy. Specify upfront only the things a second draft *cannot* fix: platform-level constraints, structural requirements, and anything invisible in the artefact being reviewed. The first list is where iteration earns its keep. The second is where it just burns the calendar.
