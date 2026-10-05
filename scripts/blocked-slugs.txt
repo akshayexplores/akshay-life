@@ -1,0 +1,11 @@
+# Insight slugs that must never be published on akshay.life.
+# sync-insights.py skips these (and removes any existing copy) even if the
+# vault still holds the source file. One slug per line.
+05-a-bridge-fee-cannot-quietly-carry-a-delivery-team
+bootstrapped-bookkeeping
+01-getting-paid-is-a-design-problem
+01-transparency-is-not-delivery
+01-your-champion-is-not-your-budget-owner
+02-a-demo-is-a-re-audition-when-they-have-already-said-no
+03-equity-should-be-earned-in-not-handed-over
+negotiating-contracts-as-a-solo-founder

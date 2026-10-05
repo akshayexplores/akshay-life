@@ -142,7 +142,7 @@ export default function Home() {
       </div>
 
       {/* ══ 02 · Latest ══ */}
-      <div className="entry">
+      <div className="entry" style={{ borderBottom: "1px solid var(--rule)" }}>
         <div className="rail">
           <span className="no">02</span>
           Latest
@@ -168,38 +168,6 @@ export default function Home() {
           <p style={{ marginTop: "var(--s5)" }}>
             <Link href="/darshana" className="link meta-sent">
               The whole archive →
-            </Link>
-          </p>
-        </div>
-      </div>
-
-      {/* ══ 03 · One statement ══ */}
-      <div className="entry" style={{ borderBottom: "1px solid var(--rule)" }}>
-        <div className="rail">
-          <span className="no">03</span>
-          Working on
-          <span className="mnote">One statement per page. The rest is paper, ink and hairlines.</span>
-        </div>
-        <div className="col">
-          <div className="on-pravala">
-            <span className="lbl">OrgIntel</span>
-            <p
-              style={{
-                fontSize: "clamp(22px,3vw,30px)",
-                fontWeight: 300,
-                lineHeight: 1.2,
-                letterSpacing: "-0.015em",
-                color: "#FFF6EE",
-                marginTop: "var(--s3)",
-              }}
-            >
-              Every rep who leaves takes the context with them.
-            </p>
-          </div>
-          <p className="meta-sent" style={{ marginTop: "var(--s4)" }}>
-            Companies lose their memory as they scale. I&rsquo;m building the fix.{" "}
-            <Link href="/kriya" className="link">
-              What that looks like today →
             </Link>
           </p>
         </div>

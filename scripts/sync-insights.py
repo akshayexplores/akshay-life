@@ -4,6 +4,9 @@ Sync Insights from akshay-brain to akshay-life.
 
 Reads .md files from akshay-brain/Insights/, transforms frontmatter,
 and writes them to content/insights/ in the akshay-life format.
+
+Slugs listed in scripts/blocked-slugs.txt are never published: they are
+skipped, and any existing copy in content/insights/ is removed.
 """
 
 import os
@@ -12,6 +15,20 @@ from datetime import datetime
 
 BRAIN_DIR = "akshay-brain/Insights"
 OUTPUT_DIR = "content/insights"
+BLOCKED_FILE = "scripts/blocked-slugs.txt"
+
+
+def load_blocked() -> set:
+    """Slugs that must never be published, one per line; # starts a comment."""
+    try:
+        with open(BLOCKED_FILE, "r", encoding="utf-8") as f:
+            return {
+                line.strip()
+                for line in f
+                if line.strip() and not line.strip().startswith("#")
+            }
+    except FileNotFoundError:
+        return set()
 
 
 def parse_frontmatter(content: str):
@@ -100,6 +117,9 @@ def main():
     # Ensure output directory exists
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+    blocked = load_blocked()
+    skipped = 0
+
     # Track existing slugs to handle duplicates
     existing_slugs = set()
 
@@ -116,6 +136,16 @@ def main():
         tags = fm.get("tags", [])
 
         slug = generate_slug(os.path.basename(filepath))
+
+        # Blocked slugs are never published, and any copy already on disk goes.
+        if slug in blocked:
+            stale = os.path.join(OUTPUT_DIR, f"{slug}.mdx")
+            if os.path.exists(stale):
+                os.remove(stale)
+            print(f"✗ {slug}.mdx (blocked)")
+            skipped += 1
+            continue
+
         if slug in existing_slugs:
             base = slug
             i = 1
@@ -154,7 +184,7 @@ def main():
 
         print(f"✓ {slug}.mdx")
 
-    print(f"\nSynced {len(insight_files)} insights to {OUTPUT_DIR}")
+    print(f"\nSynced {len(insight_files) - skipped} insights to {OUTPUT_DIR} ({skipped} blocked)")
 
 
 if __name__ == "__main__":

@@ -32,7 +32,7 @@ export const tools: Tool[] = [
   { name: "Make", category: "Automation", why: "For the quick connective work that does not justify standing up an N8N flow." },
 
   // ── CRM ───────────────────────────────────
-  { name: "Zoho CRM", category: "CRM", why: "Rebuilt it three times for three companies. The rebuild is the value, not the tool." },
+  { name: "Zoho CRM", category: "CRM", why: "The rebuild is the value, not the tool." },
 
   // ── No-Code ───────────────────────────────
   { name: "Coda", category: "No-Code", why: "Where an operating system gets prototyped before anyone argues about whether to build it." },
@@ -49,9 +49,9 @@ export const tools: Tool[] = [
   { name: "GitHub", category: "Dev", why: "Version control for code, and increasingly for writing too." },
 
   // ── Productivity ────────────────────────────
-  { name: "Notion", category: "Productivity", why: "Client-facing docs and shared wikis. Everyone already knows how to read it." },
+  { name: "Notion", category: "Productivity", why: "Shared docs and wikis. Everyone already knows how to read it." },
   { name: "Obsidian", category: "Productivity", why: "Plain markdown on disk. The notes outlive whatever app I use next." },
-  { name: "Zoho Books", category: "Productivity", why: "Invoices and receivables. Unglamorous and load-bearing." },
+  { name: "Zoho Books", category: "Productivity", why: "Bookkeeping. Unglamorous and load-bearing." },
 
   // ── Marketing ──────────────────────────────
   { name: "Apollo.io", category: "Marketing", why: "ICP filtering. Most of the work is deciding who not to contact." },
