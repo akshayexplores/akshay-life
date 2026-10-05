@@ -1,0 +1,54 @@
+---
+title: "Hide It in the UI and You Have Hidden Nothing"
+category: "Tech"
+type: "insight"
+status: "published"
+slug: "02-hide-it-in-the-ui-and-you-have-hidden-nothing"
+excerpt: "I was building a small internal tool for a client's sales team. Four roles, each of which should see a different slice: a leader who sees everything, managers…"
+date: "2026-10-05"
+tags:
+  - "insight"
+  - "tech"
+  - "security"
+  - "permissions"
+  - "data-modelling"
+  - "trust"
+publishedAt: "2026-10-05"
+---
+# Hide It in the UI and You Have Hidden Nothing
+
+I was building a small internal tool for a client's sales team. Four roles, each of which should see a different slice: a leader who sees everything, managers who log activity on their accounts, a programme sponsor who sees participation, and an executive who sees commercial value.
+
+The obvious way to build that is to render different screens. Each role gets a view, each view queries what it needs, the numbers that role should not see are not on the page. It works. It demos beautifully. And it is not a permission system — it is a curtain.
+
+## What the test run actually showed
+
+Before writing any screens, I had the schema's access policies tested role by role — 272 checks, each one asking *can this role read this row*.
+
+The sample policies failed in two places I would not have found by looking at a page. Commercial figures were readable by roles that had no business seeing them. And the activity log was readable far too broadly: a manager could see every touch on every account rather than their own.
+
+Neither of those is visible in a working UI. The manager's screen shows her accounts, because that is what her screen asks for. The figure is absent from the sponsor's page, because the page does not render it. Everything looks correct, and the data is wide open underneath.
+
+**A screen that does not display a field is a decision about rendering. A policy that refuses to return the row is a decision about access.** Those are not two implementations of the same thing. The first survives exactly as long as nobody changes a query, exports a CSV, hits an endpoint directly, or asks an AI agent with the service credential to fetch "everything about this account."
+
+That last one is why this stopped being theoretical for me. The tool has AI jobs in it. An agent does not click through a screen; it queries. Every protection I had put at the presentation layer was invisible to the thing most likely to go looking.
+
+## The sharper version
+
+The reason I keep reaching for UI-level hiding is that it is where the requirement arrives. Someone says "the sponsor shouldn't see the money," and the money is on a page, so I take it off the page. The request is phrased in the vocabulary of screens.
+
+But the requirement is never really about the screen. It is about who is permitted to know. And **the only place a statement about who is permitted to know can be enforced is the place that decides what to hand back.**
+
+Two practices came out of this that I want to keep:
+
+**Write the access rules as tests, one per role, before the first screen exists.** Not after. The tests are cheap and they are the specification — writing them is how I found out that my own description of the roles was vaguer than I thought. "Managers see their accounts" sounds complete until you have to say whether a manager sees a colleague's touch on a shared account.
+
+**Use masked views rather than omitted columns.** If a role should see that a commercial conversation happened but not its value, the right shape is a view that returns the row with the figure masked, not a query that filters the row out. Filtering changes what exists; masking changes what is legible. They produce different counts, and the counts are usually the thing the role is entitled to.
+
+## Where this goes wrong
+
+**This is easy to over-build.** A four-person internal tool with one trusted operator does not need a row-level policy matrix, and I have a documented habit of building the hardest subsystem I know how to build rather than the one the situation calls for. The honest threshold: the moment a second category of user exists, or an agent holds a credential, or the data includes something a person would be upset to have seen. Below that, a screen is fine and pretending otherwise is procrastination with a test suite.
+
+**And database-level enforcement makes some things genuinely harder.** Aggregates across roles get awkward, debugging gets a layer deeper, and a policy mistake fails closed in ways that look like bugs to the person reporting them. The cost is real. It is just much smaller than the cost of finding out that the curtain was the whole security model.
+
+**The counter-argument I take most seriously:** a well-disciplined application layer with a single enforced access path is defensible, and plenty of serious software works that way. My problem is that I am not a team with a code-review gate — I am one person with several AI agents writing against the same database, and "a single enforced access path" is a promise I would be making to myself. I know from elsewhere what my promises to myself are worth. The policy in the database is the version that does not depend on me remembering.
