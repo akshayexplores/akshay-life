@@ -46,27 +46,12 @@ export function getTools(): { rows: Tool[]; synced: boolean } {
 export type BuildEntry = { label: string; title: string; body: string }
 
 const FALLBACK_KRIYA: { updated: string; entries: BuildEntry[] } = {
-  updated: "29 July 2026",
+  updated: "5 October 2026",
   entries: [
-    {
-      label: "OrgIntel",
-      title: "Organisational memory as a living system",
-      body: "Companies lose their memory as they scale — every rep who leaves takes the context with them. Pivoted from product-first to service-first, because the sequence has to be proven on real engagements before it becomes software.",
-    },
-    {
-      label: "Vajra",
-      title: "Taking an AI workspace to market",
-      body: "Grew out of the internal automation at FastrBuild — the N8N workflows that took roughly 30% of the repeatable work off the team. The work now is go-to-market: who it is for, what it replaces, what someone would actually pay for.",
-    },
     {
       label: "FastrBuild",
       title: "Building the agency into a system",
       body: "Relationship-led marketing, CRM pipeline design and automated outbound — run as a repeatable engine rather than a set of engagements that depend on me being in the room.",
-    },
-    {
-      label: "Acsia · LiLA",
-      title: "Product vision, GTM and investor readiness",
-      body: "Consulting with Acsia Technologies on LiLA, their agentic AI platform for automotive software. Financial modelling, the investor narrative, and the sales engine behind it. Consultant, not an employee. No equity.",
     },
     {
       label: "akshay.life",

@@ -13,7 +13,10 @@ export const metadata: Metadata = {
  * from the field manual, or ported verbatim from the previous akshay.life.
  * Nothing here was authored by an assistant.
  *
- * [HUMAN_REQUIRED] — the track record below names four scars in one line each.
+ * Client, employer, equity and funding detail is deliberately kept off this
+ * page. Do not add named clients or funding history back.
+ *
+ * [HUMAN_REQUIRED] — the track record below names scars in one line each.
  * At least one deserves its own piece: the named breakage, the decision, the
  * aftermath. That has to come from him.
  */
@@ -22,7 +25,6 @@ const trackRecord = [
   "I’ve run cold outbound and watched it fail for reasons dashboards couldn’t explain.",
   "I’ve built a hyperlocal college-only community app that hit 100 paying users in the first month — and then shut it down because the unit economics didn’t make sense.",
   "I’ve led the build of a full collective-based work ecosystem on Coda, shipping a working MVP without writing a single production line of code.",
-  "I’ve worked with teams where we’ve pitched to investors, raised investment twice, been through thick and thin — watched one acquisition go through, and lived through a bankruptcy.",
 ]
 
 const roles = [
@@ -31,18 +33,6 @@ const roles = [
     role: "Founder & CEO",
     body: "Bootstrapped B2B growth agency. Relationship-led marketing, CRM pipeline design, automation.",
     note: "",
-  },
-  {
-    org: "Acsia Technologies · LiLA",
-    role: "Strategic consultant",
-    body: "Product vision, GTM motion and investor readiness for an agentic AI platform built for automotive software.",
-    note: "Consultant, not an employee. No equity held.",
-  },
-  {
-    org: "GRAC Sentinel",
-    role: "Advisor",
-    body: "GTM, sales enablement and positioning for real-time compliance operations.",
-    note: "Advisory role. No equity held.",
   },
 ]
 
@@ -131,12 +121,8 @@ export default function AboutPage() {
         <div className="rail">
           <span className="no">03</span>
           Where I work
-          <span className="mnote">
-            Stated plainly, including what I don&rsquo;t hold. Ambiguity about equity helps nobody.
-          </span>
         </div>
         <div className="col">
-          <h2 className="t-h2">Three seats, one act</h2>
           {roles.map((r, i) => (
             <div
               key={r.org}
