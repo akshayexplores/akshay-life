@@ -60,8 +60,7 @@ export default function KramaPage() {
           </p>
           <p style={{ marginTop: "var(--s4)" }}>
             True of the outbound engine that failed for reasons the dashboards couldn&rsquo;t
-            explain. True of the Coda work ecosystem shipped without a line of production code. True
-            of the GRC positioning. True of OrgIntel.
+            explain. True of the Coda work ecosystem shipped without a line of production code.
           </p>
           <div className="pull">
             The first domain you do this in is always the slowest, because you&rsquo;re building the
@@ -140,11 +139,6 @@ export default function KramaPage() {
               </li>
             ))}
           </ol>
-
-          <p className="meta-sent" style={{ marginTop: "var(--s5)", maxWidth: "62ch" }}>
-            On relationships: I consult for Acsia (on LiLA) and advise GRAC. I hold no equity in
-            either company, and none in LiLA.
-          </p>
         </div>
       </div>
 
