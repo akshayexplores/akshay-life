@@ -1,0 +1,67 @@
+---
+title: "Built Is Not Sent, and Sent Is Not Received"
+category: "Artificial Intelligence"
+type: "insight"
+status: "published"
+slug: "01-built-is-not-sent-and-sent-is-not-received"
+excerpt: "An assistant told me an invoice was eighteen days overdue. I opened the accounting system. It had been paid in full three weeks earlier, down to the tax…"
+date: "2026-10-19"
+tags:
+  - "insight"
+  - "artificial-intelligence"
+  - "agents"
+  - "verification"
+  - "delegation"
+  - "systems-of-record"
+publishedAt: "2026-10-19"
+---
+# Built Is Not Sent, and Sent Is Not Received
+
+An assistant told me an invoice was eighteen days overdue. I opened the accounting system. It had been paid in full three weeks earlier, down to the tax withheld.
+
+That was a Monday. By Friday I had the same error in eight different costumes, and the collection is the point — individually each one reads as a small operational slip, and together they are one mistake I make constantly.
+
+## The collection
+
+- A model generated an email I wanted sent. The save to the mail client failed. The text existed, perfectly, in a chat window. There was no draft and no sent message.
+- I configured a domain's records for a transactional-email provider and wrote it down as done. Days later, verification was still pending. **Saved is not propagated, and propagated is not verified.**
+- A coding agent reported a feature complete behind a few hundred passing tests. The code was written, type-checked and tested. It was not installed on the machine I use, and the local commit had never been pushed.
+- A suite of around four hundred tests passed green while the application's health endpoint redirected to a login page — which no test asserted against, and which is the only thing an uptime check actually reads.
+- I assembled an investor package and sent it. It bounced on size. The copy that came back was my own; what the recipient got, I still do not know.
+- Two requests sat side by side at the end of one day: a building-access email, verified sent at 11:45, and a product return, still an unsent draft. I had been carrying both in my head under the same label.
+
+## The actual error
+
+There is a chain between an intention and its effect in the world, and it has far more links than my vocabulary for it:
+
+**specified → built → tested → installed → committed → pushed → deployed → drafted → sent → delivered → read → acted on.**
+
+I have one word for all of it. So does every agent I delegate to. "Done" compresses twelve states into one, and the compression is lossy in exactly the direction that hurts: it always rounds up.
+
+This is not a new problem, but delegation to AI makes it structurally worse, and I think the mechanism is worth being precise about. **An agent reports in the same confident register whether it verified the state or inferred it.** When a person tells me an invoice is overdue, their uncertainty leaks — they hedge, they say "I think," they mention where they looked. A model's report has no such texture. The sentence "this invoice is eighteen days overdue" is produced with identical fluency whether it came from a live ledger read or from a stale calendar description written weeks ago. I lose the signal I normally use to decide whether to check.
+
+So the rule I want is not "trust less." It is a question, and it fits on one line:
+
+> **Which system would show this, and have I looked at it?**
+
+Money: the books, not the journal and not the summary. Outbound: the sent folder, not the chat that produced the text. A build: the running application, not the test report. A deployment: the thing a stranger loads, not the uptime panel. Delivery: a recipient confirming, not a send that returned without an error.
+
+The discipline is cheap because it is a lookup, not a judgment. What makes it hard is that it feels redundant precisely when it is most needed — right after a competent-sounding report that the work is finished.
+
+## The version that can actually get me in trouble
+
+The same category error turned up this fortnight in a privacy claim, and that one is not an operational slip.
+
+A product of mine stores everything in a local database on the machine. For months I had been describing that as local processing. An audit established that in one account-enabled mode, selected transcripts, screen text and mail context travel to a third-party model provider. **Local storage is not local processing**, and the distinction is invisible from inside the architecture I designed.
+
+The shape is identical to the invoice: a true statement about one link in the chain, promoted to a claim about the whole chain. The difference is the consequence. A wrong invoice figure is an embarrassing email. A wrong privacy claim is a representation I made to users who chose the product because of it.
+
+## Where this goes wrong
+
+**Verifying everything is its own paralysis.** If every claim needs a lookup, I will spend the day looking things up, which is an expensive way to produce nothing. The gate I actually want: verify what is **irreversible, external, or about money**. Internal and reversible states can be wrong for a while at no cost — a feature I think is installed and isn't costs me a confusing minute. A client who receives a demand for a sum they already paid costs me the credibility of every number I have ever quoted them.
+
+**The honest counterpoint is that this is just carelessness wearing a theory.** A checklist would catch most of it, and writing an essay about the epistemology of "done" is a more interesting afternoon than making a checklist. Partly fair. But I do not think a checklist survives contact with a confident report, because the checklist asks me to suspect something that sounds settled, and the whole failure mode is that it sounds settled.
+
+**And the overcorrection is real.** The person who re-does the agent's work to check it has deleted the leverage and kept the cost. The point of naming the states is to verify the *transition*, not to repeat the work: I do not re-run the build, I open the installed application. I do not rewrite the email, I open the sent folder.
+
+The sentence I want to keep: **a report is evidence about the reporter; only the system of record is evidence about the world.**
