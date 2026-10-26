@@ -5,7 +5,7 @@ type: "insight"
 status: "published"
 slug: "01-built-is-not-sent-and-sent-is-not-received"
 excerpt: "An assistant told me an invoice was eighteen days overdue. I opened the accounting system. It had been paid in full three weeks earlier, down to the tax…"
-date: "2026-10-25"
+date: "2026-10-26"
 tags:
   - "insight"
   - "artificial-intelligence"
@@ -13,7 +13,7 @@ tags:
   - "verification"
   - "delegation"
   - "systems-of-record"
-publishedAt: "2026-10-25"
+publishedAt: "2026-10-26"
 ---
 # Built Is Not Sent, and Sent Is Not Received
 
@@ -55,6 +55,24 @@ The same category error turned up this fortnight in a privacy claim, and that on
 A product of mine stores everything in a local database on the machine. For months I had been describing that as local processing. An audit established that in one account-enabled mode, selected transcripts, screen text and mail context travel to a third-party model provider. **Local storage is not local processing**, and the distinction is invisible from inside the architecture I designed.
 
 The shape is identical to the invoice: a true statement about one link in the chain, promoted to a claim about the whole chain. The difference is the consequence. A wrong invoice figure is an embarrassing email. A wrong privacy claim is a representation I made to users who chose the product because of it.
+
+## The link before the first link
+
+Three days later I found the same error one step further upstream, and that version is the one I am most likely to keep making.
+
+The chain above starts at *specified*. It does not start early enough. Across three consecutive days, the only surviving record of my working day was a calendar describing what I had intended to do: a block reserved to send a document packet a client's finance function had asked for twice, a block to make a keep-or-drop decision on a tool whose trial was already expiring, a tentative hold for a meeting nobody had confirmed. Over those same three days my sent folder contained exactly one message, and it was an apology for failing to connect to a call.
+
+So the chain begins one link earlier: **scheduled → specified → built → …**, and the scheduled link is the most seductive of all of them, because unlike the others it leaves behind a visible artefact. A calendar is a document that looks like a record and is in fact a wish. Reading mine back at the end of the week, I could not distinguish a thing I had done from a thing I had meant to do at two in the afternoon.
+
+The same shape appears wherever a planning surface renders like a reporting surface:
+
+- A task board on which assigning an agent to a question looks identical to the question having been answered.
+- A development board busy with named agents and open tickets, none of which had executed anything. Opening a ticket is not running it.
+- A performance dashboard reading *no actuals entered* while displaying illustrative figures in every cell.
+
+That last one deserves its own warning, because it is worse than an empty report. **Placeholder numbers are more dangerous than missing numbers.** A blank dashboard announces its own uselessness and gets fixed. A dashboard populated with plausible sample figures reads as a finding, survives a screenshot, and will eventually be quoted back to me — or, worse, forwarded — as the state of the business. An empty field is honest about what it does not know. A field full of example data is a false positive waiting for an audience.
+
+Which forces an amendment to the rule. "Which system would show this, and have I looked at it?" quietly assumes I can tell a system of record from a system of intent, and often I cannot, because the two ship in the same interface and use the same typography. So there is a prior question, and it is the cheaper one: **is this surface even capable of contradicting me?** A calendar cannot be wrong about whether I sent the email, because it was never asked. A sent folder can. Only the surfaces that are able to tell me I am wrong are worth consulting at all.
 
 ## Where this goes wrong
 
