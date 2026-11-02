@@ -1,0 +1,72 @@
+---
+title: "A Search Box Is Not an Assistant"
+category: "Artificial Intelligence"
+type: "insight"
+status: "published"
+slug: "02-a-search-box-is-not-an-assistant"
+excerpt: "I ran my own assistant against seventeen real questions — the kind I actually ask at nine in the morning, not demo questions. Two answers were good. Seven were…"
+date: "2026-11-02"
+tags:
+  - "insight"
+  - "artificial-intelligence"
+  - "agents"
+  - "retrieval"
+  - "product-design"
+  - "trust"
+publishedAt: "2026-11-02"
+---
+# A Search Box Is Not an Assistant
+
+I ran my own assistant against seventeen real questions — the kind I actually ask at nine in the morning, not demo questions. Two answers were good. Seven were thin or partial. Eight simply failed.
+
+Then I read the failures properly, and the scorecard turned out to be measuring the wrong thing. I had built a test of answer quality. What the failures were telling me about was plumbing.
+
+## The failure was never the wording
+
+The single most common failure had the same shape every time: I asked about something that had definitely happened, and the assistant said it couldn't find anything.
+
+The information existed. It was in mail, or in a calendar entry, or in what had been on my screen two hours earlier, or in the record of who I had spoken to that week. The assistant looked in one place — the notes — looked exactly once, and reported absence.
+
+That answer is fluent, grammatical, appropriately hedged, and completely useless. Worse than useless: **a confident "I don't see that" is a false negative delivered with the authority of a search.** I now have to go and check manually, which is the thing the product exists to stop me doing, and I have been told something untrue about my own history.
+
+No amount of prompt work fixes that. The answer was well-written. The retrieval was one source deep and one pass wide.
+
+So the benchmark I had was the wrong instrument. I was grading prose when I needed to grade coverage. The questions I want a scorecard to answer now:
+
+- How many distinct sources did it consult before answering?
+- Did it search again after the first attempt came back empty, with a different framing?
+- When it says it cannot find something, can it tell me where it looked?
+
+That last one is the cheapest and the most valuable. **An assistant that reports its own search boundary converts a false negative into an honest gap.** "I checked your notes and found nothing — I did not check mail" is a sentence I can act on. "I don't see that" is one I cannot.
+
+## The routing failure underneath it
+
+The second pattern was stranger, and I think it is the more fundamental one. I asked it to *do* things — set something up, send something — and it searched for notes about doing them.
+
+It had collapsed two different kinds of request into one. Every input was treated as a query against a corpus, because that is what the system was underneath, however the interface was dressed. An action request arriving at a search index does not produce an error. It produces a plausible, irrelevant answer, which is the characteristic failure of this entire class of product.
+
+This is the real line, and it is not about intelligence:
+
+> **A search box answers questions about the past. An assistant also changes the future. These need different machinery, and the first will silently impersonate the second.**
+
+Which is why I sequenced the rebuild the way I did — retrieval breadth first, then intent routing, then actions, then remembered preferences. Not because retrieval is the most exciting part, but because every downstream capability inherits its blindness. An assistant that cannot find the meeting cannot schedule around it, and will confidently tell you your afternoon is free.
+
+## Two things I got wrong on the way
+
+**I hardcoded my own defaults and called it a sensible default.** I use one calendar and conferencing stack. I built that in. Then someone asked for an invite and wanted the other one, and I had to correct the assistant by hand — and the correction didn't stick, because there was nowhere for it to stick.
+
+The fix is not a settings page nobody opens. It is to **read the default out of behaviour**: whatever the person actually uses is the default, and a correction is a signal to be learned from, not a one-off override. My own habits are a sample size of one, and I had shipped them as a universal.
+
+**And "just do it" does not mean "don't ask me."** I was impatient with confirmation steps, because I knew what I wanted and the extra click felt like friction. I was wrong about where the friction was. The valuable thing is not the pause; it is that **the confirmation is the boundary between drafting and acting on the world**, and without it there is no moment at which a draft becomes reversible.
+
+The detail that made it work: when I give a follow-up instruction, it should **edit the same pending card** rather than create a second one. Otherwise correcting a draft generates two drafts, and now the risk of sending the wrong one is higher than it was before I added the safety step. A confirmation step that multiplies under revision is a hazard wearing a seatbelt.
+
+## Where this is weaker than I have made it sound
+
+**Breadth has a cost I have not paid yet.** Searching five sources with multiple passes is slower and more expensive than searching one, and I have not yet tested whether the honest-but-slow answer beats the fast-and-sometimes-wrong one for someone who is not me. I am confident about the correctness argument and guessing about the experience.
+
+**Reporting the search boundary can become an excuse.** "I checked these three places" is useful once. As a habit it risks becoming a disclaimer the assistant hides behind instead of looking harder — the machine equivalent of covering yourself in the minutes.
+
+**The strongest case against all of this:** eight of seventeen failing is also just an early product, and the grand framing about search boxes and assistants may be a flattering way to describe ordinary bugs. Possibly. But the bugs clustered — they were all retrieval and routing, not generation — and a cluster is a design fact rather than a backlog.
+
+**And none of this is verified yet.** The retrieval agent exists and the backend checks pass. It is not verified in the interface and not installed on the machine I use, which, by my own standing rule, means it is not done. I have written that lesson down before. Writing it down is apparently not the same as learning it.

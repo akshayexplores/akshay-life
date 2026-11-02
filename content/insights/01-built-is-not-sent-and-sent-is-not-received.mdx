@@ -5,7 +5,7 @@ type: "insight"
 status: "published"
 slug: "01-built-is-not-sent-and-sent-is-not-received"
 excerpt: "An assistant told me an invoice was eighteen days overdue. I opened the accounting system. It had been paid in full three weeks earlier, down to the tax…"
-date: "2026-11-01"
+date: "2026-11-02"
 tags:
   - "insight"
   - "artificial-intelligence"
@@ -13,7 +13,7 @@ tags:
   - "verification"
   - "delegation"
   - "systems-of-record"
-publishedAt: "2026-11-01"
+publishedAt: "2026-11-02"
 ---
 # Built Is Not Sent, and Sent Is Not Received
 
@@ -83,3 +83,27 @@ Which forces an amendment to the rule. "Which system would show this, and have I
 **And the overcorrection is real.** The person who re-does the agent's work to check it has deleted the leverage and kept the cost. The point of naming the states is to verify the *transition*, not to repeat the work: I do not re-run the build, I open the installed application. I do not rewrite the email, I open the sent folder.
 
 The sentence I want to keep: **a report is evidence about the reporter; only the system of record is evidence about the world.**
+
+## The same system, two kinds of field
+
+A fortnight on, the error came back in a form my own rule did not catch, and the gap is worth recording because it makes the rule sharper.
+
+Two invoices, same accounting system, same week. I opened the ledger — the system of record, exactly as instructed — and read the status column. Both said *sent*.
+
+One of them had been sent. The other had not. The ledger was telling me the truth both times; I was reading the wrong field.
+
+Underneath the status column, the same system held two more facts about each invoice: a flag recording whether the thing had actually been emailed, and a timestamp recording whether the recipient had opened it. On the first invoice, both were populated — emailed, and opened, by a named person, at a time. On the second, the emailed flag was false and the client had never viewed it. The status said *sent* because at some point somebody, probably me, had set it to *sent*.
+
+So the amendment, and it is the most useful thing I have learned about this all month:
+
+> **A system of record contains its own systems of intent. "Which system?" is not a fine enough question — the unit is the field, not the application.**
+
+A status column is an assertion. Somebody typed it, or a workflow set it, and it records what a human believed. An *emailed* flag and an *opened* timestamp are receipts: a machine wrote them because an event occurred, and no amount of believing makes them appear. These sit side by side, in the same table, in the same typography — exactly the confusion I described between calendars and sent folders, except now it has moved *inside* the tool I told myself to trust.
+
+Which means the earlier test — *is this surface even capable of contradicting me?* — applies one level down. The status field cannot contradict me, because I am its author. The open-tracking timestamp can, and did.
+
+The practical version, and it is a one-time job per tool rather than a daily discipline: **go through the systems you actually rely on and mark which fields are assertions and which are receipts.** For invoicing it took me under a minute once I knew to look — status is an assertion, emailed and viewed are receipts. For a deployment pipeline it is the difference between the green badge and the response a stranger gets. For a task system, every field is an assertion, which is worth knowing before you build reporting on top of one.
+
+A smaller recurrence, noted without re-litigating it: the planning-surface problem from the section above showed up again almost immediately, as four scheduled blocks on a day whose sent folder contained exactly one message. I had already written that lesson down. The honest reading is that naming a failure mode does not retire it — this one now has a name, an essay and a repeat appearance inside three weeks, which suggests the fix is a mechanism rather than an insight.
+
+And the uncomfortable part, which I want on the record because it is the actual finding: **the rule failed in the direction of making me more confident, not less.** I did the diligent thing. I opened the ledger instead of trusting a summary. I was more sure of a wrong answer than I would have been without the discipline, because I had spent the effort that normally earns certainty. A verification habit that stops one level short of the evidence is not neutral — it manufactures exactly the confidence it was built to withhold.
