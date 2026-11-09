@@ -5,7 +5,7 @@ type: "insight"
 status: "published"
 slug: "01-built-is-not-sent-and-sent-is-not-received"
 excerpt: "An assistant told me an invoice was eighteen days overdue. I opened the accounting system. It had been paid in full three weeks earlier, down to the tax…"
-date: "2026-11-08"
+date: "2026-11-09"
 tags:
   - "insight"
   - "artificial-intelligence"
@@ -13,7 +13,7 @@ tags:
   - "verification"
   - "delegation"
   - "systems-of-record"
-publishedAt: "2026-11-08"
+publishedAt: "2026-11-09"
 ---
 # Built Is Not Sent, and Sent Is Not Received
 
@@ -107,3 +107,21 @@ The practical version, and it is a one-time job per tool rather than a daily dis
 A smaller recurrence, noted without re-litigating it: the planning-surface problem from the section above showed up again almost immediately, as four scheduled blocks on a day whose sent folder contained exactly one message. I had already written that lesson down. The honest reading is that naming a failure mode does not retire it — this one now has a name, an essay and a repeat appearance inside three weeks, which suggests the fix is a mechanism rather than an insight.
 
 And the uncomfortable part, which I want on the record because it is the actual finding: **the rule failed in the direction of making me more confident, not less.** I did the diligent thing. I opened the ledger instead of trusting a summary. I was more sure of a wrong answer than I would have been without the discipline, because I had spent the effort that normally earns certainty. A verification habit that stops one level short of the evidence is not neutral — it manufactures exactly the confidence it was built to withhold.
+
+## Receipts have a direction, and three new ways to be wrong
+
+A third week of this, and the ladder finally completed in one place while breaking in three new ones. The completion first, because it is short: an invoice went from *sent* to *emailed* to *viewed* to *paid in full*, each state observed in the ledger rather than assumed, and a second one settled alongside it. That is what the discipline is for, and it worked.
+
+Now the three new failures, each of which I think is a genuinely distinct shape.
+
+**One: I wrote the receipts myself.** A feature tracker on a client project moved to forty of fifty items *live* — because I marked every item that appeared in the specification as done, in a single pass. This is worse than the stale status column, because that one at least had the excuse of someone else's belief in it. Here I manufactured an implementation record out of a requirements document and then had a surface that read, to me and to anyone I showed it, as evidence of forty working features. The specification is a wish. Transcribing a wish into a tracker does not change its epistemic status; it changes its typography. **The dangerous assertion is not the one someone else typed — it is the one I typed and then forgot I was the author of.**
+
+**Two: my sent folder is a receipt about me, not about the recipient.** The essay above elevates the sent folder as the thing that can contradict me, and for a week that felt like the end of the chain. Then an enquiry I had verified as sent turned out never to have arrived: the recipient's mailbox was full, the server retried ten times over a day, and the message expired. The only evidence was a non-delivery report that arrived the following afternoon — after I had already filed the task as done and moved to waiting-for-a-reply.
+
+So receipts have a direction, and I had not noticed. A sent-folder entry is a receipt written by *my* system about *my* system's action. It is genuine evidence that the message left, and no evidence at all that it landed. The links are distinct for a reason: **sent → delivered → read**, and only the second and third are about the other party. The practical consequence is a change in what *waiting* means. Waiting for a reply and waiting for a delivery failure are different states, and silence is consistent with both. For anything time-bound, silence past a day is now a prompt to check the route, not to wait more patiently.
+
+**Three: two receipts can disagree, and the rule says nothing about that.** The same lodging payment appears in two systems with two different amounts, both machine-written, neither obviously authoritative. One is a bookkeeping entry with a payment reference, the other a booking confirmation stating a paid figure; they differ by a small amount and I cannot tell from either whether they describe the same transaction. There is no receipt here to prefer and no assertion to discount. My whole framework assumed that locating the receipt ends the inquiry, and when receipts conflict the only honest position is that **I do not know the number, and any figure I act on is a guess wearing a reference code.** The correction is not more checking of the same two surfaces — it is going to the funding source, which is the only system either of them is describing.
+
+A smaller one for completeness, because it is the same error at its purest. An access-granted email arrived — a one-time sign-in link, valid for an hour. I had a line in my record treating it as an access state. It is not: it is a receipt that a link was issued, from which nothing follows about whether anyone used it, whether it had already expired, or what the dashboard behind it showed. **An invitation is a receipt about the sender's intent.**
+
+And the cost of leaving assertions stale, which I had not priced before: **a stale assertion does not just mislead, it generates work.** My task surface spent the week producing collection reminders for two invoices the ledger had already recorded as paid, and reply prompts for a message the sent folder showed had gone out. Each one arrived looking like a job. Each one would have produced a slightly embarrassing email to someone who had already done the thing. The failure mode of an un-reconciled assertion is not confusion — it is a to-do list that confidently asks you to repeat completed work, and the only defence is to check the receipt before acting on the prompt rather than after.

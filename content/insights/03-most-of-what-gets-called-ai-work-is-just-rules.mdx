@@ -1,0 +1,68 @@
+---
+title: "Most of What Gets Called AI Work Is Just Rules"
+category: "Artificial Intelligence"
+type: "insight"
+status: "published"
+slug: "03-most-of-what-gets-called-ai-work-is-just-rules"
+excerpt: "A client asked me to map AI automation across an entire business function. I came back with a hundred and forty-three routine tasks. A hundred and twenty-three…"
+date: "2026-11-09"
+tags:
+  - "insight"
+  - "artificial-intelligence"
+  - "automation"
+  - "process-design"
+  - "consulting"
+  - "sequencing"
+publishedAt: "2026-11-09"
+---
+# Most of What Gets Called AI Work Is Just Rules
+
+A client asked me to map AI automation across an entire business function. I came back with a hundred and forty-three routine tasks. A hundred and twenty-three of them did not need a model at all.
+
+That ratio has not left me alone since. Something like eighty-five percent of the work that arrived labelled *AI opportunity* was forms, templates, date arithmetic and validation — things a competent process designer would have automated years ago with a structured sheet and a few required fields. Twenty tasks genuinely needed judgment over unstructured language, which is the one thing a model is uniquely good at.
+
+I want to be careful about the claim, because there is an obvious cynical reading and it is not mine. I am not saying the AI part is fake, or small, or that anything was mis-sold. The twenty are real and they are the valuable ones. The narrower and more useful claim is this: **the demand arrives as one undifferentiated request, and the first job is not building — it is sorting.**
+
+## Why the sorting does not happen on its own
+
+Nobody inside a business function describes their work as rules-shaped and judgment-shaped. They describe it as *the stuff that takes all day*, and they are right that it takes all day. The felt experience of doing a hundred-odd rule-following tasks by hand is indistinguishable from the felt experience of doing twenty judgment tasks by hand: both are tedious, both eat the week, both feel like something a machine should handle. The distinction I care about is invisible from inside the job.
+
+So the request that reaches me is honest and badly specified at the same time, and if I take it at face value I will build the wrong thing — a language model sitting on top of a process that a required date field would have fixed. That is not just wasteful. It is actively worse than the manual version, because a model asked to do arithmetic will occasionally get it wrong in a way a formula never would, and it will be wrong fluently.
+
+**The test I now use is simple: can I write the answer as a condition?** If the output is fully determined by the inputs — this form, that date, this threshold, that template — it is a rule, and a rule should be built as a rule. A model is for the cases where the input is a paragraph someone wrote and the output requires reading it.
+
+## The part that actually surprised me
+
+The map turned up forty-six process findings alongside the task list, and those were the real deliverable.
+
+Most of them were contradictions: two procedures that disagreed about the same step, documents with no version anyone trusted, steps that referenced forms that no longer existed. And here is the thing that reframed the whole engagement for me — **you cannot automate a process you cannot state.** An assistant built on top of two conflicting procedures does not resolve the conflict. It picks one, invisibly, differently each time, and now the inconsistency has a confident voice and no audit trail. The ambiguity that a human quietly navigated with judgment becomes a silent coin flip at scale.
+
+Which means the sequencing is forced, and it is not the sequencing anyone wants:
+
+1. **Ground rules first** — what may be processed, by whom, with what retention. Not as compliance theatre, but because step four is impossible without it.
+2. **Versioned procedures second.** One canonical statement of each process, with a version number, before anything reads it. This is the step everyone wants to skip and the step everything else rests on.
+3. **Then the easy pilot:** the policy-and-template questions, where being wrong is cheap and correctable, tested against a batch of real questions people actually asked rather than questions I invented.
+4. **Then drafting aids** — the model proposes, a person approves.
+5. **Only then the higher-care work**, and only behind consent, masking, retention and bias checks, because this is where being wrong stops being embarrassing and starts being someone's livelihood.
+6. **Watches on public information** before anything touching private records.
+7. **System integrations last**, because an integration makes every earlier mistake permanent and fast.
+
+Reading that back, steps one and two are not AI work by any definition. They are the unglamorous prerequisite that makes the AI work possible, and they are where the first several weeks of a serious engagement go.
+
+## The uncomfortable implication for how I sell this
+
+If most of the opportunity is rules, then an engagement that bills itself as AI enablement spends most of its time doing process design. I think that is fine, but it has to be said out loud at the start, because the alternative is a client who expected a model and received a form.
+
+The honest framing I have landed on: **I am not automating your work with AI. I am making your work legible, and the part that is left over after that is where AI earns its place.** Legibility is the deliverable. The model is the reward for achieving it.
+
+And there is a commercial reason to prefer this, beyond honesty. The rules-first work produces visible wins in weeks, with no model risk, no data-handling exposure and no accuracy argument. It buys the credibility you need to be trusted with step five.
+
+## Where this view is wrong, or at least incomplete
+
+**The strongest counterargument is that the ratio is an artefact of what I was asked to map.** I was handed routine, repeatable tasks — the explicit brief was the recurring work. Of course that bucket is rules-heavy; that is what *routine* means. The genuinely model-shaped work in any business may live mostly outside the set of tasks anyone thinks to list, in the unstructured judgment that never got written into a procedure because nobody could write it down. If that is true, then a task inventory systematically under-counts the AI opportunity, and my hundred-and-twenty-three-to-twenty finding says more about the survey instrument than about the business. I do not have a way to settle this from one engagement, and I should stop quoting the ratio as though it generalises.
+
+**The second is that the rules-first sequence can become an excuse never to ship the interesting part.** Procedure cleanup is infinite. There is always one more contradiction. A team that commits to fixing every document before building anything will be fixing documents in a year, and will have delivered nothing, and will have been right about every individual decision along the way. The pilot in step three exists specifically to prevent this: it runs on the subset that is already clean, in parallel with the cleanup, so that something is working while the foundation is laid.
+
+**The third is that I have written the opposite before.** An older note of mine argues that rule-based automation is the failed first era and reasoning models are the leap past it — see Putting AI to Work - Automating Knowledge Work. I still think that is right about the specific case it describes, which was shallow personalisation at volume, a task genuinely defined by reading context. But I took a claim about one task shape and let it become a worldview, and this engagement was the correction. Rules did not fail. Rules were never attempted in most of these processes, which is a completely different finding, and I had been reading the absence of automation as evidence that simple automation does not work.
+
+The sentence I want to keep: **before asking what the model should do, ask what is left after the rules. Usually it is a fifth of the work, and it is the only fifth worth a model.**
