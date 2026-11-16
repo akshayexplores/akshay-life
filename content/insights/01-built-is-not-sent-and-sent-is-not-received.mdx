@@ -5,7 +5,7 @@ type: "insight"
 status: "published"
 slug: "01-built-is-not-sent-and-sent-is-not-received"
 excerpt: "An assistant told me an invoice was eighteen days overdue. I opened the accounting system. It had been paid in full three weeks earlier, down to the tax…"
-date: "2026-11-15"
+date: "2026-11-16"
 tags:
   - "insight"
   - "artificial-intelligence"
@@ -13,7 +13,7 @@ tags:
   - "verification"
   - "delegation"
   - "systems-of-record"
-publishedAt: "2026-11-15"
+publishedAt: "2026-11-16"
 ---
 # Built Is Not Sent, and Sent Is Not Received
 
@@ -125,3 +125,27 @@ So receipts have a direction, and I had not noticed. A sent-folder entry is a re
 A smaller one for completeness, because it is the same error at its purest. An access-granted email arrived — a one-time sign-in link, valid for an hour. I had a line in my record treating it as an access state. It is not: it is a receipt that a link was issued, from which nothing follows about whether anyone used it, whether it had already expired, or what the dashboard behind it showed. **An invitation is a receipt about the sender's intent.**
 
 And the cost of leaving assertions stale, which I had not priced before: **a stale assertion does not just mislead, it generates work.** My task surface spent the week producing collection reminders for two invoices the ledger had already recorded as paid, and reply prompts for a message the sent folder showed had gone out. Each one arrived looking like a job. Each one would have produced a slightly embarrassing email to someone who had already done the thing. The failure mode of an un-reconciled assertion is not confusion — it is a to-do list that confidently asks you to repeat completed work, and the only defence is to check the receipt before acting on the prompt rather than after.
+
+## Approved for an audience of one is not released
+
+A fourth week, and the chain grew a tail I did not know was there. Three findings, and then the one that is not an epistemics problem at all.
+
+**The tail: certified is not available, available is not public.** My desktop product cleared a platform store's certification. In the space of a single day I could truthfully have said each of the following, and they describe four different states: the company developer account is approved; the package passed certification; the app is available to a named private tester audience; the app is publicly discoverable. The first three were true. The fourth was a prepared submission sitting in draft, awaiting a final confirm I never pressed — I had asked for it to be made public, the settings were changed to public and discoverable, and the submission was not submitted.
+
+So the ladder extends: **built → certified → available-to-a-restricted-audience → submitted → discoverable.** And every one of those rungs would have come out of my mouth as "it's on the store." The store's own interface does not help, because an app visible to a private audience looks, from the publisher's console, almost exactly like an app that is live.
+
+Worth naming the sub-case, because it is the purest version of the whole essay: **certification is a receipt about the package, not about the application.** It tells me the wrapper is acceptable to the platform. It says nothing about whether the thing installs, signs in, records, or updates on a real machine — and I had not installed the certified build on a real machine of that platform even once. A green light from somebody else's automated gate is the most convincing unearned confidence available, precisely because it is external and therefore feels like independent verification. It is independent. It is just verifying something else.
+
+**Sent is not even atomic.** The accounting system emailed an invoice to four named recipients and recorded the send as successful. One of the four hard-bounced in the same minute. The aggregate status was not wrong — the send did happen, and three of four were delivered.
+
+This sharpens the direction point above into something more specific. I had learned that *sent* is a receipt about my system and *delivered* is a fact about the other party. What I had still been treating as a single event is the delivery itself. **A send to n recipients is n independent deliveries reported under one status**, and the status reports my system's action, which succeeded, rather than the n outcomes, one of which did not. The operational version: after any send that matters, the thing to open is not the sent folder but the per-recipient delivery log, and the question is not "did it go" but "did it reach each of them." On an invoice, the one recipient who did not receive it was, inevitably, the one in the finance function.
+
+**And then the genuinely new shape: the artefact contradicted itself, and I knew, and I issued it anyway.** The same invoice states one nightly accommodation rate in its prose notes and bills a different one on its own line item — a gap of a few thousand across twenty nights. I had found that discrepancy days earlier. I had written down, in plain words, that the document needed to be internally consistent *before* it went out. Then it went out, unreconciled.
+
+Two things follow, and they point in opposite directions.
+
+The first is a real extension of the framework. My assertions-and-receipts distinction assumed the conflict would be *between* fields of different kinds, or between two systems. Here two assertions of the same kind, inside one outbound document, disagree with each other — and they are not equally consequential. The prose is what the client reads and forms an expectation from; the line item is what governs the money. **A document can be its own pair of disagreeing records, and the field a human reads is rarely the field that executes.** So the per-tool audit I recommended above needs a second column: not only which fields are assertions and which are receipts, but which field is the one that actually binds. For an invoice the line item binds and the note persuades, which means an inconsistency between them is not a typo — it is two different agreements shipped in one envelope, and the recipient gets to choose which one to argue from.
+
+The second is less comfortable and belongs to a different essay. This is the first instance in four weeks where the verification worked perfectly. I looked at the right system, read the right fields, found the real defect, and specified the correct fix. And the wrong thing still left the building. **The failure has migrated from knowing to doing** — which means the epistemics project in this essay has, at least in this one case, succeeded, and bought me nothing. That is a sequencing and follow-through problem, and I have written about it at length elsewhere; what it costs me here is the comfortable assumption that better seeing was the binding constraint.
+
+One last small one, which is the two-receipts-disagree case with a twist. Two records about building access: one showing a request still awaiting approval, another showing access valid through a date two days out. Earlier I would have called this conflicting evidence and gone to a third source. The twist is that I could not establish the two records referred to the same credentials at all. **Before deciding which record to believe, establish that they are about the same object** — because two true statements about two different things look identical to a contradiction, and resolving a conflict that does not exist is its own way of being wrong.
