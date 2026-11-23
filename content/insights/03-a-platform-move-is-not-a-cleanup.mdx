@@ -1,0 +1,72 @@
+---
+title: "A Platform Move Is Not a Cleanup"
+category: "Tech"
+type: "insight"
+status: "published"
+slug: "03-a-platform-move-is-not-a-cleanup"
+excerpt: "I asked a straightforward question about my hosting: does it make sense to move to a different provider?"
+date: "2026-11-23"
+tags:
+  - "insight"
+  - "tech"
+  - "infrastructure"
+  - "security"
+  - "migration"
+  - "operations"
+publishedAt: "2026-11-23"
+---
+# A Platform Move Is Not a Cleanup
+
+I asked a straightforward question about my hosting: does it make sense to move to a different provider?
+
+I expected a comparison. What came back, after an audit across roughly eighteen projects and three domains on the account, was a recommendation not to move — and a list of five things wrong with what I already had.
+
+- The account sits on a plan whose terms do not cover commercial use, which several of the projects on it plainly are.
+- A live site on one of my own domains is serving visitor-facing errors, apparently for want of a database that is no longer there.
+- Preview deployments for four projects are publicly reachable. Two of them are client work.
+- A domain is attached to the wrong project.
+- Dormant projects are still holding credentials nobody has rotated or revoked.
+
+Not one of those is fixed by changing provider. Every one of them would travel.
+
+## The question was the symptom
+
+What I find uncomfortable, looking at that list, is that I did not arrive at the migration question through analysis. I arrived at it through a feeling — a background sense that the setup was not right — and I converted that feeling into the most structural question available.
+
+That conversion is the error, and it is a specific one. **A vague unease about a system produces a migration question, because a migration is the only response that feels proportionate to an unease you cannot name.** The actual causes were nameable; I just had not named them. Once named, four of the five are an afternoon of chores and the fifth is a billing decision.
+
+Migrations are also uniquely attractive to someone in my position. A platform move is legible work. It has a beginning and an end, it produces a visible artefact, it can be described to somebody as a project, and — this is the seductive part — **it postpones every underlying question while looking like the most serious possible engagement with them.** Rotating a credential in a dormant project produces nothing anyone will ever see. It is also the thing that would have stopped the actual incident.
+
+The generalised test I want, and it is one question asked before any platform, framework or vendor change:
+
+> **Which of the problems I am trying to escape would follow me?**
+
+If the honest answer is most of them, I am not evaluating a migration. I am avoiding a chore list, and the chore list is the project.
+
+## The same shape, one surface over
+
+The reason I am confident this is a pattern and not an anecdote is that I made the identical mistake about my agent setup in the same week, and did not notice the symmetry until I wrote both down.
+
+The agent workspace was not getting through its queue. My response was architectural: design a better workspace — a board, approvals, a decision inbox, more capable workers. Then I looked at what was actually blocking it. Several agents were sitting on unanswered permission prompts. One session was waiting on a colleague who was himself waiting on a permission prompt. An integration in the chain needed re-authenticating. A machine had too little free disk to run the test it was asked to run.
+
+**The constraint was consent and housekeeping, not capacity.** Adding workers to a system whose workers are all waiting for permission produces more waiting, more expensively — and I was a day away from building that. The decision inbox I eventually approved is, I still think, the right structure. But it is right for a different reason than the one I gave: not because it adds throughput, but because it is where the permission answers go. Structure that resolves the actual blockage is worth building. Structure that routes around it is a second system to maintain.
+
+So: before more agents, check what the existing ones are waiting for. Before a new platform, check what the current one is actually doing wrong. The two are the same question, and the honest version of it is unflattering, which is why neither occurred to me first.
+
+## The exposure finding deserves its own line
+
+One item on that list is not a chore, and I want to be careful not to let it get averaged into the others.
+
+Publicly reachable preview deployments are a different category from a misassigned domain. A preview is built to be shared informally and is therefore built to be reachable; the default is convenience, and nobody revisits a default that has never caused a problem. Two of the four exposed previews are client projects, which means the people carrying the risk are not me.
+
+I have written elsewhere that a screen which merely declines to render a field is a curtain and not a permission system. This is the infrastructure version of the same confusion: **a URL nobody has published is not a URL nobody can reach.** Obscurity is not access control, and an unlisted preview of a client application is obscurity with a client's data behind it.
+
+The practical rule, which costs nothing once: treat preview environments as production for the purposes of access, or seed them with data that would not matter if a stranger read it. One of those two, chosen deliberately, per project.
+
+## Where this goes wrong
+
+**Sometimes the platform genuinely is the problem**, and "fix what you have" becomes a way of never leaving anything. A plan whose terms do not permit commercial use is an example of a real platform-level decision hiding inside the chore list — the fix there is to pay for the right tier or move, and no amount of tidying substitutes for it. The test I proposed is not "never migrate." It is "separate the problems that travel from the ones that don't," and then handle each set on its own terms. Mine were four travellers and one genuine platform question.
+
+**Cleanup also has no natural end**, which makes it a legitimate competitor to the migration as a form of procrastination. Five findings is a scoped list. An invitation to audit the account indefinitely is not, and I know my own appetite for that.
+
+**And the counter-argument I take most seriously is about the source.** The audit that told me not to migrate was produced by the same assistant that would have performed the migration, on the strength of what it could read from the account — and I have not independently verified a single one of the five findings. It did not, as far as I can tell, have an interest in either answer, and the findings are specific enough to be checkable. But a recommendation and a verification are different things, and this essay's confidence rests entirely on the first. The exposed previews in particular are a claim about what a stranger can reach, which has exactly one honest test: open one in a browser with no session, as a stranger would. Until I have done that, the most defensible sentence I can write is that I have a well-shaped list of things to check, which is a better position than the migration plan I nearly started and is not the same as knowing.

@@ -5,7 +5,7 @@ type: "insight"
 status: "published"
 slug: "01-built-is-not-sent-and-sent-is-not-received"
 excerpt: "An assistant told me an invoice was eighteen days overdue. I opened the accounting system. It had been paid in full three weeks earlier, down to the tax…"
-date: "2026-11-22"
+date: "2026-11-23"
 tags:
   - "insight"
   - "artificial-intelligence"
@@ -13,7 +13,7 @@ tags:
   - "verification"
   - "delegation"
   - "systems-of-record"
-publishedAt: "2026-11-22"
+publishedAt: "2026-11-23"
 ---
 # Built Is Not Sent, and Sent Is Not Received
 
@@ -149,3 +149,27 @@ The first is a real extension of the framework. My assertions-and-receipts disti
 The second is less comfortable and belongs to a different essay. This is the first instance in four weeks where the verification worked perfectly. I looked at the right system, read the right fields, found the real defect, and specified the correct fix. And the wrong thing still left the building. **The failure has migrated from knowing to doing** — which means the epistemics project in this essay has, at least in this one case, succeeded, and bought me nothing. That is a sequencing and follow-through problem, and I have written about it at length elsewhere; what it costs me here is the comfortable assumption that better seeing was the binding constraint.
 
 One last small one, which is the two-receipts-disagree case with a twist. Two records about building access: one showing a request still awaiting approval, another showing access valid through a date two days out. Earlier I would have called this conflicting evidence and gone to a third source. The twist is that I could not establish the two records referred to the same credentials at all. **Before deciding which record to believe, establish that they are about the same object** — because two true statements about two different things look identical to a contradiction, and resolving a conflict that does not exist is its own way of being wrong.
+
+## Authorized is not enabled, and a receipt can describe a world that does not exist
+
+A fifth week, and I want to lead with the one that genuinely surprised me, because it breaks the receipts framework rather than extending it.
+
+**A connection succeeded and the capability did not exist.** I wired my product to a calendar service. The authorization completed cleanly — the handshake returned, the connection badge went green, the account was linked. No events appeared. The cause, found an hour later, was that the server mediating the integration permitted *create* actions and did not permit reads of events or calendars at all. The permission to act had been granted; the ability to act had never been enabled.
+
+So another rung, and it sits earlier in the chain than anything I had: **authorized → permitted → capable → working.** And the reason this one is nastier than the others is that *nothing lied to me.* The authorization receipt was genuine and correctly described the authorization. The server's configuration was correct about itself. Two systems each reported truthfully about a different half of the question, and the gap between them had no owner and no surface. My whole framework is built on sorting assertions from receipts, and this was a true receipt about the wrong object — the sub-case I named a section ago as *certification is a receipt about the package*, except now it has moved into the one place I would have called unambiguous evidence. A green connection badge is a receipt about a handshake.
+
+The operational rule is cheap and I now want it as a reflex: **after connecting anything, immediately read one real record through it.** Not the badge, not a test ping — one actual item of the kind the feature exists to fetch. If the integration is meant to show today's meetings, the test is today's meetings appearing on the screen a user will look at.
+
+**A receipt from a test environment is a receipt about the test environment.** Later the same week my payment provider emailed four notices: two successful payments, then two immediate cancellations, each with a correct amount, a correct tax split and a named plan. Machine-written, event-driven, exactly the shape of evidence this essay has spent five weeks telling me to go and find. All four were stamped TEST MODE.
+
+This is a category I had not considered at all, and it is worth stating plainly because it defeats the assertion/receipt test completely. A sandbox receipt is not a false record. It is a true record of a simulated event. Every property I rely on holds: a machine wrote it, an event caused it, no amount of believing would have produced it. It simply describes a world that does not contain any money. **So the per-field audit needs a third column after *assertion or receipt* and *does it bind*: which world is this receipt about?** The reason this is dangerous rather than merely amusing is the aggregation case — four payment emails in an inbox are four payment emails, and a weekly summary that counts them, or an agent that reports "payments are flowing," has to read a flag in the subject line to know the difference. Test and production evidence must never land in the same bucket, and mine currently do.
+
+**A recap read today is not work done today.** I reopened a development conversation and it reported, confidently and in the present tense, a commit, a working-notes file, a platform checklist and a server version. I nearly recorded all of it as the day's progress. Reading more carefully, every item it described was anchored to rows dated two days earlier; it was summarising its own history, not reporting new work.
+
+The new link here is temporal, and I had not had a word for it. Each item on that list may well be a genuine receipt about a genuine event — the dates are the giveaway that the event is old. **The timestamp on my reading is not the timestamp on the doing**, and a conversational interface erases that distinction by design, because a summary generated this afternoon reads as news this afternoon. The question to add: *when did the event this receipt describes occur?* A receipt with no date is a receipt with no position in the chain.
+
+**A receipt can prove an event and still not name the actor.** One useful correction landed this week in the other direction: an invoice I had recorded as possibly undelivered turned out to have client-view timestamps against it, on two separate days. That is exactly the receipt I argued for four sections ago, and it genuinely narrowed the problem — the document reached someone.
+
+But it does not say who, and I noticed myself sliding from *the client viewed it* to *the finance contact has seen it*, which is a different claim and the one that matters, since the whole dispute was about a bounced address at that end. **A view event is a receipt about an access, not about a person**, and the actor is the field it does not have. Where I needed the identity, the only thing that supplies it is a reply.
+
+And a recurrence I will not re-litigate, except to note the cost has changed. Two sections above I wrote that a stale assertion generates work. This week it generated *destructive* work: a planner block instructed me to produce damage evidence for a warranty claim that my sent folder showed had been submitted overnight, and the proof in question required breaking the item further. A second block told me to sign a contract addendum I had signed and returned the previous day. Both would have been wasted; the first would have been wasted and irreversible. **The reconciliation has to happen when the plan is written, not when the task is read** — because at read time the prompt arrives with the full authority of a decision I made while better informed, and the thing it asks for may not be undoable.

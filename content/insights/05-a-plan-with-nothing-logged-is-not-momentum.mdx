@@ -5,7 +5,7 @@ type: "insight"
 status: "published"
 slug: "05-a-plan-with-nothing-logged-is-not-momentum"
 excerpt: "I rebuilt a client's demand plan around buyer journeys instead of disconnected activities, and it is the best version of that artefact I have made. Fifty-five…"
-date: "2026-11-22"
+date: "2026-11-23"
 tags:
   - "insight"
   - "marketing"
@@ -13,7 +13,7 @@ tags:
   - "measurement"
   - "planning"
   - "pricing"
-publishedAt: "2026-11-22"
+publishedAt: "2026-11-23"
 ---
 # A Plan With Nothing Logged Is Not Momentum
 
@@ -70,3 +70,28 @@ Both errors — the audience sum and the cost-plus price — have the same shape
 **And the uncomfortable one: "get the owners to log their activity" is a people problem I keep trying to solve with a better interface.** I have now built the logging surface twice. The gap is not a missing feature; it is that logging is work with no reward attached for the person doing it, and no dashboard fixes that. Until somebody's week visibly goes better because they logged, the column stays empty — and a third interface will not change it.
 
 The line worth keeping: **the only number in a demand plan that is not a guess is the one somebody logged.**
+
+## The zero that was the finding, and the mechanism I had been missing
+
+Six weeks on, the same engine reported back, and it did something I had not prepared for: it filled the logged column in, and the number it logged was zero.
+
+The week-seven dashboard showed revenue at a small fraction of the annual forecast, two of a hundred-odd marketing-qualified leads converted, and — the cell that matters — **zero actual spend against a planned budget.** The page's own diagnosis was insufficient new leads.
+
+I read that first as a reporting gap. It is not. **A logged zero is the most informative number a plan can produce**, and it is a different finding from an empty column. An empty column means nobody is recording; a logged zero means the recording works and the activity did not happen. The essay above spends its length worrying about the empty case, and I had no reading at all for the populated-with-zero case, which is strictly better news about the instrument and strictly worse news about the plan. The instinct to treat it as a measurement problem — to go and check whether the spend was recorded somewhere else — is the instinct to disbelieve the only honest cell on the page.
+
+And the dashboard was displaying this, to its owners, for seven weeks. Which is the part that forces a correction to my own framing. I have been arguing that the fix is better labelling: planned and logged in separate columns, visibly. This dashboard did exactly that. The columns were separate, the logged column was legible, the gap was enormous, and nothing happened. **Legibility is not a trigger.** A number that nobody is obliged to act on is decoration regardless of how honestly it is presented, and I built the honest presentation and stopped there.
+
+The mechanism I had been missing arrived, unexpectedly, from the client's own side. A proposal came across to rebuild the motion around account research rather than campaign volume — and the useful part was not the research argument, which I already agreed with. It was the four operational commitments stapled underneath it:
+
+- a named owner for every inbound hand-raiser, within one business day;
+- a qualified lead either accepted by sales or returned with a stated reason;
+- a nurturing owner named rather than assumed;
+- **a CRM update required after every interaction, not encouraged.**
+
+That last one answers the complaint I close the section above with. I wrote that logging fails because it is work with no reward attached, and that no third interface would fix it. Correct, and incomplete: the alternative to a reward is a **dependency**. If the handoff does not proceed until the log exists — if the lead cannot be accepted, returned or escalated without it — then logging stops being an administrative favour and becomes the mechanism by which the person gets the thing they want. Nobody logs to feed a dashboard. People log to unblock themselves.
+
+So the sharper version of the whole essay: **do not attach logging to reporting, attach it to routing.** A log that feeds a chart is overhead. A log that releases the next step is a gate, and gates get used.
+
+Two honest qualifications. The first is that this remains a proposal in a document I have not yet responded to, which makes it exactly the artefact class this essay is about — a plan with nothing logged against it. I would be repeating my own error if I recorded the four commitments as an improvement rather than as a hypothesis that happens to be well-shaped. The second is the cost: a one-business-day ownership rule and a mandatory-capture rule are capacity commitments, and the essay's third check asks whether the capacity exists. The same proposal estimates a few hours a week of business-development time against them. I have not tested that estimate, and the last time I accepted a per-week number without testing it, the plan carried a twenty-four-contact deficit from week one.
+
+A smaller instance of the same shape, from a different engagement the same week. I sent a pricing team an offer ladder and, separately, a structured template for the inputs behind the sales story — splitting the commercial artefact from the evidence it needs, which is the right split. Then I sent both without naming who owns the template or when it comes back. **A structured input form with no owner and no return date is a logging surface with no gate on it**, which is the thing I have now built three times, and I built the third one in the same week I worked out why the first two were empty.
